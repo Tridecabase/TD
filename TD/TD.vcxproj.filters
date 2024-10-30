@@ -20,6 +20,12 @@
     <Filter Include="Manager">
       <UniqueIdentifier>{cbc8900a-4c58-4524-a340-1066db36ca12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Characters">
+      <UniqueIdentifier>{6118574e-0a88-4ee6-ab7f-40767736b274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{e8aa929a-48f5-4670-8034-48dcaa14eb24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -49,6 +55,15 @@
     </ClCompile>
     <ClCompile Include="Manager\resource_manager.cpp">
       <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\player.cpp">
+      <Filter>Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\scene_manager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\stage.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +143,15 @@
     </ClInclude>
     <ClInclude Include="Manager\resource_manager.h">
       <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\player.h">
+      <Filter>Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\scene_manager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\stage.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
