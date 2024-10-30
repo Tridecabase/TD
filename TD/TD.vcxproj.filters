@@ -26,6 +26,9 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{e8aa929a-48f5-4670-8034-48dcaa14eb24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{4a84a5e6-b357-4d2d-b04d-e3e760b81164}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -67,6 +70,15 @@
     </ClCompile>
     <ClCompile Include="Scene\background.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\bullet.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\map.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\obj.cpp">
+      <Filter>Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +173,15 @@
     </ClInclude>
     <ClInclude Include="Tools\config.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\bullet.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\map.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\obj.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

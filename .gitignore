@@ -186,3 +186,5 @@ ipch/
 *.psess
 *.vsp
 *.vspx
+/Generated
+/.vs
