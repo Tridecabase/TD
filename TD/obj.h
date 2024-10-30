@@ -2,7 +2,7 @@
 class obj
 {
 public:
-	void draw()
+	void draw();
 
 };
 
