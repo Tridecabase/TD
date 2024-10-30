@@ -2,7 +2,7 @@
 #define STAGE_H
 
 #include "./Characters/player.h"
-
+#include "./Scene/background.h"
 #include "./Manager/resource_manager.h"
 #include "Vector2.h"
 #include <Novice.h>
@@ -16,7 +16,7 @@ public:
     Stage();
     ~Stage();
 
-    //マップの描画処理
+    //マップの初期化処理
     void Init();
     //ステージの更新処理
     void Update();
@@ -26,6 +26,9 @@ public:
 private:
 
     ResourceManager resourceManager;
+
+    //背景の宣言
+    Background* background;
 };
 
 #endif
