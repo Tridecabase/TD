@@ -115,8 +115,11 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\TextureManager.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
+    <ClCompile Include="Characters\player.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager\resource_manager.cpp" />
+    <ClCompile Include="Manager\scene_manager.cpp" />
+    <ClCompile Include="Scene\stage.cpp" />
     <ClCompile Include="Tools\csv_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +150,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\DirectXGame\input\Input.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
+    <ClInclude Include="Characters\player.h" />
     <ClInclude Include="Manager\resource_manager.h" />
+    <ClInclude Include="Manager\scene_manager.h" />
+    <ClInclude Include="Scene\stage.h" />
     <ClInclude Include="Tools\csv_parser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
