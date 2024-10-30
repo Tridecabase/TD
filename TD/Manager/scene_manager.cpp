@@ -88,21 +88,29 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 
 void SceneManager::Render() {
 
+
     switch (current_scene) {
     case SceneState::GAMETITLE:
 
+
+        //テスト用背景
+        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x708090ff, kFillModeSolid);
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : GAMETITLE");
 
         break;
     case SceneState::LOADING:
 
+        //テスト用背景
+        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0xffdab9ff, kFillModeSolid);
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : LOADING");
 
         break;
     case SceneState::GAMESTART:
 
+        //テスト用背景
+        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x808080ff, kFillModeSolid);
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : GAMESTART");
 
@@ -112,6 +120,8 @@ void SceneManager::Render() {
         break;
     case SceneState::GAMEEND:
 
+        //テスト用背景
+        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
 
