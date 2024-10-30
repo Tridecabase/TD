@@ -91,19 +91,35 @@ void SceneManager::Render() {
     switch (current_scene) {
     case SceneState::GAMETITLE:
 
+        //テスト用シーン切り替え
+        Novice::ScreenPrintf(10, 30, "current_scene : GAMETITLE");
+
         break;
     case SceneState::LOADING:
+
+        //テスト用シーン切り替え
+        Novice::ScreenPrintf(10, 30, "current_scene : LOADING");
 
         break;
     case SceneState::GAMESTART:
 
+        //テスト用シーン切り替え
+        Novice::ScreenPrintf(10, 30, "current_scene : GAMESTART");
+
         stage.Render();
+
 
         break;
     case SceneState::GAMEEND:
 
+        //テスト用シーン切り替え
+        Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
+
         break;
     }
+
+    //テスト用シーン切り替えボータン
+    Novice::ScreenPrintf(10,10,"press M to change scene");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
