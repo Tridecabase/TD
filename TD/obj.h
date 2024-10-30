@@ -1,8 +1,13 @@
 #pragma once
-class obj
+#include <Vector2.h>
+
+class Obj
 {
 public:
-	void draw();
+	void updateMouseUI();
+	void drawMouseUI();
 
+	Vector2 pos_;
+	bool isAlive_;
 };
 
