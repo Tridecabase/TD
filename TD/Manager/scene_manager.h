@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include "./Tools/csv_parser.h"
+#include "./Tools/config.h"
 #include "./Scene/stage.h"
 #include "./Manager/resource_manager.h"
 

@@ -3,6 +3,7 @@
 
 #include "./Characters/player.h"
 #include "./Scene/background.h"
+#include "./Tools/config.h"
 #include "./Manager/resource_manager.h"
 #include "Vector2.h"
 #include <Novice.h>

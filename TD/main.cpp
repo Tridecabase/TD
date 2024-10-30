@@ -1,4 +1,5 @@
 #include <Novice.h>
+#include "./Tools/config.h"
 #include "./Manager/scene_manager.h"
 
 const char kWindowTitle[] = "GC1B_08_ジョ_シセイ";
@@ -7,7 +8,7 @@ const char kWindowTitle[] = "GC1B_08_ジョ_シセイ";
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ライブラリの初期化
-	Novice::Initialize(kWindowTitle, 1280, 720);
+	Novice::Initialize(kWindowTitle, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	SceneManager sceneManager;
 	sceneManager.Init();

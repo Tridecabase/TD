@@ -2,6 +2,7 @@
 #define BACKGROUND_H
 
 #include "./Manager/resource_manager.h"
+#include "./Tools/config.h"
 #include "Vector2.h"
 #include <Novice.h>
 #include <stdio.h>
