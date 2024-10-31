@@ -80,6 +80,9 @@
     <ClCompile Include="Entities\obj.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\title.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="Entities\obj.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\title.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

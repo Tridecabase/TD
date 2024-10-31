@@ -11,6 +11,7 @@
 #include "./Tools/csv_parser.h"
 #include "./Tools/config.h"
 #include "./Scene/stage.h"
+#include "./Scene/title.h"
 #include "./Manager/resource_manager.h"
 
 
@@ -48,7 +49,9 @@ private:
     //現在のシーン
     SceneState current_scene;
     //現在のステージ
-    Stage stage;
+    Stage* stage;
+    //
+    Title* title;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑scenemanager.cppで使用するための変数をここで宣言↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
