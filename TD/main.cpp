@@ -17,11 +17,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char keys[256] = {0};
 	char preKeys[256] = {0};
 
-	Map* map = new Map;
-	Stage* mainStage = new Stage;
-	Player* player = new Player(map);
-	Bullet* bullet = new Bullet;
-
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
@@ -35,11 +30,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 
-
-		mainStage->MainStage(player, bullet, map, keys, preKeys);
-		sceneManager.Update(keys,preKeys);
 		sceneManager->Update(keys,preKeys);
-
 
 		///
 		/// ↑更新処理ここまで

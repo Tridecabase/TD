@@ -183,5 +183,8 @@
     <ClInclude Include="Entities\obj.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Tools\shaker.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

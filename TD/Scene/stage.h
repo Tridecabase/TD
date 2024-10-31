@@ -3,6 +3,8 @@
 
 #include "./Characters/player.h"
 #include "./Scene/background.h"
+#include "./Entities/map.h"
+#include "./Entities/bullet.h"
 #include "./Tools/config.h"
 #include "./Manager/resource_manager.h"
 #include "Vector2.h"
@@ -11,19 +13,10 @@
 #include <stdlib.h>
 #include <vector>
 
-/////////////////////
-#include "player.h"
-#include "map.h"
-#include "bullet.h"
-
-
-/// ///////////////////////
+///////////////////////////
 
 class Stage {
 public:
-
-    void MainStage(Player* player, Bullet* bullet, Map* map, char keys[], char preKeys[]);
-
 
     Stage();
     ~Stage();
@@ -31,7 +24,7 @@ public:
     //マップの初期化処理
     void Init();
     //ステージの更新処理
-    void Update();
+    void Update(char keys[256], char preKeys[256]);
     //ステージの描画処理
     void Render();
 
@@ -41,6 +34,12 @@ private:
 
     //背景の宣言
     Background* background;
+    //プレイヤーの宣言
+    Player* player;
+    //プレイヤーマップの宣言
+    Map* map;
+    //プレイヤ弾丸の宣言
+//  Bullet* bullet;
 };
 
 #endif
