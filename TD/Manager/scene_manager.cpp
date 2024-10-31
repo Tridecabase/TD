@@ -53,7 +53,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
     case SceneState::GAMESTART:
 
         //ステージ要素の更新処理
-        stage->Update();
+        stage->Update(keys,preKeys);
 
 
         //テスト用シーン切り替え

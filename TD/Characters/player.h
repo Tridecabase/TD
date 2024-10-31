@@ -1,11 +1,19 @@
 #pragma once
 #include "Vector2.h"
-#include "map.h" 
+#include "./Entities/map.h" 
+#include "./Tools/config.h" 
 
 class Player {
 public:
 
-	Player(Map* map);
+	Player();
+	~Player();
+
+	void Init(Map* map);
+	void Move(Map* map, char keys[256], char preKeys[256]);
+	void Draw(Map* map);
+
+private:
 
 	Vector2 pos;
 	Vector2 tmpPos;
@@ -19,6 +27,4 @@ public:
 
 	bool isAlive;
 
-	void Move(Map* map, char keys[], char preKeys[]);
-	void Draw(Map* map);
-}; #pragma once
+}; 

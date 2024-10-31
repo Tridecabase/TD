@@ -1,8 +1,27 @@
 #include <Novice.h>
 #include "player.h" 
 
-Player::Player(Map* map) {
+Player::Player() {
 
+	pos.x = 192.0f;
+	pos.y = 96.0f;
+	posNum.x = 0.0f;
+	posNum.y = 0.0f;
+	tmpPos.x = 192.0f;
+	tmpPos.y = 96.0f;
+	speed.x = BLOCK_SIZE;
+	speed.y = BLOCK_SIZE / 2.0f;
+	width = 40.0f;
+	height = 20.0f;
+
+	shootCoolTime = 10;
+	isShootAble = false;
+
+	isAlive = true;
+}
+Player::~Player(){}
+
+void Player::Init(Map* map) {
 	pos.x = 192.0f;
 	pos.y = 96.0f;
 	posNum.x = 0.0f;
@@ -18,14 +37,14 @@ Player::Player(Map* map) {
 	isShootAble = false;
 
 	isAlive = true;
-}
+};
 
-void Player::Move(Map* map, char keys[], char preKeys[]) {
+void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
-	//今のプレイヤーマップ番号
+
 	posNum.x = pos.x / speed.x;
 	posNum.y = pos.y / speed.y;
-	//空いてないなら仮は戻る
+
 	tmpPos.x = pos.x;
 	tmpPos.y = pos.y;
 
@@ -43,33 +62,33 @@ void Player::Move(Map* map, char keys[], char preKeys[]) {
 	}
 
 	if (!preKeys[DIK_W] && keys[DIK_W]) {
-		tmpPos.y -= speed.y;//仮で進んでみる
-		posNum.y = tmpPos.y / speed.y;//仮のプレイヤーマップ番号
-		//もし仮に進んで空いてたら進む
+		tmpPos.y -= speed.y;
+		posNum.y = tmpPos.y / speed.y;
+
 		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
 			pos.y = tmpPos.y;
 		}
 	}
 	else if (!preKeys[DIK_S] && keys[DIK_S]) {
-		tmpPos.y += speed.y;//仮で進んでみる
-		posNum.y = tmpPos.y / speed.y;//仮のプレイヤーマップ番号
-		//もし仮に進んで空いてたら進む
+		tmpPos.y += speed.y;
+		posNum.y = tmpPos.y / speed.y;
+
 		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
 			pos.y = tmpPos.y;
 		}
 	}
 	else if (!preKeys[DIK_A] && keys[DIK_A]) {
-		tmpPos.x -= speed.x;//仮で進んでみる
-		posNum.x = tmpPos.x / speed.x;//仮のプレイヤーマップ番号
-		//もし仮に進んで空いてたら進む
+		tmpPos.x -= speed.x;
+		posNum.x = tmpPos.x / speed.x;
+
 		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
 			pos.x = tmpPos.x;
 		}
 	}
 	else if (!preKeys[DIK_D] && keys[DIK_D]) {
-		tmpPos.x += speed.x;//仮で進んでみる
-		posNum.x = tmpPos.x / speed.x;//仮のプレイヤーマップ番号
-		//もし仮に進んで空いてたら進む
+		tmpPos.x += speed.x;
+		posNum.x = tmpPos.x / speed.x;
+
 		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
 			pos.x = tmpPos.x;
 		}
