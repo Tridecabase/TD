@@ -89,7 +89,6 @@ void SceneManager::Render() {
     switch (current_scene) {
     case SceneState::GAMETITLE:
 
-
         //テスト用背景
         Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x708090ff, kFillModeSolid);
         //テスト用シーン切り替え
@@ -99,7 +98,7 @@ void SceneManager::Render() {
     case SceneState::LOADING:
 
         //テスト用背景
-        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0xffdab9ff, kFillModeSolid);
+        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x6495edff, kFillModeSolid);
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : LOADING");
 
