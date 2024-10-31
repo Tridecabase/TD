@@ -1,12 +1,12 @@
 #ifndef STAGE_H
 #define STAGE_H
 
+#include "./Manager/resource_manager.h"
 #include "./Characters/player.h"
 #include "./Scene/background.h"
 #include "./Entities/map.h"
 #include "./Entities/bullet.h"
 #include "./Tools/config.h"
-#include "./Manager/resource_manager.h"
 #include "Vector2.h"
 #include <Novice.h>
 #include <stdio.h>
@@ -39,7 +39,7 @@ private:
     //プレイヤーマップの宣言
     Map* map;
     //プレイヤ弾丸の宣言
-//  Bullet* bullet;
+    Bullet* bullet;
 };
 
 #endif

@@ -1,11 +1,12 @@
 #pragma once
 #include "Vector2.h"
-#include "player.h"
+#include "./Characters/player.h"
 
 class Bullet {
 public:
 
 	Bullet();
+	~Bullet();
 
 	Vector2 pos;
 	Vector2 newPos;
@@ -23,6 +24,5 @@ public:
 	bool isShoot;
 
 	void Shot(Player* player, Map* map);
-
-	void Draw();
+	void Draw() const;
 };

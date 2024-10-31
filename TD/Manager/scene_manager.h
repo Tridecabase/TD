@@ -10,6 +10,7 @@
 #include <map>
 #include "./Tools/csv_parser.h"
 #include "./Tools/config.h"
+#include "./Tools/wave_generator.h"
 #include "./Scene/stage.h"
 #include "./Manager/resource_manager.h"
 
@@ -49,6 +50,12 @@ private:
     SceneState current_scene;
     //現在のステージ
     Stage* stage;
+    bool is_stage_off;
+
+    //test wave
+    WaveGenerator* wave1;
+    WaveGenerator* wave2;
+    WaveGenerator* wave3;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑scenemanager.cppで使用するための変数をここで宣言↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//

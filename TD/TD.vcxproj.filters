@@ -80,6 +80,9 @@
     <ClCompile Include="Entities\obj.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Tools\wave_generator.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -184,6 +187,9 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Tools\shaker.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\wave_generator.h">
       <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>

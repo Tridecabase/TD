@@ -4,10 +4,29 @@
 
 
 Bullet::Bullet() {
+	newPos = {};
+	frontPos = {};
 	pos.x = 0.0f;
 	pos.y = 0.0f;
 	mousePosX = 0;
 	mousePosY = 0;
+	distanceToMouse = 0.0f;
+	width = 45.0f;
+	height = 45.0f;
+	radius = 3.0f;
+	speed = 8.0f;
+	time = 0.0f;
+	maxBullet = 32;
+	isShoot = false;
+}
+Bullet::~Bullet() {
+	newPos = {};
+	frontPos = {};
+	pos.x = 0.0f;
+	pos.y = 0.0f;
+	mousePosX = 0;
+	mousePosY = 0;
+	distanceToMouse = 0.0f;
 	width = 45.0f;
 	height = 45.0f;
 	radius = 3.0f;
@@ -55,6 +74,8 @@ void Bullet::Shot(Player* player, Map *map) {
 	}
 }
 
-void Bullet::Draw() {
-	Novice::DrawEllipse(static_cast<int>(newPos.x), static_cast<int>(newPos.y), static_cast<int>(width), static_cast<int>(height), 0.0, BLUE, kFillModeSolid);
+void Bullet::Draw() const {
+	if (isShoot) {
+		Novice::DrawEllipse(static_cast<int>(newPos.x), static_cast<int>(newPos.y), static_cast<int>(width), static_cast<int>(height), 0.0, BLUE, kFillModeSolid);
+	}
 }

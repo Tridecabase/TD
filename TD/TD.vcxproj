@@ -125,6 +125,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="Scene\background.cpp" />
     <ClCompile Include="Scene\stage.cpp" />
     <ClCompile Include="Tools\csv_parser.cpp" />
+    <ClCompile Include="Tools\wave_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h" />
@@ -165,6 +166,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Tools\config.h" />
     <ClInclude Include="Tools\csv_parser.h" />
     <ClInclude Include="Tools\shaker.h" />
+    <ClInclude Include="Tools\wave_generator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
