@@ -1,12 +1,9 @@
 #include "scene_manager.h"
 
-SceneManager::SceneManager()
-    : current_scene(SceneState::GAMETITLE)
-{
-
+SceneManager::SceneManager(): current_scene(SceneState::GAMETITLE), stage(new Stage) {}
+SceneManager::~SceneManager() {
+    delete stage;
 }
-
-SceneManager::~SceneManager() {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
@@ -17,7 +14,7 @@ void SceneManager::Init() {
     //初期シーンを設定
     current_scene = SceneState::GAMETITLE;
     //ステージ要素の初期化
-    stage.Init();
+    stage->Init();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +41,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
     case SceneState::LOADING:
 
         //ステージ要素の再初期化
-        stage.Init();
+        stage->Init();
 
         //テスト用シーン切り替え
         if (keys[DIK_M] && !preKeys[DIK_M]) {
@@ -56,7 +53,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
     case SceneState::GAMESTART:
 
         //ステージ要素の更新処理
-        stage.Update();
+        stage->Update();
 
 
         //テスト用シーン切り替え
@@ -92,7 +89,6 @@ void SceneManager::Render() {
     switch (current_scene) {
     case SceneState::GAMETITLE:
 
-
         //テスト用背景
         Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x708090ff, kFillModeSolid);
         //テスト用シーン切り替え
@@ -102,7 +98,7 @@ void SceneManager::Render() {
     case SceneState::LOADING:
 
         //テスト用背景
-        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0xffdab9ff, kFillModeSolid);
+        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x6495edff, kFillModeSolid);
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : LOADING");
 
@@ -114,7 +110,7 @@ void SceneManager::Render() {
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : GAMESTART");
 
-        stage.Render();
+        stage->Render();
 
 
         break;
