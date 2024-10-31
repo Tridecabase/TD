@@ -11,8 +11,19 @@
 #include <stdlib.h>
 #include <vector>
 
+/////////////////////
+#include "player.h"
+#include "map.h"
+#include "bullet.h"
+
+
+/// ///////////////////////
+
 class Stage {
 public:
+
+    void MainStage(Player* player, Bullet* bullet, Map* map, char keys[], char preKeys[]);
+
 
     Stage();
     ~Stage();

@@ -29,3 +29,16 @@ void Stage::Render() {
 	background->Render();
 
 };
+
+
+/// /////////////////////
+void Stage::MainStage(Player* player, Bullet* bullet, Map* map, char keys[], char preKeys[]) {
+	player->Move(map, keys, preKeys);
+	player->Draw(map);
+
+	bullet->Shot(player, map);
+	bullet->Draw();
+
+	map->Draw();
+}
+////////////////////////////////
