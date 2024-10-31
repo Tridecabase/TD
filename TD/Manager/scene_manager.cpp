@@ -1,11 +1,6 @@
 #include "scene_manager.h"
 
-SceneManager::SceneManager()
-    : current_scene(SceneState::GAMETITLE)
-{
-
-}
-
+SceneManager::SceneManager(): current_scene(SceneState::GAMETITLE), stage(new Stage) {}
 SceneManager::~SceneManager() {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +12,7 @@ void SceneManager::Init() {
     //初期シーンを設定
     current_scene = SceneState::GAMETITLE;
     //ステージ要素の初期化
-    stage.Init();
+    stage->Init();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +39,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
     case SceneState::LOADING:
 
         //ステージ要素の再初期化
-        stage.Init();
+        stage->Init();
 
         //テスト用シーン切り替え
         if (keys[DIK_M] && !preKeys[DIK_M]) {
@@ -56,7 +51,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
     case SceneState::GAMESTART:
 
         //ステージ要素の更新処理
-        stage.Update();
+        stage->Update();
 
 
         //テスト用シーン切り替え
@@ -114,7 +109,7 @@ void SceneManager::Render() {
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : GAMESTART");
 
-        stage.Render();
+        stage->Render();
 
 
         break;

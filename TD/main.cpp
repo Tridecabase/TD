@@ -10,8 +10,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ライブラリの初期化
 	Novice::Initialize(kWindowTitle, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	SceneManager sceneManager;
-	sceneManager.Init();
+	SceneManager* sceneManager = new SceneManager;
+	sceneManager->Init();
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -30,7 +30,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 
-		sceneManager.Update(keys,preKeys);
+		sceneManager->Update(keys,preKeys);
 
 		///
 		/// ↑更新処理ここまで
@@ -40,7 +40,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		sceneManager.Render();
+		sceneManager->Render();
 
 		///
 		/// ↑描画処理ここまで
@@ -51,6 +51,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		// ESCキーが押されたらループを抜ける
 		if (preKeys[DIK_ESCAPE] == 0 && keys[DIK_ESCAPE] != 0) {
+			delete sceneManager;
 			break;
 		}
 	}
