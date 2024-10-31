@@ -35,7 +35,7 @@ public:
         posY = float (tempY + cos(rand() % 10) * intensity);
     }
 
-    // スクリーン揺れの速い振動
+    //スクリーン揺れの速い振動
     static void QuickShake(float& posX, float& posY, float intensity) {
         static float tempX = posX;
         static float tempY = posY;
