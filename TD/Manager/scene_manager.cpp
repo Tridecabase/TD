@@ -1,7 +1,9 @@
 #include "scene_manager.h"
 
 SceneManager::SceneManager(): current_scene(SceneState::GAMETITLE), stage(new Stage) {}
-SceneManager::~SceneManager() {}
+SceneManager::~SceneManager() {
+    delete stage;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
