@@ -6,25 +6,43 @@
 class Player {
 public:
 
+	//コンストラクタとデストラクタ
 	Player();
 	~Player();
 
+	//プレイヤーの初期化
 	void Init(Map* map);
+	//プレイヤーの移動処理
 	void Move(Map* map, char keys[256], char preKeys[256]);
+	//プレイヤーの描画
 	void Draw(Map* map);
 
 private:
 
+	// ============================
+	// プレイヤ基本情報
+	// ============================
+	
+	//プレイヤーの位置ベクトル
 	Vector2 pos;
 	Vector2 tmpPos;
 	Vector2 posNum;
+	//プレイヤーの速度ベクトル
 	Vector2 speed;
+	//プレイヤーの長さ
 	float width;
+	//プレイヤーの高さ
 	float height;
-
-	int shootCoolTime;
-	bool isShootAble;
-
+	//プレイヤーの生存フラグ
 	bool isAlive;
+
+	// ============================
+	// 弾丸関数変数
+	// ============================
+
+	//弾丸のクールダウン
+	int shootCoolTime;
+	//弾丸撃つのフラグ
+	bool isShootAble;
 
 }; 
