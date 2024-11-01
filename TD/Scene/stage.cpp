@@ -34,10 +34,17 @@ void Stage::Init() {
 void Stage::Update(char keys[256], char preKeys[256]) {
 
 	//背景の更新処理
-	background->Update();
+	background->Update(player,keys);
 	//プレイヤーの移動処理
 	player->Move(map, keys, preKeys);
-	//プレイヤー弾丸の更新処理
+	//プレイヤー弾丸の更新処理0
+
+
+
+
+
+
+
 	bullet->Shot(player, map);
 
 
@@ -54,7 +61,7 @@ void Stage::Render() {
 	//背景の描画
 	background->Render();
 	//プレイヤーの描画
-	player->Draw(map);
+	player->Draw();
 	//プレイヤーマップの描画
 	map->Draw();
 	//プレイヤー弾丸の描画

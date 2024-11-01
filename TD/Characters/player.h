@@ -15,7 +15,7 @@ public:
 	//プレイヤーの移動処理
 	void Move(Map* map, char keys[256], char preKeys[256]);
 	//プレイヤーの描画
-	void Draw(Map* map);
+	void Draw();
 
 	// ============================
 	// プレイヤ基本情報
@@ -42,6 +42,13 @@ public:
 	int shootCoolTime;
 	//弾丸撃つのフラグ
 	bool isShootAble;
+
+	// ============================
+	// 背景用のメンバー変数を
+	// ============================
+
+	Vector2 screen_pos;
+
 
 	/*他のcppにplayer.cppの情報を渡す関数
 	*例：

@@ -29,6 +29,9 @@
     <Filter Include="Entities">
       <UniqueIdentifier>{4a84a5e6-b357-4d2d-b04d-e3e760b81164}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Csv">
+      <UniqueIdentifier>{2dedb511-8d8c-4f45-831f-3634f2654ed7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -192,5 +195,10 @@
     <ClInclude Include="Tools\wave_generator.h">
       <Filter>Tools</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Csv\background.csv">
+      <Filter>Csv</Filter>
+    </None>
   </ItemGroup>
 </Project>

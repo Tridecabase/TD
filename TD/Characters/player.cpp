@@ -34,6 +34,12 @@ Player::Player() {
 	//弾丸撃つのフラグ
 	isShootAble = false;
 
+	// ============================
+	// 背景用のメンバー変数を
+	// ============================
+
+	screen_pos = {};
+
 }
 //デストラクタ
 Player::~Player(){}
@@ -82,7 +88,6 @@ void Player::Init(Map* map) {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Player::Move(Map* map, char keys[256], char preKeys[256]) {
-
 
 	posNum.x = pos.x / speed.x;
 	posNum.y = pos.y / speed.y;
@@ -135,6 +140,10 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 			pos.x = tmpPos.x;
 		}
 	}
+
+	screen_pos.x = map->blockPos.x + pos.x;
+	screen_pos.y = map->blockPos.y + pos.y;
+
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑更新処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -143,12 +152,12 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Player::Draw(Map* map) {
+void Player::Draw() {
 	
 	//テスト：プレイヤーの描画
 	Novice::DrawEllipse(
-		static_cast<int>(map->blockPos.x + pos.x), 
-		static_cast<int>(map->blockPos.y + pos.y), 
+		static_cast<int>(screen_pos.x),
+		static_cast<int>(screen_pos.y),
 		static_cast<int>(width), 
 		static_cast<int>(height), 
 		0.0f, WHITE, kFillModeSolid);
