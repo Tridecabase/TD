@@ -5,7 +5,7 @@ Map::Map() {
 
 	blockSize = 96.0f;
 	blockPos.x = 450.0f;
-	blockPos.y = 450.0f;
+	blockPos.y = 500.0f;
 
 //	blockMapHandle = Novice::LoadTexture("./resources/map/blockMap.png");
 }

@@ -11,6 +11,7 @@ Player::Player() {
 	//プレイヤーの位置ベクトル
 	pos.x = 192.0f;
 	pos.y = 96.0f;
+	pos.z = 50.0f;
 	posNum.x = 0.0f;
 	posNum.y = 0.0f;
 	tmpPos.x = 192.0f;
@@ -22,8 +23,12 @@ Player::Player() {
 	width = 40.0f;
 	//プレイヤーの高さ
 	height = 20.0f;
+	//プレイヤーの動きクールタイム
+	moveCooltime = 0;
 	//プレイヤーの生存フラグ
 	isAlive = true;
+
+	moveCooltime = 0;
 
 	// ============================
 	// 弾丸関数変数
@@ -39,10 +44,11 @@ Player::Player() {
 	// ============================
 
 	screen_pos = {};
+	
 
 }
 //デストラクタ
-Player::~Player(){}
+Player::~Player() {}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,6 +63,7 @@ void Player::Init(Map* map) {
 	//プレイヤーの位置ベクトル
 	pos.x = 192.0f;
 	pos.y = 96.0f;
+	pos.z = 50.0f;
 	posNum.x = 0.0f;
 	posNum.y = 0.0f;
 	tmpPos.x = 192.0f;
@@ -68,8 +75,11 @@ void Player::Init(Map* map) {
 	width = 40.0f;
 	//プレイヤーの高さ
 	height = 20.0f;
+	//プレイヤーの動きクールタイム
+	moveCooltime = 0;
 	//プレイヤーの生存フラグ
 	isAlive = true;
+
 
 	// ============================
 	// 弾丸関数変数
@@ -79,6 +89,13 @@ void Player::Init(Map* map) {
 	shootCoolTime = 10;
 	//弾丸撃つのフラグ
 	isShootAble = false;
+
+	// ============================
+	// 背景用のメンバー変数
+	// ============================
+
+	//スクロールのフラグ
+	isScrollOn = false;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -95,15 +112,19 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 	tmpPos.x = pos.x;
 	tmpPos.y = pos.y;
 
-	if (posNum.y == 2) {
-		width = 40.0f;
-		height = 20.0f;
-	}
+
 	if (posNum.y == 3) {
+		pos.z = 0.0f;
 		width = 48.0f;
 		height = 24.0f;
 	}
+	if (posNum.y == 2) {
+		pos.z = 50.0f;
+		width = 40.0f;
+		height = 20.0f;
+	}
 	if (posNum.y == 1) {
+		pos.z = 100.0f;
 		width = 32.0f;
 		height = 16.0f;
 	}
@@ -124,20 +145,29 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 			pos.y = tmpPos.y;
 		}
 	}
-	else if (!preKeys[DIK_A] && keys[DIK_A]) {
-		tmpPos.x -= speed.x;
-		posNum.x = tmpPos.x / speed.x;
 
-		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-			pos.x = tmpPos.x;
-		}
+	if (moveCooltime >= 0) {
+		moveCooltime--;
 	}
-	else if (!preKeys[DIK_D] && keys[DIK_D]) {
-		tmpPos.x += speed.x;
-		posNum.x = tmpPos.x / speed.x;
+	if (moveCooltime < 0) {
+		moveCooltime = -1;
+		if (keys[DIK_A]) {
+			tmpPos.x -= speed.x;
+			posNum.x = tmpPos.x / speed.x;
 
-		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-			pos.x = tmpPos.x;
+			if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
+				pos.x = tmpPos.x;
+				moveCooltime = 5;
+			}
+		}
+		else if (keys[DIK_D]) {
+			tmpPos.x += speed.x;
+			posNum.x = tmpPos.x / speed.x;
+
+			if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
+				pos.x = tmpPos.x;
+				moveCooltime = 5;
+			}
 		}
 	}
 
@@ -153,13 +183,13 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Player::Draw() {
-	
+
 	//テスト：プレイヤーの描画
 	Novice::DrawEllipse(
 		static_cast<int>(screen_pos.x),
 		static_cast<int>(screen_pos.y),
-		static_cast<int>(width), 
-		static_cast<int>(height), 
+		static_cast<int>(width),
+		static_cast<int>(height),
 		0.0f, WHITE, kFillModeSolid);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////

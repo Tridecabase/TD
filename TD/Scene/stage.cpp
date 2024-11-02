@@ -34,7 +34,7 @@ void Stage::Init() {
 void Stage::Update(char keys[256], char preKeys[256]) {
 
 	//背景の更新処理
-	background->Update(player,keys);
+	background->Update(player,map,keys);
 	//プレイヤーの移動処理
 	player->Move(map, keys, preKeys);
 	//プレイヤー弾丸の更新処理0

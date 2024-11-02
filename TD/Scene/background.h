@@ -19,7 +19,7 @@ public:
     //背景の初期化処理
     void Init();
     //背景の更新処理
-    void Update(Player* player, char keys[256]);
+    void Update(Player* player,Map* map,char keys[256]);
     //背景の描画処理
     void Render();
 

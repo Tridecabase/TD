@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include "Vector3.h"
 #include "./Entities/map.h" 
 #include "./Tools/config.h" 
 
@@ -22,7 +23,7 @@ public:
 	// ============================
 
 	//プレイヤーの位置ベクトル
-	Vector2 pos;
+	Vector3 pos;
 	Vector2 tmpPos;
 	Vector2 posNum;
 	//プレイヤーの速度ベクトル
@@ -31,8 +32,11 @@ public:
 	float width;
 	//プレイヤーの高さ
 	float height;
+	//プレイヤーの動きクールタイム
+	int moveCooltime;
 	//プレイヤーの生存フラグ
 	bool isAlive;
+
 
 	// ============================
 	// 弾丸関数変数
@@ -48,6 +52,8 @@ public:
 	// ============================
 
 	Vector2 screen_pos;
+	//スクロールのフラグ
+	bool isScrollOn;
 
 
 	/*他のcppにplayer.cppの情報を渡す関数
