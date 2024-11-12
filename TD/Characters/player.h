@@ -43,9 +43,13 @@ public:
 	// ============================
 
 	//弾丸のクールダウン
-	int shootCoolTime;
+	int shootCoolTimeA;
 	//弾丸撃つのフラグ
-	bool isShootAble;
+	bool isShootAbleA;
+	//弾丸のクールダウン
+	int shootCoolTimeB;
+	//弾丸撃つのフラグ
+	bool isShootAbleB;
 
 	// ============================
 	// 背景用のメンバー変数を

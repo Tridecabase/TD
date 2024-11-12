@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "./Tools/config.h" 
+#include "./Entities/bullet.h"
 
 class Enemy {
 public:
@@ -13,7 +14,7 @@ public:
 	//敵の初期化
 	void Init();
 	//敵の移動処理
-	void Move();
+	void Move(BulletA*bulletA, BulletB*bulletB);
 	//敵の描画
 	void Draw();
 
@@ -29,9 +30,12 @@ public:
 	float depth;
 	//敵の高さ
 	float height;
+	//敵の色
+	int color;
 	//敵の生存フラグ
 	bool isAlive;
 
+	float tmp;
 
 	// ============================
 	// 弾丸関数変数
