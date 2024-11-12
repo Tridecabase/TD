@@ -3,6 +3,7 @@
 
 #include "./Manager/resource_manager.h"
 #include "./Characters/player.h"
+#include "./enemy.h"
 #include "./Scene/background.h"
 #include "./Entities/map.h"
 #include "./Entities/bullet.h"
@@ -40,6 +41,8 @@ private:
     Map* map;
     //プレイヤ弾丸の宣言
     Bullet* bullet;
+    //敵の宣言
+    Enemy* enemy;
 };
 
 #endif

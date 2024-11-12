@@ -47,9 +47,6 @@ void Background::Update(Player* player, Map* map, char keys[256]) {
 		}
 	}
 
-	/*if (map->block[(int)player->posNum.y][(int)player->posNum.x] == 2) {
-	}*/
-
 	/*if (player->posNum.x <= 1.0f) {
 		if (keys[DIK_A]) {
 			scrollX -= OUTER_BG_SPEED;

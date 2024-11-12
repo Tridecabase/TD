@@ -1,31 +1,24 @@
-#include <Novice.h>
-#include "player.h" 
+﻿#include <Novice.h>
+#include "enemy.h" 
 
 //コンストラクタ
-Player::Player() {
+Enemy::Enemy() {
 
 	// ============================
-	// プレイヤ基本情報
+	// 敵基本情報
 	// ============================
 
-	//プレイヤーの位置ベクトル
-	pos.x = 192.0f;
-	pos.y = 96.0f;
-	pos.z = 50.0f;
-	posNum.x = 0.0f;
-	posNum.y = 0.0f;
-	tmpPos.x = 192.0f;
-	tmpPos.y = 96.0f;
-	//プレイヤーの速度ベクトル
-	speed.x = BLOCK_SIZE;
-	speed.y = BLOCK_SIZE / 2.0f;
-	//プレイヤーの長さ
-	width = 40.0f;
-	//プレイヤーの高さ
-	height = 20.0f;
-	//プレイヤーの動きクールタイム
-	moveCooltime = 0;
-	//プレイヤーの生存フラグ
+	//敵の位置ベクトル
+	pos.x = 640.0f;
+	pos.y = 100.0f;
+	pos.z = 800.0f;
+	//敵の長さ
+	width = 20.0f;
+	//敵の深さ
+	depth = 20.0f;
+	//敵の高さ
+	height = 40.0f;
+	//敵の生存フラグ
 	isAlive = true;
 
 
@@ -43,40 +36,33 @@ Player::Player() {
 	// ============================
 
 	screen_pos = {};
-	
+
 
 }
 //デストラクタ
-Player::~Player() {}
+Enemy::~Enemy() {}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Player::Init(Map* map) {
+void Enemy::Init() {
 
 	// ============================
-	// プレイヤ基本情報
+	// 敵基本情報
 	// ============================
 
-	//プレイヤーの位置ベクトル
-	pos.x = 192.0f;
-	pos.y = 96.0f;
-	pos.z = 50.0f;
-	posNum.x = 0.0f;
-	posNum.y = 0.0f;
-	tmpPos.x = 192.0f;
-	tmpPos.y = 96.0f;
-	//プレイヤーの速度ベクトル
-	speed.x = map->blockSize;
-	speed.y = map->blockSize / 2.0f;
-	//プレイヤーの長さ
-	width = 40.0f;
-	//プレイヤーの高さ
-	height = 20.0f;
-	//プレイヤーの動きクールタイム
-	moveCooltime = 0;
-	//プレイヤーの生存フラグ
+	//敵の位置ベクトル
+	pos.x = 640.0f;
+	pos.y = 100.0f;
+	pos.z = 800.0f;
+	//敵の長さ
+	width = 20.0f;
+	//敵の深さ
+	depth = 20.0f;
+	//敵の高さ
+	height = 40.0f;
+	//敵の生存フラグ
 	isAlive = true;
 
 
@@ -97,75 +83,13 @@ void Player::Init(Map* map) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Player::Move(Map* map, char keys[256], char preKeys[256]) {
-
-	posNum.x = pos.x / speed.x;
-	posNum.y = pos.y / speed.y;
-
-	tmpPos.x = pos.x;
-	tmpPos.y = pos.y;
+void Enemy::Move() {
 
 
-	if (posNum.y == 3) {
-		pos.z = 0.0f;
-		width = 48.0f;
-		height = 24.0f;
-	}
-	if (posNum.y == 2) {
-		pos.z = 50.0f;
-		width = 40.0f;
-		height = 20.0f;
-	}
-	if (posNum.y == 1) {
-		pos.z = 100.0f;
-		width = 32.0f;
-		height = 16.0f;
-	}
+	
 
-	if (!preKeys[DIK_W] && keys[DIK_W]) {
-		tmpPos.y -= speed.y;
-		posNum.y = tmpPos.y / speed.y;
-
-		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-			pos.y = tmpPos.y;
-		}
-	}
-	else if (!preKeys[DIK_S] && keys[DIK_S]) {
-		tmpPos.y += speed.y;
-		posNum.y = tmpPos.y / speed.y;
-
-		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-			pos.y = tmpPos.y;
-		}
-	}
-
-	if (moveCooltime >= 0) {
-		moveCooltime--;
-	}
-	if (moveCooltime < 0) {
-		moveCooltime = -1;
-		if (keys[DIK_A]) {
-			tmpPos.x -= speed.x;
-			posNum.x = tmpPos.x / speed.x;
-
-			if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-				pos.x = tmpPos.x;
-				moveCooltime = 10;
-			}
-		}
-		else if (keys[DIK_D]) {
-			tmpPos.x += speed.x;
-			posNum.x = tmpPos.x / speed.x;
-
-			if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-				pos.x = tmpPos.x;
-				moveCooltime = 10;
-			}
-		}
-	}
-
-	screen_pos.x = map->blockPos.x + pos.x;
-	screen_pos.y = map->blockPos.y + pos.y;
+	screen_pos.x = pos.x;
+	screen_pos.y = pos.y;
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,12 +99,12 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Player::Draw() {
+void Enemy::Draw() {
 
-	//テスト：プレイヤーの描画
-	Novice::DrawEllipse(
-		static_cast<int>(screen_pos.x),
-		static_cast<int>(screen_pos.y),
+	//テスト：敵の描画
+	Novice::DrawBox(
+		static_cast<int>(screen_pos.x - width / 2),
+		static_cast<int>(screen_pos.y - height / 2),
 		static_cast<int>(width),
 		static_cast<int>(height),
 		0.0f, WHITE, kFillModeSolid);

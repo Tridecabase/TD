@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "./Characters/player.h"
+#include "./Scene/background.h"
 
 class Bullet {
 public:

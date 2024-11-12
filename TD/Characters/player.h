@@ -52,8 +52,6 @@ public:
 	// ============================
 
 	Vector2 screen_pos;
-	//スクロールのフラグ
-	bool isScrollOn;
 
 
 	/*他のcppにplayer.cppの情報を渡す関数
