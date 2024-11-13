@@ -5,6 +5,32 @@
 #include "./Scene/background.h"
 #include "./Tools/config.h"
 
+
+
+
+
+typedef struct Bullet{
+	Vector3 pos;
+	Vector3 randPos;
+	Vector2 newPos;
+	Vector2 frontPos;
+	Vector2 screen_pos;
+	int mousePosX;
+	int mousePosY;
+	float gravityY;
+	float gravitySpeedY;
+	float radius;
+	float scale;
+	float speed;
+	float time;
+	float distanceToMouse;
+	float stoppageTime;
+	float stoppageTimer;
+
+	bool isShoot;
+}Bullet;
+
+
 class BulletA {
 public:
 
@@ -27,17 +53,16 @@ public:
 	int mousePosY;
 	float gravityY;
 	float gravitySpeedY;
-	float width;
-	float height;
-	float depth;
 	float radius;
 	float scale;
 	float speed;
 	float time;
 	float distanceToMouse;
-	int maxBullet;
-
+	
 	bool isShoot;
+
+	Bullet bulletA[MAX_BULLET_A]{};
+
 };
 
 class BulletB {
@@ -61,19 +86,16 @@ public:
 	Vector2 screen_pos;
 	int mousePosX;
 	int mousePosY;
-	float gravityY;
-	float gravitySpeedY;
-	float width;
-	float height;
-	float depth;
 	float radius;
 	float scale;
 	float speed;
 	float time;
 	float stoppageTime;
+	float stoppageTimer;
 	float distanceToMouse;
-	int maxBullet;
 
 	bool isShoot;
+
+	Bullet bulletB[MAX_BULLET_B]{};
 
 };

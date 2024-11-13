@@ -18,7 +18,7 @@ Enemy::Enemy() {
 	//敵の位置ベクトル
 	pos.x = 640.0f;
 	pos.y = 100.0f;
-	pos.z = 1200.0f;
+	pos.z = 1000.0f;
 	//敵の長さ
 	width = 40.0f;
 	//敵の深さ
@@ -82,7 +82,7 @@ void Enemy::Init() {
 	//敵の位置ベクトル
 	pos.x = 640.0f;
 	pos.y = 100.0f;
-	pos.z = 1200.0f;
+	pos.z = 1000.0f;
 	//敵の長さ
 	width = 40.0f;
 	//敵の深さ
@@ -129,24 +129,27 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 
 	color = WHITE;
 
-	
-	if (pos.x + width / 2 >= bulletA->screen_pos.x - bulletA->width / 2 &&
-		pos.x - width / 2 <= bulletA->screen_pos.x + bulletA->width / 2) {
-		if (pos.y + height / 2 >= bulletA->screen_pos.y - bulletA->height / 2 &&
-			pos.y - height / 2 <= bulletA->screen_pos.y + bulletA->height / 2) {
-			if (pos.z + depth / 2 >= bulletA->pos.z - bulletA->depth / 2 &&
-				pos.z - depth / 2 <= bulletA->pos.z + bulletA->depth / 2) {
-				tmp = bulletA->pos.z;
-				color = BLACK;
+	for (int i = 0; i < MAX_BULLET_A; i++) {
+		if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radius / 2 &&
+			pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radius / 2) {
+			if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radius / 2 &&
+				pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radius / 2) {
+				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radius / 2 &&
+					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
+					tmp = bulletA->bulletA[i].pos.z;
+					color = BLACK;
+				}
 			}
 		}
 	}
 
-	if (pos.x + width / 2 >= bulletB->screen_pos.x - bulletB->width / 2 &&
-		pos.x - width / 2 <= bulletB->screen_pos.x + bulletB->width / 2) {
-		if (pos.y + height / 2 >= bulletB->screen_pos.y - bulletB->height / 2 &&
-			pos.y - height / 2 <= bulletB->screen_pos.y + bulletB->height / 2) {
+	for (int i = 0; i < MAX_BULLET_B; i++) {
+		if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radius / 2 &&
+			pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radius / 2) {
+			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
+				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
 				color = BLACK;
+			}
 		}
 	}
 	

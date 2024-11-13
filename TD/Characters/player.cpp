@@ -36,7 +36,7 @@ Player::Player() {
 	// ============================
 
 	//弾丸のクールダウン
-	shootCoolTimeA = 10;
+	shootCoolTimeA = 3;
 	shootCoolTimeB = 30;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
@@ -91,7 +91,7 @@ void Player::Init(Map* map) {
 	// ============================
 
 	//弾丸のクールダウン
-	shootCoolTimeA = 10;
+	shootCoolTimeA = 3;
 	shootCoolTimeB = 30;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
