@@ -2,7 +2,7 @@
 
 //コンストラクタ
 Stage::Stage()
-	: background(new Background), map(new Map), player(new Player()),bulletA(new BulletA),bulletB(new BulletB), enemy(new Enemy()) {}
+	: background(new Background), map(new Map), ui(new UI), player(new Player()),bulletA(new BulletA),bulletB(new BulletB), enemy(new Enemy()) {}
 //デストラクタ
 Stage::~Stage() {
 	delete background;
@@ -11,6 +11,7 @@ Stage::~Stage() {
 	delete bulletB;
 	delete map;
 	delete enemy;
+	delete ui;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,6 +25,7 @@ void Stage::Init() {
 	player->Init(map);
 	bulletA->Init();
 	bulletB->Init();
+	ui = new UI;
 	map = new Map;
 	//敵の初期化
 	enemy->Init();
@@ -50,6 +52,8 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	//敵の移動処理
 	enemy->Move(bulletA,bulletB);
 	enemy->Scroll(player, keys);
+	//UI処理
+	ui->Updata();
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑更新処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -71,6 +75,8 @@ void Stage::Render() {
 	//プレイヤー弾丸の描画
  	bulletA->Draw();
 	bulletB->Draw();
+
+	ui->Draw();
 
 };
 ////////////////////////////////////////////////////////////////////////////////////////////

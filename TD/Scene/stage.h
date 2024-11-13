@@ -6,6 +6,7 @@
 #include "./Characters/enemy.h"
 #include "./Scene/background.h"
 #include "./Entities/map.h"
+#include "UI.h"
 #include "./Entities/bullet.h"
 #include "./Tools/config.h"
 #include "Vector2.h"
@@ -44,6 +45,8 @@ private:
     BulletB* bulletB;
     //敵の宣言
     Enemy* enemy;
+    //UIの宣言
+    UI* ui;
 };
 
 #endif
