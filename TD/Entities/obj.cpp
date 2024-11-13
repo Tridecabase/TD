@@ -40,5 +40,5 @@ void Obj::drawMouseUI()
 	Novice::DrawLine(x + 15, y, x - 15, y, color);
 	Novice::DrawLine(x, y + 15, x, y - 15, color);
 
-	Novice::ScreenPrintf(10,150,"MousePx = %d,MousePy = %d",x,y);
+	Novice::ScreenPrintf(10, 150, "MousePx = %d,MousePy = %d", x, y);
 };

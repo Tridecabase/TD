@@ -86,6 +86,9 @@
     <ClCompile Include="Tools\wave_generator.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Characters\enemy.cpp">
+      <Filter>Characters</Filter>
+    </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
@@ -197,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="Tools\wave_generator.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\enemy.h">
+      <Filter>Characters</Filter>
     </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>Entities</Filter>

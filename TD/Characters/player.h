@@ -37,23 +37,27 @@ public:
 	//プレイヤーの生存フラグ
 	bool isAlive;
 
+	bool isPlayerLeft;
+	bool isPlayerRight;
 
 	// ============================
 	// 弾丸関数変数
 	// ============================
 
 	//弾丸のクールダウン
-	int shootCoolTime;
+	int shootCoolTimeA;
 	//弾丸撃つのフラグ
-	bool isShootAble;
+	bool isShootAbleA;
+	//弾丸のクールダウン
+	int shootCoolTimeB;
+	//弾丸撃つのフラグ
+	bool isShootAbleB;
 
 	// ============================
 	// 背景用のメンバー変数を
 	// ============================
 
 	Vector2 screen_pos;
-	//スクロールのフラグ
-	bool isScrollOn;
 
 
 	/*他のcppにplayer.cppの情報を渡す関数

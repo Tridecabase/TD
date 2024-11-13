@@ -3,8 +3,10 @@
 
 #include "./Manager/resource_manager.h"
 #include "./Characters/player.h"
+#include "./Characters/enemy.h"
 #include "./Scene/background.h"
 #include "./Entities/map.h"
+#include "UI.h"
 #include "./Entities/bullet.h"
 #include "./Tools/config.h"
 #include "Vector2.h"
@@ -33,8 +35,6 @@ private:
 
     ResourceManager resourceManager;
 
-    //UIの宣言
-    UI* ui;
     //背景の宣言
     Background* background;
     //プレイヤーの宣言
@@ -42,7 +42,12 @@ private:
     //プレイヤーマップの宣言
     Map* map;
     //プレイヤ弾丸の宣言
-    Bullet* bullet;
+    BulletA* bulletA;
+    BulletB* bulletB;
+    //敵の宣言
+    Enemy* enemy;
+    //UIの宣言
+    UI* ui;
 };
 
 #endif

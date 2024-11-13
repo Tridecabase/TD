@@ -28,16 +28,19 @@ Player::Player() {
 	//プレイヤーの生存フラグ
 	isAlive = true;
 
-	moveCooltime = 0;
+	isPlayerLeft = false;
+	isPlayerRight = false;
 
 	// ============================
 	// 弾丸関数変数
 	// ============================
 
 	//弾丸のクールダウン
-	shootCoolTime = 10;
+	shootCoolTimeA = 10;
+	shootCoolTimeB = 30;
 	//弾丸撃つのフラグ
-	isShootAble = false;
+	isShootAbleA = false;
+	isShootAbleB = false;
 
 	// ============================
 	// 背景用のメンバー変数を
@@ -80,22 +83,20 @@ void Player::Init(Map* map) {
 	//プレイヤーの生存フラグ
 	isAlive = true;
 
+	isPlayerLeft = false;
+	isPlayerRight = false;
 
 	// ============================
 	// 弾丸関数変数
 	// ============================
 
 	//弾丸のクールダウン
-	shootCoolTime = 10;
+	shootCoolTimeA = 10;
+	shootCoolTimeB = 30;
 	//弾丸撃つのフラグ
-	isShootAble = false;
+	isShootAbleA = false;
+	isShootAbleB = false;
 
-	// ============================
-	// 背景用のメンバー変数
-	// ============================
-
-	//スクロールのフラグ
-	isScrollOn = false;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -157,7 +158,7 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
 			if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
 				pos.x = tmpPos.x;
-				moveCooltime = 5;
+				moveCooltime = 10;
 			}
 		}
 		else if (keys[DIK_D]) {
@@ -166,7 +167,7 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
 			if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
 				pos.x = tmpPos.x;
-				moveCooltime = 5;
+				moveCooltime = 10;
 			}
 		}
 	}
