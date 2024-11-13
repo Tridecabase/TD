@@ -239,7 +239,7 @@ void Enemy::SetRandomAction() {
 
 //行動ID 101
 void Enemy::ExecuteMoveAndDeploy() {
-	pos.x += 5;
+	//pos.x += 5;
 
 	//定期的に浮遊砲を設置
 	//浮遊砲の間隔
@@ -272,6 +272,20 @@ void Enemy::ExitBreakState() {
 	is_break = false;
 	//ブレイク終了後、行動を再設定
 	SetRandomAction();
+}
+
+//プレイヤーの移動によってスクロール関数
+void Enemy::Scroll(Player* player, char keys[256]) {
+	if (player->isPlayerLeft) {
+		if (keys[DIK_A]) {
+			pos.x += OUTER_BG_SPEED;
+		}
+	}
+	if (player->isPlayerRight) {
+		if (keys[DIK_D]) {
+			pos.x -= OUTER_BG_SPEED;
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

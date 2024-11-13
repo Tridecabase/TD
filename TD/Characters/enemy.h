@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "./Tools/config.h" 
+#include "./Characters/player.h" 
 #include "./Entities/bullet.h"
 #include <string>
 #include <random>
@@ -43,6 +44,9 @@ public:
 	void TakeDamage(int damage);
 	//ブレイクゲージを更新
 	void UpdateBreakMeter();
+
+	//プレイヤーの移動によってスクロール関数
+	void Scroll(Player* player, char keys[256]);
 
 
 	// ============================
@@ -99,7 +103,6 @@ public:
 	// ============================
 
 	Vector2 screen_pos;
-
 
 private:
 
