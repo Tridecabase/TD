@@ -99,7 +99,7 @@ void WaveGenerator::WaveRandomUpdate() {
     //各点の座標計算
     for (int i = 0; i < numbers; ++i) {
         //振幅変調を計算
-        float mod_amp = static_cast<float>(1.0f + 0.5f * sin(2 * M_PI * (static_cast<double>(i) /mod_length)));
+        float mod_amp = static_cast<float>(2.0f + 0.5f * sin(2 * M_PI * (static_cast<double>(i) /mod_length)));
         //現在の振幅を計算
         float current_amp = amp * mod_amp;
 

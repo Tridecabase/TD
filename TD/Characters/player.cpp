@@ -34,9 +34,11 @@ Player::Player() {
 	// ============================
 
 	//弾丸のクールダウン
-	shootCoolTime = 10;
+	shootCoolTimeA = 10;
+	shootCoolTimeB = 30;
 	//弾丸撃つのフラグ
-	isShootAble = false;
+	isShootAbleA = false;
+	isShootAbleB = false;
 
 	// ============================
 	// 背景用のメンバー変数を
@@ -85,9 +87,11 @@ void Player::Init(Map* map) {
 	// ============================
 
 	//弾丸のクールダウン
-	shootCoolTime = 10;
+	shootCoolTimeA = 10;
+	shootCoolTimeB = 30;
 	//弾丸撃つのフラグ
-	isShootAble = false;
+	isShootAbleA = false;
+	isShootAbleB = false;
 
 };
 ////////////////////////////////////////////////////////////////////////////////////////////

@@ -40,7 +40,8 @@ private:
     //プレイヤーマップの宣言
     Map* map;
     //プレイヤ弾丸の宣言
-    Bullet* bullet;
+    BulletA* bulletA;
+    BulletB* bulletB;
     //敵の宣言
     Enemy* enemy;
 };
