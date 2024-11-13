@@ -35,8 +35,6 @@ private:
 
     ResourceManager resourceManager;
 
-    //UIの宣言
-    UI* ui;
     //背景の宣言
     Background* background;
     //プレイヤーの宣言
