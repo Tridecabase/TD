@@ -89,7 +89,7 @@
     <ClCompile Include="Characters\boss.cpp">
       <Filter>Characters</Filter>
     </ClCompile>
-    <ClCompile Include="enemy.cpp">
+    <ClCompile Include="Characters\enemy.cpp">
       <Filter>Characters</Filter>
     </ClCompile>
   </ItemGroup>
@@ -204,7 +204,7 @@
     <ClInclude Include="Characters\boss.h">
       <Filter>Characters</Filter>
     </ClInclude>
-    <ClInclude Include="enemy.h">
+    <ClInclude Include="Characters\enemy.h">
       <Filter>Characters</Filter>
     </ClInclude>
   </ItemGroup>

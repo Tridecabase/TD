@@ -3,7 +3,7 @@
 
 #include "./Manager/resource_manager.h"
 #include "./Characters/player.h"
-#include "./enemy.h"
+#include "./Characters/enemy.h"
 #include "./Scene/background.h"
 #include "./Entities/map.h"
 #include "./Entities/bullet.h"
