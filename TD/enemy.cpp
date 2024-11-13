@@ -73,6 +73,7 @@ void Enemy::Init() {
 
 	tmp = 0.0f;
 
+	
 	// ============================
 	// 弾丸関数変数
 	// ============================
@@ -94,6 +95,7 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 
 	color = WHITE;
 
+	
 	if (pos.x + width / 2 >= bulletA->screen_pos.x - bulletA->width / 2 &&
 		pos.x - width / 2 <= bulletA->screen_pos.x + bulletA->width / 2) {
 		if (pos.y + height / 2 >= bulletA->screen_pos.y - bulletA->height / 2 &&

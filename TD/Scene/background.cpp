@@ -41,22 +41,20 @@ void Background::Update(Player* player, Map* map, char keys[256]) {
 	if (map->block[(int)player->posNum.y][(int)player->posNum.x] == 2) {
 		if (keys[DIK_A]) {
 			scrollX -= OUTER_BG_SPEED;
+			player->isPlayerLeft = true;
 		}
-		else if (keys[DIK_D]) {
+		else {
+			player->isPlayerLeft = false;
+		}
+		if (keys[DIK_D]) {
 			scrollX += OUTER_BG_SPEED;
+			player->isPlayerRight = true;
+		}
+		else {
+			player->isPlayerRight = false;
 		}
 	}
 
-	/*if (player->posNum.x <= 1.0f) {
-		if (keys[DIK_A]) {
-			scrollX -= OUTER_BG_SPEED;
-		}
-	}
-	if (player->posNum.x >= 3.0f) {
-		if (keys[DIK_D]) {
-			scrollX += OUTER_BG_SPEED;
-		}
-	}*/
 };
 
 //背景の描画処理

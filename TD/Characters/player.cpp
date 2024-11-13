@@ -28,6 +28,8 @@ Player::Player() {
 	//プレイヤーの生存フラグ
 	isAlive = true;
 
+	isPlayerLeft = false;
+	isPlayerRight = false;
 
 	// ============================
 	// 弾丸関数変数
@@ -81,6 +83,8 @@ void Player::Init(Map* map) {
 	//プレイヤーの生存フラグ
 	isAlive = true;
 
+	isPlayerLeft = false;
+	isPlayerRight = false;
 
 	// ============================
 	// 弾丸関数変数

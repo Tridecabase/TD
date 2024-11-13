@@ -37,6 +37,8 @@ public:
 	//プレイヤーの生存フラグ
 	bool isAlive;
 
+	bool isPlayerLeft;
+	bool isPlayerRight;
 
 	// ============================
 	// 弾丸関数変数

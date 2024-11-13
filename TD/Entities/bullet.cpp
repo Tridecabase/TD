@@ -26,7 +26,9 @@ BulletA::BulletA() {
 
 	screen_pos = {};
 }
-BulletA::~BulletA() {
+BulletA::~BulletA() {}
+
+void BulletA::Init() {
 	newPos = {};
 	frontPos = {};
 	pos.x = 0.0f;
@@ -48,6 +50,19 @@ BulletA::~BulletA() {
 	isShoot = false;
 
 	screen_pos = {};
+}
+
+void BulletA::Scroll(Player* player, char keys[256]) {
+	if (player->isPlayerLeft) {
+		if (keys[DIK_A]) {
+			mousePosX += static_cast<int>(OUTER_BG_SPEED)/2;
+		}
+	}
+	if (player->isPlayerRight) {
+		if (keys[DIK_D]) {
+			mousePosX -= static_cast<int>(OUTER_BG_SPEED)/2;
+		}
+	}
 }
 
 void BulletA::Shot(Player* player, Map* map) {
@@ -142,7 +157,10 @@ BulletB::BulletB() {
 
 	screen_pos = {};
 }
-BulletB::~BulletB() {
+
+BulletB::~BulletB() {}
+
+void BulletB::Init() {
 	newPos = {};
 	frontPos = {};
 	pos.x = 0.0f;
@@ -169,6 +187,19 @@ BulletB::~BulletB() {
 	screen_pos = {};
 }
 
+void BulletB::Scroll(Player* player, char keys[256]) {
+	if (player->isPlayerLeft) {
+		if (keys[DIK_A]) {
+			mousePosX += static_cast<int>(OUTER_BG_SPEED);
+		}
+	}
+	if (player->isPlayerRight) {
+		if (keys[DIK_D]) {
+			mousePosX -= static_cast<int>(OUTER_BG_SPEED);
+		}
+	}
+}
+
 void BulletB::Shot(Player* player, Map* map) {
 	if (player->isAlive) {
 		if (player->shootCoolTimeB > 0) {
@@ -188,7 +219,7 @@ void BulletB::Shot(Player* player, Map* map) {
 					pos.z = player->pos.z;
 					randPos.x = (rand() % 101) - 50.0f;
 					randPos.y = (rand() % 100 + 1.0f);
-					randPos.z = (rand() % 51 - 25.0f);
+					randPos.z = (rand() % 76 - 35.0f);
 					Novice::GetMousePosition(&mousePosX, &mousePosY);
 					distanceToMouse = sqrtf(static_cast<float>(
 						pow(map->blockPos.x + player->pos.x - mousePosX, 2) +

@@ -3,12 +3,21 @@
 #include "Vector3.h"
 #include "./Characters/player.h"
 #include "./Scene/background.h"
+#include "./Tools/config.h"
 
 class BulletA {
 public:
 
 	BulletA();
 	~BulletA();
+
+	void Init();
+
+	void Shot(Player* player, Map* map);
+
+	void Scroll(Player* player, char keys[256]);
+
+	void Draw() const;
 
 	Vector3 pos;
 	Vector2 newPos;
@@ -29,9 +38,6 @@ public:
 	int maxBullet;
 
 	bool isShoot;
-
-	void Shot(Player* player, Map* map);
-	void Draw() const;
 };
 
 class BulletB {
@@ -39,6 +45,14 @@ public:
 
 	BulletB();
 	~BulletB();
+
+	void Init();
+
+	void Shot(Player* player, Map* map);
+
+	void Scroll(Player* player, char keys[256]);
+
+	void Draw() const;
 
 	Vector3 pos;
 	Vector3 randPos;
@@ -62,6 +76,4 @@ public:
 
 	bool isShoot;
 
-	void Shot(Player* player, Map* map);
-	void Draw() const;
 };

@@ -22,8 +22,8 @@ void Stage::Init() {
 	background->Init();
 	//プレイヤーの初期化
 	player->Init(map);
-	bulletA = new BulletA;
-	bulletB = new BulletB;
+	bulletA->Init();
+	bulletB->Init();
 	map = new Map;
 	//敵の初期化
 	enemy->Init();
@@ -45,6 +45,8 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	//プレイヤー弾丸の更新処理
 	bulletA->Shot(player, map);
 	bulletB->Shot(player, map);
+	bulletA->Scroll(player, keys);
+	bulletB->Scroll(player, keys);
 	//敵の移動処理
 	enemy->Move(bulletA,bulletB);
 };
