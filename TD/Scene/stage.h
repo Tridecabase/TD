@@ -10,6 +10,7 @@
 #include "./Entities/bullet.h"
 #include "./Tools/config.h"
 #include "Vector2.h"
+#include "UI.h"
 #include <Novice.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,6 +35,8 @@ private:
 
     ResourceManager resourceManager;
 
+    //UIの宣言
+    UI* ui;
     //背景の宣言
     Background* background;
     //プレイヤーの宣言

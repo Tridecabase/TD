@@ -89,7 +89,9 @@
     <ClCompile Include="Characters\enemy.cpp">
       <Filter>Characters</Filter>
     </ClCompile>
-    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UI.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -202,7 +204,9 @@
     <ClInclude Include="Characters\enemy.h">
       <Filter>Characters</Filter>
     </ClInclude>
-    <ClInclude Include="UI.h" />
+    <ClInclude Include="UI.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Csv\background.csv">
