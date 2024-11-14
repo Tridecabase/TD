@@ -19,11 +19,6 @@ void SceneManager::Init() {
     stage->Init();
 
     is_stage_off = true;
-
-    //test wave
-    wave1 = new WaveGenerator(0.0f, 100.0f, WINDOW_WIDTH ,640, 20, 100, 2.0f, 300, 0xffffffff);
-    wave2 = new WaveGenerator(0.0f, 300.0f, WINDOW_WIDTH, 1280, 20, 100, 2.0f, 300, 0xffffffff);
-    wave3 = new WaveGenerator(0.0f, 500.0f, WINDOW_WIDTH, 640, 30, 200, 4.0f, 200, 0xffffffff);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,23 +33,6 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 
     switch (current_scene) {
     case SceneState::GAMETITLE:
-
-        //テスト用シーン切り替え
-        if (keys[DIK_M] && !preKeys[DIK_M]) {
-            current_scene = SceneState::LOADING;
-        }
-        //テスト用シーン切り替え
-
-        break;
-    case SceneState::LOADING:
-
-        //ステージ要素の再初期化
-        stage->Init();
-
-        //test wave
-        wave1->WaveUpdate();
-        wave2->WaveRandomUpdate();
-        wave3->WaveNoiseUpdate();
 
         //テスト用シーン切り替え
         if (keys[DIK_M] && !preKeys[DIK_M]) {
@@ -77,6 +55,11 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
             current_scene = SceneState::GAMEEND;
         }
         //テスト用シーン切り替え
+
+        //敵を倒したらシーン切り替え
+        if (stage->enemy->hp <= 0) {
+            current_scene = SceneState::GAMEEND;
+        }
 
         break;
     case SceneState::GAMEEND:
@@ -114,19 +97,6 @@ void SceneManager::Render() {
         Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x708090ff, kFillModeSolid);
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : GAMETITLE");
-
-        break;
-    case SceneState::LOADING:
-
-        //テスト用背景
-        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x6495edff, kFillModeSolid);
-        //テスト用シーン切り替え
-        Novice::ScreenPrintf(10, 30, "current_scene : LOADING");
-
-        //test wave
-        wave1->Render();
-        wave2->Render();
-        wave3->Render();
 
         break;
     case SceneState::GAMESTART:
