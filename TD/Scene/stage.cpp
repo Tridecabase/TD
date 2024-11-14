@@ -66,11 +66,10 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Stage::Render() {
 
-	//敵のUI描画
-	enemy->DrawInfo();
-
 	//背景の描画
 	background->Render();
+	//敵のUI描画
+	enemy->DrawInfo();
 	//プレイヤーの描画
 	player->Draw();
 	//敵の描画
