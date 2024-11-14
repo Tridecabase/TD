@@ -59,9 +59,6 @@ public:
 	std::string name;
 	//現在のHP
 	int hp;
-	//最大HP
-	int max_hp;
-
 	//敵の位置ベクトル
 	Vector3 pos;
 	//敵の長さ
