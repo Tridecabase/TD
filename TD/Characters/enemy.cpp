@@ -62,9 +62,13 @@ Enemy::Enemy() {
 
 	screen_pos = {};
 
+	// ============================
+	//	HP BAR
+	// ============================
+
 	wave1 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP, WAVE_LENGTH, WAVE_SPEED, 100, 0xffffffff);
-	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP, WAVE_LENGTH, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
-	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP, WAVE_LENGTH, float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
+	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP + 1, WAVE_LENGTH - 20, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
+	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP + 2, WAVE_LENGTH - 40 , float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
 
 }
 //デストラクタ
@@ -209,7 +213,7 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 	// ============================
 
 	wave1->WaveRandomUpdate();
-	wave2->WaveNoiseUpdate();
+	wave2->WaveRandomUpdate();
 	wave3->WaveRandomUpdate();
 }
 

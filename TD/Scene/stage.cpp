@@ -23,6 +23,7 @@ void Stage::Init() {
 	background->Init();
 	//プレイヤーの初期化
 	player->Init(map);
+	//プレイヤー弾丸の初期化
 	bulletA->Init();
 	bulletB->Init();
 	ui = new UI;
@@ -49,11 +50,9 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	//プレイヤー弾丸の更新処理
 	bulletA->Shot(player, map);
 	bulletA->Scroll(player, keys);
-	//敵の移動処理
+	//敵の更新処理
 	enemy->Move(bulletA,bulletB);
 	enemy->Scroll(player, keys);
-
-
 	//UI処理
 	ui->Updata();
 };
@@ -79,9 +78,7 @@ void Stage::Render() {
 	//プレイヤー弾丸の描画
  	bulletA->Draw();
 	bulletB->Draw();
-
-	ui->Draw();
-
+	//UIの描画
 	ui->Draw();
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
