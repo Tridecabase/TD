@@ -70,6 +70,11 @@ Enemy::Enemy() {
 	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP + 1, WAVE_LENGTH - 20, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
 	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP + 2, WAVE_LENGTH - 40 , float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
 
+	hpbar_r = 0x00;
+	hpbar_g = 0xFF;
+	hpbar_b = 0x00;
+	hpbar_alpha = 0x00;
+
 }
 //デストラクタ
 Enemy::~Enemy() {
@@ -351,37 +356,60 @@ void Enemy::Draw() {
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
 }
 
-//logs
+//HP BAR 描画
 void Enemy::DrawInfo() {
 
+	Novice::DrawBox(
+		static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
+		15,
+		max_hp,
+		30,
+		0.0f,
+		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + 1), kFillModeSolid
+	);
+
+	for (int i = 0; i < 10; i++) {
+		Novice::DrawBox(
+			static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
+			15 + i,
+			hp,
+			30 - i * 2,
+			0.0f,
+			(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + i), kFillModeSolid
+		);
+	}
+
+	//なみ
 	wave1->Render();
 	wave2->Render();
 	wave3->Render();
 
+	//左の線
 	Novice::DrawLine(
 		static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
-		10,
+		15,
 		static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
-		50,
+		45,
 		0x00ff00ff
 		);
 
+	//右の線
 	Novice::DrawLine(
 		static_cast<int>((WINDOW_WIDTH - max_hp) / 2 + hp - 1),
-		10,
+		15,
 		static_cast<int>((WINDOW_WIDTH - max_hp) / 2 + hp - 1),
-		50,
+		45,
 		0x00ff00ff
 	);
 
+	//現在のHP
 	Novice::DrawLine(
 		static_cast<int>((WINDOW_WIDTH + max_hp) / 2 - 1),
-		10,
+		15,
 		static_cast<int>((WINDOW_WIDTH + max_hp) / 2 - 1),
-		50,
+		45,
 		0x00ff00ff
 	);
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

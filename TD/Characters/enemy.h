@@ -146,6 +146,11 @@ private:
 	//色
 	const unsigned int BASE_COLOR = 0x00FF0044;
 
+	int hpbar_r;
+	int hpbar_g;
+	int hpbar_b;
+	int hpbar_alpha;
+
 	WaveGenerator* wave1;
 	WaveGenerator* wave2;
 	WaveGenerator* wave3;
