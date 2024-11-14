@@ -242,7 +242,7 @@ void Enemy::SetRandomAction() {
 
 //行動ID 101
 void Enemy::ExecuteMoveAndDeploy() {
-	pos.x += 5;
+	/*pos.x += 5;*/
 
 	//定期的に浮遊砲を設置
 	//浮遊砲の間隔
