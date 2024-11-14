@@ -62,10 +62,17 @@ Enemy::Enemy() {
 
 	screen_pos = {};
 
+	wave1 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP, WAVE_LENGTH, WAVE_SPEED, 100, 0xffffffff);
+	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP, WAVE_LENGTH, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
+	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - max_hp) / 2), 30.0f, hp, max_hp, BASE_AMP, WAVE_LENGTH, float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
 
 }
 //デストラクタ
-Enemy::~Enemy() {}
+Enemy::~Enemy() {
+	delete wave1;
+	delete wave2;
+	delete wave3;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,12 +130,24 @@ void Enemy::Init() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 
+	wave1->total_length = hp;
+	wave2->total_length = hp;
+	wave3->total_length = hp;
+
+	wave1->numbers = static_cast<int>(hp / 2);
+	wave2->numbers = static_cast<int>(hp / 2);
+	wave3->numbers = static_cast<int>(hp / 2);
+
+	if (hp <= 0) {
+		hp = 0;
+	}
+
 	// ============================
 	// 当たり判定
 	// ============================
 
 	color = WHITE;
-
+	
 	
 	if (pos.x + width / 2 >= bulletA->screen_pos.x - bulletA->width / 2 &&
 		pos.x - width / 2 <= bulletA->screen_pos.x + bulletA->width / 2) {
@@ -138,6 +157,7 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 				pos.z - depth / 2 <= bulletA->pos.z + bulletA->depth / 2) {
 				tmp = bulletA->pos.z;
 				color = BLACK;
+				TakeDamage(10);
 			}
 		}
 	}
@@ -147,6 +167,8 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 		if (pos.y + height / 2 >= bulletB->screen_pos.y - bulletB->height / 2 &&
 			pos.y - height / 2 <= bulletB->screen_pos.y + bulletB->height / 2) {
 				color = BLACK;
+				TakeDamage(10);
+
 		}
 	}
 	
@@ -181,6 +203,14 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 		PerformAction();
 		action_timer--;
 	}
+
+	// ============================
+	//	HP BARの更新処理
+	// ============================
+
+	wave1->WaveRandomUpdate();
+	wave2->WaveNoiseUpdate();
+	wave3->WaveRandomUpdate();
 }
 
 //ダメージを受けた際の処理
@@ -311,7 +341,36 @@ void Enemy::Draw() {
 //logs
 void Enemy::DrawInfo() {
 
+	wave1->Render();
+	wave2->Render();
+	wave3->Render();
+
+	Novice::DrawLine(
+		static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
+		10,
+		static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
+		50,
+		0x00ff00ff
+		);
+
+	Novice::DrawLine(
+		static_cast<int>((WINDOW_WIDTH - max_hp) / 2 + hp - 1),
+		10,
+		static_cast<int>((WINDOW_WIDTH - max_hp) / 2 + hp - 1),
+		50,
+		0x00ff00ff
+	);
+
+	Novice::DrawLine(
+		static_cast<int>((WINDOW_WIDTH + max_hp) / 2 - 1),
+		10,
+		static_cast<int>((WINDOW_WIDTH + max_hp) / 2 - 1),
+		50,
+		0x00ff00ff
+	);
+
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑描画処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
 ////////////////////////////////////////////////////////////////////////////////////////////

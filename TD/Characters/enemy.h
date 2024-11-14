@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "./Tools/config.h" 
+#include "./Tools/wave_generator.h" 
 #include "./Characters/player.h" 
 #include "./Entities/bullet.h"
 #include <string>
@@ -33,6 +34,7 @@ public:
 	void Draw();
 	//敵の情報を表示する関数
 	void DrawInfo();
+	//void RenderWaveWithLength(WaveGenerator* wave, int length, unsigned int color);
 
 	// ============================
 	// 敵の攻撃行動関数
@@ -129,4 +131,17 @@ private:
 	//ブレイク状態を終了
 	void ExitBreakState();
 
+	// ============================
+	// HP BAR 表示
+	// ============================
+
+	const int WAVE_NUMBERS = 1000;
+	const int BASE_AMP = 3;
+	const int WAVE_LENGTH = 200;
+	const float WAVE_SPEED = 1.0f;
+	const unsigned int BASE_COLOR = 0x00FF00FF;
+
+	WaveGenerator* wave1;
+	WaveGenerator* wave2;
+	WaveGenerator* wave3;
 };

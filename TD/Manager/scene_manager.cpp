@@ -21,9 +21,9 @@ void SceneManager::Init() {
     is_stage_off = true;
 
     //test wave
-    wave1 = new WaveGenerator(100.0f, 640, 20, 100, 2.0f, 300, 0xffffffff);
-    wave2 = new WaveGenerator(300.0f, 1280, 20, 100, 2.0f, 300, 0xffffffff);
-    wave3 = new WaveGenerator(500.0f, 640, 30, 200, 4.0f, 200, 0xffffffff);
+    wave1 = new WaveGenerator(0.0f, 100.0f, WINDOW_WIDTH ,640, 20, 100, 2.0f, 300, 0xffffffff);
+    wave2 = new WaveGenerator(0.0f, 300.0f, WINDOW_WIDTH, 1280, 20, 100, 2.0f, 300, 0xffffffff);
+    wave3 = new WaveGenerator(0.0f, 500.0f, WINDOW_WIDTH, 640, 30, 200, 4.0f, 200, 0xffffffff);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
