@@ -160,9 +160,6 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 				//hpとhpbarを減らす
 				color = BLACK;
 				TakeDamage(10);
-				//wave1->color = 0xff000055;
-				//wave2->color = 0xff000055;
-				//wave3->color = 0xff000055;
 			}
 		}
 	}
@@ -174,9 +171,6 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 				//hpとhpbarを減らす
 				color = BLACK;
 				TakeDamage(10);
-				//wave1->color = 0xff000055;
-				//wave2->color = 0xff000055;
-				//wave3->color = 0xff000055;
 		}
 	}
 	
@@ -219,9 +213,6 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 	wave1->total_length = hp;
 	wave2->total_length = hp;
 	wave3->total_length = hp;
-	//wave1->color = 0xffffff55;
-	//wave2->color = BASE_COLOR;
-	//wave3->color = BASE_COLOR;
 	wave1->numbers = static_cast<int>(hp / 2);
 	wave2->numbers = static_cast<int>(hp / 2);
 	wave3->numbers = static_cast<int>(hp / 2);
@@ -229,6 +220,14 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 	wave1->WaveRandomUpdate();
 	wave2->WaveRandomUpdate();
 	wave3->WaveRandomUpdate();
+
+	if (hp < max_hp * 0.3) {
+		wave2->color = 0xdc143cff;
+		wave3->color = 0xdc143cff;
+		hpbar_g = 0x00;
+		hpbar_r = 0x0FF;
+	}
+
 }
 
 //ダメージを受けた際の処理
@@ -359,25 +358,29 @@ void Enemy::Draw() {
 //HP BAR 描画
 void Enemy::DrawInfo() {
 
-	Novice::DrawBox(
-		static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
-		15,
-		max_hp,
-		30,
-		0.0f,
-		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + 1), kFillModeSolid
-	);
-
-	for (int i = 0; i < 10; i++) {
+	//HPbar　エフェクト
+	for (int i = 0; i < 3; i++) {
 		Novice::DrawBox(
 			static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
-			15 + i,
-			hp,
-			30 - i * 2,
+			18 + i,
+			max_hp,
+			24 - i * 2,
 			0.0f,
 			(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + i), kFillModeSolid
 		);
 	}
+
+	for (int i = 0; i < 10; i++) {
+		Novice::DrawBox(
+			static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
+			18 + i,
+			hp,
+			24 - i * 2,
+			0.0f,
+			(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + i), kFillModeSolid
+		);
+	}
+
 
 	//なみ
 	wave1->Render();
@@ -390,7 +393,7 @@ void Enemy::DrawInfo() {
 		15,
 		static_cast<int>((WINDOW_WIDTH - max_hp) / 2),
 		45,
-		0x00ff00ff
+		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
 		);
 
 	//右の線
@@ -399,7 +402,7 @@ void Enemy::DrawInfo() {
 		15,
 		static_cast<int>((WINDOW_WIDTH - max_hp) / 2 + hp - 1),
 		45,
-		0x00ff00ff
+		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
 	);
 
 	//現在のHP
@@ -408,7 +411,7 @@ void Enemy::DrawInfo() {
 		15,
 		static_cast<int>((WINDOW_WIDTH + max_hp) / 2 - 1),
 		45,
-		0x00ff00ff
+		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
 	);
 }
 
