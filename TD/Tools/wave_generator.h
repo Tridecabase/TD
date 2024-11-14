@@ -41,6 +41,8 @@ public:
     int total_length;
     //線の数
     int numbers;
+    //色
+    unsigned int color;
 
 private:
 
@@ -57,8 +59,6 @@ private:
     int mod_length;
     //位相
     float offset;
-    //色
-    unsigned int color;
 
     WaveGenerator(const WaveGenerator&) = delete;
     WaveGenerator& operator=(const WaveGenerator&) = delete;

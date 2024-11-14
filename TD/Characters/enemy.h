@@ -138,14 +138,13 @@ private:
 	//線の数
 	const int WAVE_NUMBERS = 1000;
 	//振幅
-	const int BASE_AMP = 3;
+	const int BASE_AMP = 4;
 	//波長
 	const int WAVE_LENGTH = 200;
 	//速度
-	const float WAVE_SPEED = 1.0f;
+	const float WAVE_SPEED = 2.0f;
 	//色
-	const unsigned int BASE_COLOR = 0x00FF00FF;
-//	int hpbar_color;
+	const unsigned int BASE_COLOR = 0x00FF0044;
 
 	WaveGenerator* wave1;
 	WaveGenerator* wave2;

@@ -134,14 +134,6 @@ void Enemy::Init() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 
-	wave1->total_length = hp;
-	wave2->total_length = hp;
-	wave3->total_length = hp;
-
-	wave1->numbers = static_cast<int>(hp / 2);
-	wave2->numbers = static_cast<int>(hp / 2);
-	wave3->numbers = static_cast<int>(hp / 2);
-
 	if (hp <= 0) {
 		hp = 0;
 	}
@@ -160,8 +152,12 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 			if (pos.z + depth / 2 >= bulletA->pos.z - bulletA->depth / 2 &&
 				pos.z - depth / 2 <= bulletA->pos.z + bulletA->depth / 2) {
 				tmp = bulletA->pos.z;
+				//hpとhpbarを減らす
 				color = BLACK;
 				TakeDamage(10);
+				//wave1->color = 0xff000055;
+				//wave2->color = 0xff000055;
+				//wave3->color = 0xff000055;
 			}
 		}
 	}
@@ -170,9 +166,12 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 		pos.x - width / 2 <= bulletB->screen_pos.x + bulletB->width / 2) {
 		if (pos.y + height / 2 >= bulletB->screen_pos.y - bulletB->height / 2 &&
 			pos.y - height / 2 <= bulletB->screen_pos.y + bulletB->height / 2) {
+				//hpとhpbarを減らす
 				color = BLACK;
 				TakeDamage(10);
-
+				//wave1->color = 0xff000055;
+				//wave2->color = 0xff000055;
+				//wave3->color = 0xff000055;
 		}
 	}
 	
@@ -211,6 +210,16 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 	// ============================
 	//	HP BARの更新処理
 	// ============================
+
+	wave1->total_length = hp;
+	wave2->total_length = hp;
+	wave3->total_length = hp;
+	//wave1->color = 0xffffff55;
+	//wave2->color = BASE_COLOR;
+	//wave3->color = BASE_COLOR;
+	wave1->numbers = static_cast<int>(hp / 2);
+	wave2->numbers = static_cast<int>(hp / 2);
+	wave3->numbers = static_cast<int>(hp / 2);
 
 	wave1->WaveRandomUpdate();
 	wave2->WaveRandomUpdate();
