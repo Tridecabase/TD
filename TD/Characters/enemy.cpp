@@ -139,8 +139,17 @@ void Enemy::Init() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 
+	//HPを0に超えないように
 	if (hp <= 0) {
 		hp = 0;
+	}
+
+	//敵位置をループさせる
+	if (pos.x < 0) {
+		pos.x += WINDOW_WIDTH * 6;
+	}
+	if (pos.x >= WINDOW_WIDTH * 6) {
+		pos.x -= WINDOW_WIDTH * 6;
 	}
 
 	// ============================
