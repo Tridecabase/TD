@@ -8,7 +8,6 @@ public:
 
 	Vector2 blockPos;
 	float blockSize;
-	int blockMapHandle;
 
 	int block[5][5] = {
 		{1,1,1,1,1},
@@ -17,6 +16,4 @@ public:
 		{2,0,0,0,2},
 		{1,1,1,1,1}
 	};
-	
-	void Draw();
 };

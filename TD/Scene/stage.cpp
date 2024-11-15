@@ -66,7 +66,7 @@ void Stage::Render() {
 	//敵の描画
 	enemy->Draw();
 	//プレイヤーマップの描画
-	map->Draw();
+	
 	//プレイヤー弾丸の描画
  	bulletA->Draw();
 	bulletB->Draw();

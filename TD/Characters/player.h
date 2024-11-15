@@ -26,6 +26,7 @@ public:
 	Vector3 pos;
 	Vector2 tmpPos;
 	Vector2 posNum;
+	Vector2 blockPos;
 	//プレイヤーの速度ベクトル
 	Vector2 speed;
 	//プレイヤーの長さ

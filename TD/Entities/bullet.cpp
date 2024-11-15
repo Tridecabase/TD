@@ -48,6 +48,7 @@ BulletA::BulletA() {
 		0.0f,	//stoppageTime
 		0.0f,	//stoppageTimer
 		0.0f,	//altitude
+		0.0f,	//frontAltitude
 		false	//isShoot 
 		};
 	}
@@ -98,6 +99,7 @@ void BulletA::Init() {
 		0.0f,	//stoppageTime
 		0.0f,	//stoppageTimer
 		0.0f,	//altitude
+		0.0f,	//frontAltitude
 		false	//isShoot 
 		};
 	}
@@ -214,6 +216,8 @@ BulletB::BulletB() {
 	stoppageTime = 0.0f;
 	stoppageTimer = 0.0f;
 	time = 0.0f;
+	altitude = 0.0f;
+	frontAltitude = 0.0f;
 
 	isShoot = false;
 
@@ -241,6 +245,7 @@ BulletB::BulletB() {
 		0.0f,	//stoppageTime
 		0.0f,	//stoppageTimer
 		0.0f,	//altitude
+		0.0f,	//frontAltitude
 		false	//isShoot 
 		};
 	}
@@ -261,6 +266,8 @@ void BulletB::Init() {
 	time = 0.0f;
 	stoppageTime = 0.0f;
 	stoppageTimer = 0.0f;
+	altitude = 0.0f;
+	frontAltitude = 0.0f;
 
 	isShoot = false;
 
@@ -288,6 +295,7 @@ void BulletB::Init() {
 		0.0f,	//stoppageTime
 		0.0f,	//stoppageTimer
 		0.0f,	//altitude
+		0.0f,	//frontAltitude
 		false	//isShoot 
 		};
 	}
@@ -352,23 +360,24 @@ void BulletB::Shot(Player* player, Map* map) {
 					bulletB[i].frontPos.x -= bulletB[i].randPos.x / 48.0f;
 					bulletB[i].frontPos.y -= bulletB[i].randPos.y / 48.0f;
 					bulletB[i].pos.z -= bulletB[i].randPos.z / 5.0f;
-					bulletB[i].altitude += bulletB[i].frontPos.y / 450.0f;
+					bulletB[i].frontAltitude += bulletB[i].frontPos.y / 450.0f;
 				}
 				else {
 					bulletB[i].pos.z += bulletB[i].speed + bulletB[i].randPos.z / 4.0f;
 					bulletB[i].time += bulletB[i].speed / (bulletB[i].distanceToMouse * 3);
-					bulletB[i].altitude += (720 - bulletB[i].mousePosY) / 100.0f;
+					bulletB[i].altitude += bulletB[i].pos.z / 150.0f; //bulletA[i].pos.z / 7.0f;
 					if (bulletB[i].time > 1.05f) {
 						bulletB[i].isShoot = false;
 						bulletB[i].time = 0.0f;
 						bulletB[i].stoppageTimer = 0.0f;
 						bulletB[i].altitude = 0.0f;
+						bulletB[i].frontAltitude = 0.0f;
 					}
 				}
 				bulletB[i].lastPos = { static_cast<float>(bulletB[i].mousePosX) , static_cast<float>(bulletB[i].mousePosY)};
 				bulletB[i].screen_pos.x = bulletB[i].newPos.x;
 				bulletB[i].screen_pos.y = bulletB[i].newPos.y;
-				bulletB[i].shadowPos = bulletB[i].screen_pos;
+				bulletB[i].shadowPos = getShadowPos(bulletB[i].frontPos, bulletB[i].lastPos, bulletB[i].screen_pos, bulletB[i].frontAltitude);
 				bulletB[i].shadowPos.y += bulletB[i].altitude;
 			}
 		}

@@ -30,6 +30,7 @@ typedef struct Bullet{
 	float stoppageTime;
 	float stoppageTimer;
 	float altitude;
+	float frontAltitude;
 
 	bool isShoot;
 }Bullet;
@@ -115,6 +116,12 @@ public:
 
 	void Draw() const;
 
+	Vector2 getShadowPos(Vector2 frontPos1, Vector2 lastPos1, Vector2 screenPos1, float altitude1) {
+		Vector2 shadowPos1;
+		shadowPos1.x = screenPos1.x;
+		shadowPos1.y = ((frontPos1.y + altitude1 - lastPos1.y) / (frontPos1.x - lastPos1.x)) * (screenPos1.x - frontPos1.x) + frontPos1.y + altitude1;
+		return shadowPos1;
+	};
 
 	Vector3 pos;
 	Vector3 randPos;
@@ -130,6 +137,8 @@ public:
 	float stoppageTime;
 	float stoppageTimer;
 	float distanceToMouse;
+	float altitude;
+	float frontAltitude;
 
 	bool isShoot;
 
