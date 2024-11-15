@@ -127,6 +127,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="Scene\stage.cpp" />
     <ClCompile Include="Tools\csv_parser.cpp" />
     <ClCompile Include="Tools\wave_generator.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h" />
@@ -156,7 +157,6 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\DirectXGame\input\Input.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
-    <ClInclude Include="Characters\boss.h" />
     <ClInclude Include="Characters\enemy.h" />
     <ClInclude Include="Characters\player.h" />
     <ClInclude Include="Entities\bullet.h" />
@@ -170,6 +170,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Tools\csv_parser.h" />
     <ClInclude Include="Tools\shaker.h" />
     <ClInclude Include="Tools\wave_generator.h" />
+    <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Csv\background.csv" />

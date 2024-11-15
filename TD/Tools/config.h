@@ -64,14 +64,20 @@ const float OUTER_BG_SPEED = 30.0f;
 const int MAX_BULLET_A = 32;
 const int MAX_BULLET_B = 10;
 
+const int PLAYER_ATK = 10;
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓敵設定↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 //敵の位置
+const float ENEMY_SPAWN_POSX = 0.0f;
+const float ENEMY_SPAWN_POSY = 0.0f;
 
-//敵の最大HP BAR SIZE
+//敵の最大HP
+const int ENEMY_MAX_HP = 1000;
 
 //敵のHPBAR
 

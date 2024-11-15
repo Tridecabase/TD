@@ -18,7 +18,7 @@ public:
     *modLength: モジュレーション波長
     *color: 色
     */
-	WaveGenerator(float startY, int numbers, int amp, int wave_length, float speed, int mod_length, unsigned int color);
+	WaveGenerator(float startX, float startY, int total_length ,int numbers, int amp, int wave_length, float speed, int mod_length, unsigned int color);
     //デストラクタ
     ~WaveGenerator();
 
@@ -31,15 +31,24 @@ public:
     //波の描画
     void Render() const;
 
+    //座標配列
+    float* x1;
+    float* y1;
+    float* x2;
+    float* y2;
+
+    //長さ
+    int total_length;
+    //線の数
+    int numbers;
+    //色
+    unsigned int color;
+
 private:
 
     //開始位置
     float startX;
     float startY;
-    //長さ
-    int total_length;
-    //線の数
-    int numbers;
     //振幅
     int amp;
     //波長
@@ -50,14 +59,6 @@ private:
     int mod_length;
     //位相
     float offset;
-    //色
-    unsigned int color;
-
-    //座標配列
-    float* x1;
-    float* y1;
-    float* x2;
-    float* y2;
 
     WaveGenerator(const WaveGenerator&) = delete;
     WaveGenerator& operator=(const WaveGenerator&) = delete;

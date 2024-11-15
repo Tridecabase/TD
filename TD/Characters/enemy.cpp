@@ -11,9 +11,7 @@ Enemy::Enemy() {
 	//BOSSの名前
 	name = "test=boss";
 	//現在のHP
-	hp = 1000;
-	//最大HP
-	max_hp = 1000;
+	hp = ENEMY_MAX_HP;
 
 	//敵の位置ベクトル
 	pos.x = 640.0f;
@@ -35,17 +33,15 @@ Enemy::Enemy() {
 	//行動の残り時間
 	action_timer = 1200;
 	//ブレイクゲージ
-	break_meter = max_hp/2;
+	break_meter = ENEMY_MAX_HP /2;
 	//ブレイクゲージの最大値
-	break_meter_max = max_hp / 2;
+	break_meter_max = ENEMY_MAX_HP / 2;
 	//ブレイク状態フラグ
 	is_break = false;
 	//ブレイク状態の残り時間
 	break_timer = 0;
 
-
 	tmp = 0.0f;
-
 
 	// ============================
 	// 弾丸関数変数
@@ -62,10 +58,26 @@ Enemy::Enemy() {
 
 	screen_pos = {};
 
+	// ============================
+	//	HP BAR
+	// ============================
+
+	wave1 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP, WAVE_LENGTH, WAVE_SPEED, 100, 0xffffffff);
+	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP + 1, WAVE_LENGTH - 20, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
+	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP + 2, WAVE_LENGTH - 40 , float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
+
+	hpbar_r = 0x00;
+	hpbar_g = 0xFF;
+	hpbar_b = 0x00;
+	hpbar_alpha = 0x00;
 
 }
 //デストラクタ
-Enemy::~Enemy() {}
+Enemy::~Enemy() {
+	delete wave1;
+	delete wave2;
+	delete wave3;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +90,7 @@ void Enemy::Init() {
 	// ============================
 
 	//敵のHP
-	hp = max_hp;
+	hp = ENEMY_MAX_HP;
 	//敵の位置ベクトル
 	pos.x = 640.0f;
 	pos.y = 100.0f;
@@ -102,7 +114,6 @@ void Enemy::Init() {
 	//SetRandomAction();
 
 	tmp = 0.0f;
-
 	
 	// ============================
 	// 弾丸関数変数
@@ -113,6 +124,11 @@ void Enemy::Init() {
 	//弾丸撃つのフラグ
 	isShootAble = false;
 
+	hpbar_r = 0x00;
+	hpbar_g = 0xFF;
+	hpbar_b = 0x00;
+	hpbar_alpha = 0x00;
+
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -122,6 +138,19 @@ void Enemy::Init() {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
+
+	//HPを0に超えないように
+	if (hp <= 0) {
+		hp = 0;
+	}
+
+	//敵位置をループさせる
+	if (pos.x < 0) {
+		pos.x += WINDOW_WIDTH * 6;
+	}
+	if (pos.x >= WINDOW_WIDTH * 6) {
+		pos.x -= WINDOW_WIDTH * 6;
+	}
 
 	// ============================
 	// 当たり判定
@@ -138,6 +167,7 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
 					tmp = bulletA->bulletA[i].pos.z;
 					color = BLACK;
+					TakeDamage(PLAYER_ATK);
 				}
 			}
 		}
@@ -149,6 +179,7 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
 				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
 				color = BLACK;
+				TakeDamage(PLAYER_ATK);
 			}
 		}
 	}
@@ -184,6 +215,29 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 		PerformAction();
 		action_timer--;
 	}
+
+	// ============================
+	//	HP BARの更新処理
+	// ============================
+
+	wave1->total_length = hp;
+	wave2->total_length = hp;
+	wave3->total_length = hp;
+	wave1->numbers = static_cast<int>(hp / 2);
+	wave2->numbers = static_cast<int>(hp / 2);
+	wave3->numbers = static_cast<int>(hp / 2);
+
+	wave1->WaveRandomUpdate();
+	wave2->WaveRandomUpdate();
+	wave3->WaveRandomUpdate();
+
+	if (hp < ENEMY_MAX_HP * 0.3) {
+		wave2->color = 0xdc143cff;
+		wave3->color = 0xdc143cff;
+		hpbar_g = 0x00;
+		hpbar_r = 0x0FF;
+	}
+
 }
 
 //ダメージを受けた際の処理
@@ -242,7 +296,9 @@ void Enemy::SetRandomAction() {
 
 //行動ID 101
 void Enemy::ExecuteMoveAndDeploy() {
-	/*pos.x += 5;*/
+
+	//pos.x += 5;
+
 
 	//定期的に浮遊砲を設置
 	//浮遊砲の間隔
@@ -277,6 +333,20 @@ void Enemy::ExitBreakState() {
 	SetRandomAction();
 }
 
+//プレイヤーの移動によってスクロール関数
+void Enemy::Scroll(Player* player, char keys[256]) {
+	if (player->isPlayerLeft) {
+		if (keys[DIK_A]) {
+			pos.x += OUTER_BG_SPEED;
+		}
+	}
+	if (player->isPlayerRight) {
+		if (keys[DIK_D]) {
+			pos.x -= OUTER_BG_SPEED;
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑更新処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -297,9 +367,63 @@ void Enemy::Draw() {
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
 }
 
-//logs
+//HP BAR 描画
 void Enemy::DrawInfo() {
 
+	//HPbar　エフェクト
+	for (int i = 0; i < 3; i++) {
+		Novice::DrawBox(
+			static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2),
+			18 + i,
+			ENEMY_MAX_HP,
+			24 - i * 2,
+			0.0f,
+			(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + i), kFillModeSolid
+		);
+	}
+
+	for (int i = 0; i < 10; i++) {
+		Novice::DrawBox(
+			static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2),
+			18 + i,
+			hp,
+			24 - i * 2,
+			0.0f,
+			(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + i), kFillModeSolid
+		);
+	}
+
+	//なみ
+	wave1->Render();
+	wave2->Render();
+	wave3->Render();
+
+	//左の線
+	Novice::DrawLine(
+		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2),
+		15,
+		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2),
+		45,
+		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
+		);
+
+	//右の線
+	Novice::DrawLine(
+		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2 + hp - 1),
+		15,
+		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2 + hp - 1),
+		45,
+		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
+	);
+
+	//現在のHP
+	Novice::DrawLine(
+		static_cast<int>((WINDOW_WIDTH + ENEMY_MAX_HP) / 2 - 1),
+		15,
+		static_cast<int>((WINDOW_WIDTH + ENEMY_MAX_HP) / 2 - 1),
+		45,
+		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
+	);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑描画処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//

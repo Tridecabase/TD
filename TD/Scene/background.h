@@ -10,6 +10,49 @@
 #include <stdlib.h>
 #include <vector>
 
+class PlayerRoad {
+public:
+    PlayerRoad();
+
+    void render(int color);
+    
+
+    ///横線
+    Vector2 Line1P1;
+    Vector2 Line1P2;
+    Vector2 Line2P1;
+    Vector2 Line2P2;
+    Vector2 Line3P1;
+    Vector2 Line3P2;
+    Vector2 Line4P1;
+    Vector2 Line4P2;
+    ///縦線
+    Vector2 Line5P1;
+    Vector2 Line5P2;
+    Vector2 Line6P1;
+    Vector2 Line6P2;
+    Vector2 Line7P1;
+    Vector2 Line7P2;
+    Vector2 Line8P1;
+    Vector2 Line8P2;
+
+    ///矢印(左)
+    Vector2 ArrowLeftPoint1;
+    Vector2 ArrowLeftPoint2;
+    Vector2 ArrowLeftPoint3;
+    Vector2 ArrowLeftPoint4;
+    Vector2 ArrowLeftPoint5;
+    Vector2 ArrowLeftPoint6;
+
+    ///矢印(右)
+    Vector2 ArrowLeftPoint7;
+    Vector2 ArrowLeftPoint8;
+    Vector2 ArrowLeftPoint9;
+    Vector2 ArrowLeftPoint10;
+    Vector2 ArrowLeftPoint11;
+    Vector2 ArrowLeftPoint12;
+};
+
 class Background {
 public:
 
@@ -40,7 +83,9 @@ private:
     int offsetX;
     int startIdx;
 
+    PlayerRoad * playerRoad;
 };
+
 
 #endif
 
