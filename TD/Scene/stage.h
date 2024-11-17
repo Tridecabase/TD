@@ -31,21 +31,22 @@ public:
     //ステージの描画処理
     void Render();
 
+    //プレイヤーの宣言
+    Player* player;
+    //敵の宣言
+    Enemy* enemy;
+
 private:
 
     ResourceManager resourceManager;
 
     //背景の宣言
     Background* background;
-    //プレイヤーの宣言
-    Player* player;
     //プレイヤーマップの宣言
     Map* map;
     //プレイヤ弾丸の宣言
     BulletA* bulletA;
     BulletB* bulletB;
-    //敵の宣言
-    Enemy* enemy;
     //UIの宣言
     UI* ui;
 };

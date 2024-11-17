@@ -38,8 +38,8 @@
  ////////////////////////////////////////////////////////////////////////////////////////////
  //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
  ////////////////////////////////////////////////////////////////////////////////////////////
-WaveGenerator::WaveGenerator(float startY, int numbers, int amp, int wave_length, float speed, int mod_length, unsigned int color)
-    : startX(0.0f), startY(startY), total_length(WINDOW_WIDTH), numbers(numbers),
+WaveGenerator::WaveGenerator(float startX, float startY, int total_length ,int numbers, int amp, int wave_length, float speed, int mod_length, unsigned int color)
+    : startX(startX), startY(startY), total_length(total_length), numbers(numbers),
     amp(amp), wave_length(wave_length), speed(speed),
    mod_length(mod_length), offset(0.0f), color(color) {
 

@@ -9,16 +9,18 @@ Player::Player() {
 	// ============================
 
 	//プレイヤーの位置ベクトル
-	pos.x = 192.0f;
-	pos.y = 96.0f;
+	pos.x = BLOCK_SIZE * 2.0f;
+	pos.y = BLOCK_SIZE;
 	pos.z = 50.0f;
 	posNum.x = 0.0f;
 	posNum.y = 0.0f;
-	tmpPos.x = 192.0f;
-	tmpPos.y = 96.0f;
+	tmpPos.x = 0.0f;
+	tmpPos.y = 0.0f;
+	blockPos.x = BLOCK_SIZE * 2.0f;
+	blockPos.y = BLOCK_SIZE;
 	//プレイヤーの速度ベクトル
 	speed.x = BLOCK_SIZE;
-	speed.y = BLOCK_SIZE / 2.0f;
+	speed.y = BLOCK_SIZE;
 	//プレイヤーの長さ
 	width = 40.0f;
 	//プレイヤーの高さ
@@ -36,7 +38,7 @@ Player::Player() {
 	// ============================
 
 	//弾丸のクールダウン
-	shootCoolTimeA = 10;
+	shootCoolTimeA = 3;
 	shootCoolTimeB = 30;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
@@ -64,16 +66,18 @@ void Player::Init(Map* map) {
 	// ============================
 
 	//プレイヤーの位置ベクトル
-	pos.x = 192.0f;
-	pos.y = 96.0f;
+	pos.x = map->blockSize * 2.0f;
+	pos.y = map->blockSize;
 	pos.z = 50.0f;
 	posNum.x = 0.0f;
 	posNum.y = 0.0f;
-	tmpPos.x = 192.0f;
-	tmpPos.y = 96.0f;
+	tmpPos.x = 0.0f;
+	tmpPos.y = 0.0f;
+	blockPos.x = map->blockSize * 2.0f;
+	blockPos.y = map->blockSize;
 	//プレイヤーの速度ベクトル
 	speed.x = map->blockSize;
-	speed.y = map->blockSize / 2.0f;
+	speed.y = map->blockSize;
 	//プレイヤーの長さ
 	width = 40.0f;
 	//プレイヤーの高さ
@@ -91,7 +95,7 @@ void Player::Init(Map* map) {
 	// ============================
 
 	//弾丸のクールダウン
-	shootCoolTimeA = 10;
+	shootCoolTimeA = 3;
 	shootCoolTimeB = 30;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
@@ -107,27 +111,57 @@ void Player::Init(Map* map) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
-	posNum.x = pos.x / speed.x;
-	posNum.y = pos.y / speed.y;
+	posNum.x = blockPos.x / speed.x;
+	posNum.y = blockPos.y / speed.y;
 
-	tmpPos.x = pos.x;
-	tmpPos.y = pos.y;
+	tmpPos.x = blockPos.x;
+	tmpPos.y = blockPos.y;
 
 
 	if (posNum.y == 3) {
+		pos.y = 52.0f;
 		pos.z = 0.0f;
 		width = 48.0f;
 		height = 24.0f;
+		if (posNum.x == 3) {
+			pos.x = 120.0f;
+		}
+		if (posNum.x == 2) {
+			pos.x = 0.0f;
+		}
+		if (posNum.x == 1) {
+			pos.x = -120.0f;
+		}
 	}
 	if (posNum.y == 2) {
+		pos.y = 0.0f;
 		pos.z = 50.0f;
 		width = 40.0f;
 		height = 20.0f;
+		if (posNum.x == 3) {
+			pos.x = 108.0f;
+		}
+		if (posNum.x == 2) {
+			pos.x = 0.0f;
+		}
+		if (posNum.x == 1) {
+			pos.x = -108.0f;
+		}
 	}
 	if (posNum.y == 1) {
+		pos.y = -44.0f;
 		pos.z = 100.0f;
 		width = 32.0f;
 		height = 16.0f;
+		if (posNum.x == 3) {
+			pos.x = 96.0f;
+		}
+		if (posNum.x == 2) {
+			pos.x = 0.0f;
+		}
+		if (posNum.x == 1) {
+			pos.x = -96.0f;
+		}
 	}
 
 	if (!preKeys[DIK_W] && keys[DIK_W]) {
@@ -135,15 +169,15 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 		posNum.y = tmpPos.y / speed.y;
 
 		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-			pos.y = tmpPos.y;
+			blockPos.y = tmpPos.y;
 		}
 	}
-	else if (!preKeys[DIK_S] && keys[DIK_S]) {
+	if (!preKeys[DIK_S] && keys[DIK_S]) {
 		tmpPos.y += speed.y;
 		posNum.y = tmpPos.y / speed.y;
 
 		if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-			pos.y = tmpPos.y;
+			blockPos.y = tmpPos.y;
 		}
 	}
 
@@ -157,7 +191,7 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 			posNum.x = tmpPos.x / speed.x;
 
 			if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-				pos.x = tmpPos.x;
+				blockPos.x = tmpPos.x;
 				moveCooltime = 10;
 			}
 		}
@@ -166,7 +200,7 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 			posNum.x = tmpPos.x / speed.x;
 
 			if (map->block[(int)posNum.y][(int)posNum.x] == 0) {
-				pos.x = tmpPos.x;
+				blockPos.x = tmpPos.x;
 				moveCooltime = 10;
 			}
 		}

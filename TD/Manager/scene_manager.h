@@ -37,7 +37,6 @@ private:
     //シーンの状態を表す列挙型
     enum class SceneState {
         GAMETITLE,
-        LOADING,
         GAMESTART,
         GAMEEND
     };
@@ -51,11 +50,6 @@ private:
     //現在のステージ
     Stage* stage;
     bool is_stage_off;
-
-    //test wave
-    WaveGenerator* wave1;
-    WaveGenerator* wave2;
-    WaveGenerator* wave3;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑scenemanager.cppで使用するための変数をここで宣言↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
