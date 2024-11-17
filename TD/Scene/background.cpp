@@ -36,7 +36,7 @@ PlayerRoad::PlayerRoad() {
 		float c1 = 80.0f;
 		float c2 = 110.0f;
 
-		ArrowLeftPoint1 = {640.0f - a2, 530.0f};
+		ArrowLeftPoint1 = {640.0f - a1, 530.0f};
 		ArrowLeftPoint2 = {640.0f - a2, 530.0f};
 		ArrowLeftPoint3 = {640.0f - b1, 601.0f};
 		ArrowLeftPoint4 = {640.0f - b2, 601.0f};
