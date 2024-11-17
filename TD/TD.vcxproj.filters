@@ -92,6 +92,9 @@
     <ClCompile Include="UI.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="drawPolygon.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -206,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="drawPolygon.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
