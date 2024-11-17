@@ -29,7 +29,7 @@ PlayerRoad::PlayerRoad() {
 	}
 
 	if (true) {
-//		float a1 = 70.0f;
+		float a1 = 70.0f;
 		float a2 = 100.0f;
 		float b1 = 100.0f;
 		float b2 = 130.0f;
