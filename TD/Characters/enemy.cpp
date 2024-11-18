@@ -235,7 +235,7 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 
 	//ブレイク状態の場合、ブレイクタイマーを減らす
 	if (is_break) {
-		break_timer--;
+		break_timer -= 2;
 		if (break_timer <= 0) {
 			ExitBreakState();
 		}
