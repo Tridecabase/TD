@@ -497,31 +497,31 @@ void Enemy::Draw() {
 
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
 
-	//int centerX = int(pos.x);
-	//int centerY = int(pos.y);
+	int centerX = int(pos.x);
+	int centerY = int(pos.y);
 
-	//Novice::DrawLine(centerX - 15, centerY - 50, centerX - 30, centerY, GREEN);
-	//Novice::DrawLine(centerX - 30, centerY, centerX - 20, centerY + 50, GREEN);
-	//Novice::DrawLine(centerX - 20, centerY + 50, centerX + 20, centerY + 50, GREEN);
-	//Novice::DrawLine(centerX + 20, centerY + 50, centerX + 30, centerY, GREEN);
-	//Novice::DrawLine(centerX + 30, centerY, centerX + 15, centerY - 50, GREEN);
-	//Novice::DrawLine(centerX + 15, centerY - 50, centerX - 15, centerY - 50, GREEN);
+	Novice::DrawLine(centerX - 15, centerY - 50, centerX - 30, centerY, GREEN);
+	Novice::DrawLine(centerX - 30, centerY, centerX - 20, centerY + 50, GREEN);
+	Novice::DrawLine(centerX - 20, centerY + 50, centerX + 20, centerY + 50, GREEN);
+	Novice::DrawLine(centerX + 20, centerY + 50, centerX + 30, centerY, GREEN);
+	Novice::DrawLine(centerX + 30, centerY, centerX + 15, centerY - 50, GREEN);
+	Novice::DrawLine(centerX + 15, centerY - 50, centerX - 15, centerY - 50, GREEN);
 
-	//Novice::DrawLine(centerX, centerY - 30, centerX - 15, centerY + 30, GREEN);
-	//Novice::DrawLine(centerX - 15, centerY + 30, centerX + 15, centerY + 30, GREEN);
-	//Novice::DrawLine(centerX + 15, centerY + 30, centerX, centerY - 30, GREEN);
+	Novice::DrawLine(centerX, centerY - 30, centerX - 15, centerY + 30, GREEN);
+	Novice::DrawLine(centerX - 15, centerY + 30, centerX + 15, centerY + 30, GREEN);
+	Novice::DrawLine(centerX + 15, centerY + 30, centerX, centerY - 30, GREEN);
 
-	//Novice::DrawEllipse(centerX, centerY, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawEllipse(centerX, centerY, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
 
-	//Novice::DrawBox(centerX - 5, centerY - 45, 10, 7, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX - 15, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX + 7, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawBox(centerX - 5, centerY - 45, 10, 7, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawBox(centerX - 15, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawBox(centerX + 7, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
 
-	//Novice::DrawBox(centerX - 5, centerY + 50, 7, 12, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX - 12, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX - 20, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawBox(centerX - 5, centerY + 50, 7, 12, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawBox(centerX - 12, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawBox(centerX - 20, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
+	Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
 
 }
 
