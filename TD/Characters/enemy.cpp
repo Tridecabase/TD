@@ -15,7 +15,7 @@ Enemy::Enemy() {
 
 	//敵の位置ベクトル
 	pos.x = 640.0f;
-	pos.y = 100.0f;
+	pos.y = ENEMY_SPAWN_POSY;
 	pos.z = 1000.0f;
 	//敵の長さ
 	width = 40.0f;
@@ -23,6 +23,8 @@ Enemy::Enemy() {
 	depth = 20.0f;
 	//敵の高さ
 	height = 80.0f;
+	//敵の速度
+	vel = 0.0f;
 	//敵の色
 	color = WHITE;
 	//敵の生存フラグ
@@ -71,6 +73,16 @@ Enemy::Enemy() {
 	hpbar_b = 0x00;
 	hpbar_alpha = 0x00;
 
+
+	// 浮遊砲の初期化
+	for (int i = 0; i < MAX_FUNNEL; ++i) {
+		funnel[i].isActive = false;
+		funnel[i].x = funnel[i].y = 0.0f;
+		funnel[i].width = 64.0f;
+		funnel[i].height = 64.0f;
+		funnel[i].hp = 0;
+	}
+
 }
 //デストラクタ
 Enemy::~Enemy() {
@@ -93,7 +105,7 @@ void Enemy::Init() {
 	hp = ENEMY_MAX_HP;
 	//敵の位置ベクトル
 	pos.x = 640.0f;
-	pos.y = 100.0f;
+	pos.y = ENEMY_SPAWN_POSY;
 	pos.z = 1000.0f;
 	//敵の長さ
 	width = 40.0f;
@@ -101,6 +113,8 @@ void Enemy::Init() {
 	depth = 20.0f;
 	//敵の高さ
 	height = 80.0f;
+	//敵の速度
+	vel = 0.0f;
 	//敵の色
 	color = WHITE;
 	//敵の生存フラグ
@@ -132,6 +146,15 @@ void Enemy::Init() {
 	wave2->color = BASE_COLOR;
 	wave3->color = BASE_COLOR;
 
+	//浮遊砲の初期化
+	for (int i = 0; i < MAX_FUNNEL; ++i) {
+		funnel[i].isActive = false;
+		funnel[i].x = funnel[i].y = 0.0f;
+		funnel[i].width = 64.0f;
+		funnel[i].height = 64.0f;
+		funnel[i].hp = 0;
+	}
+
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -153,6 +176,18 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 	}
 	if (pos.x >= WINDOW_WIDTH * 6) {
 		pos.x -= WINDOW_WIDTH * 6;
+	}
+
+	//浮遊砲をループさせる
+	for (int i = 0; i < MAX_FUNNEL; ++i) {
+		if (funnel[i].isActive) {
+			if (funnel[i].x < 0) {
+				funnel[i].x += WINDOW_WIDTH * 6;
+			}
+			if (funnel[i].x >= WINDOW_WIDTH * 6) {
+				funnel[i].x -= WINDOW_WIDTH * 6;
+			}
+		}
 	}
 
 	// ============================
@@ -241,13 +276,20 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 		hpbar_r = 0x0FF;
 	}
 
+	//浮遊砲の状態を更新
+	for (int i = 0; i < MAX_FUNNEL; ++i) {
+		if (funnel[i].isActive && funnel[i].hp <= 0) {
+			//耐久値が0以下なら無効化
+			funnel[i].isActive = false;
+		}
+	}
 }
 
 //ダメージを受けた際の処理
 void Enemy::TakeDamage(int damage) {
 	hp -= damage;
 	//ブレイクメーターはHPダメージの半分減少
-	break_meter -= damage / 2;
+	break_meter -= damage * 2;
 	if (break_meter <= 0 && !is_break) {
 		EnterBreakState();
 	}
@@ -257,7 +299,7 @@ void Enemy::TakeDamage(int damage) {
 void Enemy::UpdateBreakMeter() {
 	if (!is_break && break_meter < break_meter_max) {
 		//徐々にブレイクゲージを回復
-		break_meter++; 
+		//break_meter++; 
 	}
 }
 
@@ -265,16 +307,19 @@ void Enemy::UpdateBreakMeter() {
 void Enemy::PerformAction() {
 	switch (current_action) {
 	case ActionID::IDLE:
-
+		Idle();
 		break;
 	case ActionID::MOVE_AND_DEPLOY:
-		ExecuteMoveAndDeploy();
+		MoveAndDeploy();
 		break;
 	case ActionID::FIRE_AT_PLAYER:
-		ExecuteFireAtPlayer();
+		FireAtPlayer();
+		break;
+	case ActionID::Figure_Eight:
+		FigureEight();
 		break;
 	case ActionID::BREAK_STATE:
-		break; //ブレイク状態中は行動しない
+		break;
 	}
 }
 
@@ -282,58 +327,120 @@ void Enemy::PerformAction() {
 void Enemy::SetRandomAction() {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dist(0, 1);
+	std::uniform_int_distribution<int> dist(1, 3);
 
 	int actionChoice = dist(gen);
-	if (actionChoice == 0) {
+	if (actionChoice == 1) {
 		current_action = ActionID::MOVE_AND_DEPLOY;
 		//行動の持続時間を設定
-		action_timer = 1200;
+		action_timer = 600;
 	}
-	else {
+	else if (actionChoice == 2) {
 		current_action = ActionID::FIRE_AT_PLAYER;
-		//行動持続時間
-		action_timer = 1200;
+		//行動の持続時間を設定
+		action_timer = 600; // 行动持续时间
+	}
+	else if (actionChoice == 3) {
+		current_action = ActionID::Figure_Eight;
+		//行動の持続時間を設定
+		action_timer = 300;
 	}
 }
 
-//行動ID 101
-void Enemy::ExecuteMoveAndDeploy() {
+void Enemy::MoveAndDeploy() {
+	const float maxSpeed = 8.0f;
+	const float deployInterval = 1280.0f; //浮遊砲設置間隔
+	static float distanceTraveled = 0.0f;
 
-	//pos.x += 5;
+	//横の加速
+	if (fabs(vel) < maxSpeed) {
+		vel += (vel < 0 ? -0.2f : 0.2f);
+	}
 
+	pos.x += vel; // 位置更新
 
-	//定期的に浮遊砲を設置
-	//浮遊砲の間隔
-	static int deploy_interval = 30;
-	if (action_timer % deploy_interval == 0) {
-		//発射した弾の関数
+	//浮遊砲を設置
+	distanceTraveled += fabs(vel);
+	if (distanceTraveled >= deployInterval) {
+		DeployFunnel(pos.x, pos.y); //浮遊砲を設置
+		distanceTraveled = 0.0f;
+	}
+
+	//巻き戻し処理
+	if ((vel > 0 && pos.x >= WINDOW_WIDTH * 6) || (vel < 0.0f && pos.x <= 0.0f)) {
+		//行動終了、リセット
+		vel = 0.0f;
+		current_action = ActionID::IDLE; //次はIDLEに遷移
+		action_timer = 100;             //IDLEの時間設定
 	}
 }
 
-//行動ID 102
-void Enemy::ExecuteFireAtPlayer() const {
-	//弾の発射間隔
-	static int fire_interval = 20; 
-	if (action_timer % fire_interval == 0) {
-		//発射した弾の関数
+// 浮遊砲の設置
+void Enemy::DeployFunnel(float x, float y) {
+	for (int i = 0; i < MAX_FUNNEL; ++i) {
+		if (!funnel[i].isActive) {
+			funnel[i].isActive = true;
+			funnel[i].x = x;
+			funnel[i].y = y;
+			funnel[i].hp = 100;
+			break;
+		}
 	}
 }
 
-//ブレイク状態に入る
+//エネルギー収集と弾幕発射
+void Enemy::FireAtPlayer() {
+	static int chargeTime = 0;
+	const int maxChargeTime = 300;
+
+	chargeTime++;
+	if (chargeTime >= maxChargeTime) {
+		chargeTime = 0;
+		current_action = ActionID::IDLE; //IDLEに遷移
+		action_timer = 300;              //IDLE時間設定
+	}
+}
+
+
+void Enemy::FigureEight() {
+	const float speed = 4.0f;        //横の移動速度
+	const float amplitudeX = 200.0f; //横の振幅
+	const float amplitudeY = 150.0f; //縦の振幅
+	static float angle = 0.0f;       //角度
+
+	angle += 0.05f;
+
+	//移動
+	float deltaX = cos(angle) * amplitudeX * 0.05f;		//横の変化量
+	float deltaY = sin(2 * angle) * amplitudeY * 0.05f; //縦の変化量
+
+	//現在位置を更新
+	pos.x += speed + deltaX; //振動を追加
+	pos.y += deltaY;         //縦方向の振動
+}
+
+
 void Enemy::EnterBreakState() {
 	is_break = true;
-	//ブレイク状態の持続時間
 	break_timer = 600;
-	//ブレイクゲージをリセット
 	break_meter = break_meter_max;
+	current_action = ActionID::BREAK_STATE;
 }
 
-//ブレイク状態を終了
 void Enemy::ExitBreakState() {
 	is_break = false;
-	//ブレイク終了後、行動を再設定
+	action_timer = 0;
 	SetRandomAction();
+}
+
+void Enemy::Idle() {
+	// 高さをゆっくり元の位置へ戻す
+	if (fabs(pos.y - ENEMY_SPAWN_POSY) > 1.0f) {
+		pos.y += (ENEMY_SPAWN_POSY - pos.y) * 0.1f; // 緩やかな移動
+	}
+	else {
+		SetRandomAction(); // ランダムな次の行動を選択
+	}
 }
 
 //プレイヤーの移動によってスクロール関数
@@ -341,11 +448,21 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 	if (player->isPlayerLeft) {
 		if (keys[DIK_A]) {
 			pos.x += OUTER_BG_SPEED;
+			for (int i = 0; i < MAX_FUNNEL; ++i) {
+				if (funnel[i].isActive) {
+					funnel[i].x += OUTER_BG_SPEED;
+				}
+			}
 		}
 	}
 	if (player->isPlayerRight) {
 		if (keys[DIK_D]) {
 			pos.x -= OUTER_BG_SPEED;
+			for (int i = 0; i < MAX_FUNNEL; ++i) {
+				if (funnel[i].isActive) {
+					funnel[i].x -= OUTER_BG_SPEED;
+				}
+			}
 		}
 	}
 }
@@ -359,6 +476,17 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Draw() {
 
+	for (int i = 0; i < MAX_FUNNEL; ++i) {
+		if (funnel[i].isActive) {
+			Novice::DrawBox(
+				static_cast<int>(funnel[i].x - funnel[i].width / 2),
+				static_cast<int>(funnel[i].y - funnel[i].height / 2),
+				static_cast<int>(funnel[i].width),
+				static_cast<int>(funnel[i].height),
+				0.0f, 0x00FF00FF, kFillModeSolid);
+		}
+	}
+
 	//テスト：敵の描画
 	Novice::DrawBox(
 		static_cast<int>(screen_pos.x - width / 2),
@@ -368,6 +496,33 @@ void Enemy::Draw() {
 		0.0f, color, kFillModeSolid);
 
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
+
+	//int centerX = int(pos.x);
+	//int centerY = int(pos.y);
+
+	//Novice::DrawLine(centerX - 15, centerY - 50, centerX - 30, centerY, GREEN);
+	//Novice::DrawLine(centerX - 30, centerY, centerX - 20, centerY + 50, GREEN);
+	//Novice::DrawLine(centerX - 20, centerY + 50, centerX + 20, centerY + 50, GREEN);
+	//Novice::DrawLine(centerX + 20, centerY + 50, centerX + 30, centerY, GREEN);
+	//Novice::DrawLine(centerX + 30, centerY, centerX + 15, centerY - 50, GREEN);
+	//Novice::DrawLine(centerX + 15, centerY - 50, centerX - 15, centerY - 50, GREEN);
+
+	//Novice::DrawLine(centerX, centerY - 30, centerX - 15, centerY + 30, GREEN);
+	//Novice::DrawLine(centerX - 15, centerY + 30, centerX + 15, centerY + 30, GREEN);
+	//Novice::DrawLine(centerX + 15, centerY + 30, centerX, centerY - 30, GREEN);
+
+	//Novice::DrawEllipse(centerX, centerY, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+
+	//Novice::DrawBox(centerX - 5, centerY - 45, 10, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 15, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 7, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+
+	//Novice::DrawBox(centerX - 5, centerY + 50, 7, 12, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 12, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 20, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
+
 }
 
 //HP BAR 描画
@@ -427,6 +582,21 @@ void Enemy::DrawInfo() {
 		45,
 		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
 	);
+
+	// --- BREAK槽 ---
+	if (break_timer > 0) {
+		for (int i = 0; i < 10; i++) {
+			Novice::DrawBox(
+				(WINDOW_WIDTH / 2) - static_cast<int>(150.0f * break_timer / 600.0f),
+				60 - i,
+				static_cast<int>(300.0f * break_timer / 600.0f),
+				20 - i * 2,
+				0.0f,
+				(0xCC << 24) | (0xCC << 16) | (0xCC << 8) | (255 - i * 25),
+				kFillModeSolid
+			);
+		}
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑描画処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//

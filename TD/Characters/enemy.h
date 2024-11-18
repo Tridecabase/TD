@@ -14,6 +14,7 @@ enum class ActionID {
 	IDLE,					//待機
 	MOVE_AND_DEPLOY,		//移動して浮遊砲を設置する行動
 	FIRE_AT_PLAYER,			//プレイヤーに向けた弾を多方向に発射
+	Figure_Eight,
 	BREAK_STATE				//ブレイク状態
 							//and more...
 };
@@ -67,6 +68,8 @@ public:
 	float depth;
 	//敵の高さ
 	float height;
+	//敵の速度
+	float vel;
 	//敵の色
 	int color;
 	//敵の生存フラグ
@@ -97,6 +100,17 @@ public:
 	//弾丸撃つのフラグ
 	bool isShootAble;
 
+	//浮遊砲構造体
+	struct Funnel {
+		bool isActive;       //浮遊砲が有効かどうか
+		float x, y;			 //浮遊砲の位置
+		float width, height; //浮遊砲のサイズ
+		int hp;              //浮遊砲の耐久値
+	};
+
+	//敵クラスのメンバー変数として宣言
+	Funnel funnel[MAX_FUNNEL];
+
 	// ============================
 	// 背景用のメンバー変数を
 	// ============================
@@ -113,10 +127,15 @@ private:
 	void SetRandomAction();
 
 	//行動を実行する関数
+	//ID 100
+	void Idle();
 	//ID 101: 移動して浮遊砲を設置
-	void ExecuteMoveAndDeploy(); 
+	void MoveAndDeploy(); 
+	void DeployFunnel(float x, float y);
 	//ID 102: 弾を多方向に発射
-	void ExecuteFireAtPlayer() const;
+	void FireAtPlayer();
+	//ID 103
+	void FigureEight();
 	//and more...
 
 	// ============================
@@ -151,4 +170,5 @@ private:
 	WaveGenerator* wave1;
 	WaveGenerator* wave2;
 	WaveGenerator* wave3;
+
 };
