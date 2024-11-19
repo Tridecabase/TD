@@ -46,7 +46,7 @@ const float DELTA_TIME = 1.0f / 60.0f;
 //プレイヤーマップブロックのサイズ
 const float BLOCK_SIZE = 96.0f;
 //外層背景の移動速度
-const float OUTER_BG_SPEED = 30.0f;
+const float OUTER_BG_SPEED = 10.0f;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////

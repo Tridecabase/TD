@@ -197,27 +197,33 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 	color = WHITE;
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
-		if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radius / 2 &&
-			pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radius / 2) {
-			if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radius / 2 &&
-				pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radius / 2) {
-				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radius / 2 &&
-					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
-					tmp = bulletA->bulletA[i].pos.z;
-					color = BLACK;
-					TakeDamage(PLAYER_ATK);
+		if (bulletA[i].isShoot) {
+			if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radius / 2 &&
+				pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radius / 2) {
+				if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radius / 2 &&
+					pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radius / 2) {
+					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radius / 2 &&
+						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
+						tmp = bulletA->bulletA[i].pos.z;
+						color = RED;
+						bulletA[i].isShoot = false;
+						TakeDamage(PLAYER_ATK);
+					}
 				}
 			}
 		}
 	}
 
 	for (int i = 0; i < MAX_BULLET_B; i++) {
-		if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radius / 2 &&
-			pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radius / 2) {
-			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
-				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
-				color = BLACK;
-				TakeDamage(PLAYER_ATK);
+		if (bulletB[i].isShoot) {
+			if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radius / 2 &&
+				pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radius / 2) {
+				if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
+					pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
+					color = RED;
+					bulletB[i].isShoot = false;
+					TakeDamage(PLAYER_ATK);
+				}
 			}
 		}
 	}
@@ -250,7 +256,7 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 		if (action_timer <= 0) {
 			SetRandomAction();
 		}
-		PerformAction();
+		/*PerformAction();*/
 		action_timer--;
 	}
 
