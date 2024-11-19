@@ -55,6 +55,12 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 			funnelBullet[i].cooldown--;
 		}
 
+		//回転角度を更新
+		funnelBullet[i].angle += 0.1f;
+		if (funnelBullet[i].angle >= 2 * static_cast<float>(M_PI)) {
+			funnelBullet[i].angle -= 2 * static_cast<float>(M_PI);
+		}
+
 		//発射条件が満たされた場合
 		if (funnelBullet[i].cooldown <= 0) {
 			//クールダウンをリセット
@@ -137,62 +143,52 @@ void FunnelBullet::Scroll(Player* player, char keys[256]) {
 
 
 //描画処理
-void FunnelBullet::Draw(){
+void FunnelBullet::Draw() {
 	for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
-		float posX = funnelBullet[i].pos.x;
-		float posY = funnelBullet[i].pos.y;
-		float radius = funnelBullet[i].radius * funnelBullet[i].scale;
+		float posX = funnelBullet[i].pos.x; //現在のX座標
+		float posY = funnelBullet[i].pos.y; //現在のY座標
+		float radius = funnelBullet[i].radius * funnelBullet[i].scale; //半径
 
-		float angleOffset = funnelBullet[i].angle;
+		float angleOffset = funnelBullet[i].angle; //角度オフセット
 
-		float outerPoints[5][2]{};
+		float outerPoints[5][2]{}; //starの点
 
-		float innerPoints[5][2]{};
-
+		//点を計算
 		for (int j = 0; j < 5; ++j) {
-
+			//点の計算
 			float outerAngle = angleOffset + j * (2 * static_cast<float>(M_PI) / 5);
 			outerPoints[j][0] = posX + cos(outerAngle) * radius;
 			outerPoints[j][1] = posY + sin(outerAngle) * radius;
-
-			float innerAngle = outerAngle + static_cast<float>(M_PI) / 5;
-			float innerRadius = radius * 0.4f;
-			innerPoints[j][0] = posX + cos(innerAngle) * innerRadius;
-			innerPoints[j][1] = posY + sin(innerAngle) * innerRadius;
 		}
 
-
+		//外部線を描画
 		for (int j = 0; j < 5; ++j) {
-			int next = (j + 2) % 5;
+			int next = (j + 2) % 5; //次の点を選択
 
+			//線を描画
 			Novice::DrawLine(
 				static_cast<int>(outerPoints[j][0]),
 				static_cast<int>(outerPoints[j][1]),
 				static_cast<int>(outerPoints[next][0]),
 				static_cast<int>(outerPoints[next][1]),
-				RED 
+				0x00FF0088
 			);
 		}
 
+		//三角形を描画
 		for (int j = 0; j < 5; ++j) {
 			int next = (j + 2) % 5;
-			int innerNext = (j + 1) % 5;
 
 			Novice::DrawTriangle(
 				static_cast<int>(outerPoints[j][0]),
 				static_cast<int>(outerPoints[j][1]),
 				static_cast<int>(outerPoints[next][0]),
 				static_cast<int>(outerPoints[next][1]),
-				static_cast<int>(innerPoints[innerNext][0]),
-				static_cast<int>(innerPoints[innerNext][1]),
-				0xFF0000FF,
+				static_cast<int>(posX),
+				static_cast<int>(posY),
+				0x005243FF,
 				kFillModeSolid
 			);
-		}
-
-		funnelBullet[i].angle += 0.05f;
-		if (funnelBullet[i].angle >= 2 * static_cast<float>(M_PI)) {
-			funnelBullet[i].angle -= 2 * static_cast<float>(M_PI);
 		}
 	}
 }
