@@ -139,28 +139,28 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 		width = 40.0f;
 		height = 20.0f;
 		if (posNum.x == 3) {
-			pos.x = 108.0f;
+			pos.x = 106.0f;
 		}
 		if (posNum.x == 2) {
 			pos.x = 0.0f;
 		}
 		if (posNum.x == 1) {
-			pos.x = -108.0f;
+			pos.x = -107.0f;
 		}
 	}
 	if (posNum.y == 1) {
-		pos.y = -44.0f;
+		pos.y = -46.0f;
 		pos.z = 100.0f;
 		width = 32.0f;
 		height = 16.0f;
 		if (posNum.x == 3) {
-			pos.x = 96.0f;
+			pos.x = 91.0f;
 		}
 		if (posNum.x == 2) {
 			pos.x = 0.0f;
 		}
 		if (posNum.x == 1) {
-			pos.x = -96.0f;
+			pos.x = -93.0f;
 		}
 	}
 
