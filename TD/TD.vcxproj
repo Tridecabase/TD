@@ -118,6 +118,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="Characters\enemy.cpp" />
     <ClCompile Include="Characters\player.cpp" />
     <ClCompile Include="Entities\bullet.cpp" />
+    <ClCompile Include="Entities\enemy_bullet.cpp" />
     <ClCompile Include="Entities\map.cpp" />
     <ClCompile Include="Entities\obj.cpp" />
     <ClCompile Include="main.cpp" />
@@ -162,6 +163,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Characters\player.h" />
     <ClInclude Include="drawPolygon.h" />
     <ClInclude Include="Entities\bullet.h" />
+    <ClInclude Include="Entities\enemy_bullet.h" />
     <ClInclude Include="Entities\map.h" />
     <ClInclude Include="Entities\obj.h" />
     <ClInclude Include="Manager\resource_manager.h" />

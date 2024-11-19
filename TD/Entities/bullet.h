@@ -142,24 +142,3 @@ public:
 	Bullet bulletB[MAX_BULLET_B]{};
 
 };
-
-class FunnelBullet {
-public:
-	//コンストラクタとデストラクタ
-	FunnelBullet();
-	~FunnelBullet();
-
-	//初期化
-	void init();
-	//発射処理
-	void Shot(float x, float y, Player* player);
-	//プレイヤーの移動によってスクロール処理
-	void Scroll();
-	//描画処理
-	void Draw() const;
-
-	Bullet funnelBullet[MAX_BULLET_FUNNEL];
-
-private:
-
-};

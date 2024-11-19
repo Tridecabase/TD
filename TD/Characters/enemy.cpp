@@ -252,7 +252,7 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 		if (action_timer <= 0) {
 			SetRandomAction();
 		}
-		/*PerformAction();*/
+		PerformAction();
 		action_timer--;
 	}
 
@@ -298,7 +298,7 @@ void Enemy::TakeDamage(int damage) {
 }
 
 //ブレイクゲージを更新
-void Enemy::UpdateBreakMeter() {
+void Enemy::UpdateBreakMeter() const {
 	if (!is_break && break_meter < break_meter_max) {
 		//徐々にブレイクゲージを回復
 		//break_meter++; 

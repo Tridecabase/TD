@@ -46,7 +46,7 @@ public:
 	//ダメージを受けた際の処理
 	void TakeDamage(int damage);
 	//ブレイクゲージを更新
-	void UpdateBreakMeter();
+	void UpdateBreakMeter() const;
 
 	//プレイヤーの移動によってスクロール関数
 	void Scroll(Player* player, char keys[256]);
