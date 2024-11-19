@@ -122,7 +122,7 @@ void BulletA::Scroll(Player* player, char keys[256]) {
 	}
 }
 
-void BulletA::Shot(Player* player, Map* map) {
+void BulletA::Shot(Player* player) {
 	if (player->isAlive) {
 		if (player->shootCoolTimeA > 0) {
 			player->shootCoolTimeA--;
@@ -143,10 +143,10 @@ void BulletA::Shot(Player* player, Map* map) {
 						bulletA[i].savePos.z = player->pos.z;
 						Novice::GetMousePosition(&bulletA[i].mousePosX, &bulletA[i].mousePosY);
 						bulletA[i].distanceToMouse = sqrtf(static_cast<float>(
-							pow(map->blockPos.x + player->pos.x - bulletA[i].mousePosX, 2) +
-							pow(map->blockPos.y + player->pos.y - bulletA[i].mousePosY, 2)));
-						bulletA[i].frontPos.x = map->blockPos.x + player->pos.x;
-						bulletA[i].frontPos.y = map->blockPos.y + player->pos.y;
+							pow(player->screen_pos.x - bulletA[i].mousePosX, 2) +
+							pow(player->screen_pos.y - bulletA[i].mousePosY, 2)));
+						bulletA[i].frontPos.x = player->screen_pos.x;
+						bulletA[i].frontPos.y = player->screen_pos.y;
 						break;
 					}
 				}
@@ -318,7 +318,7 @@ void BulletB::Scroll(Player* player, char keys[256]) {
 	}
 }
 
-void BulletB::Shot(Player* player, Map* map) {
+void BulletB::Shot(Player* player) {
 	if (player->isAlive) {
 		if (player->shootCoolTimeB > 0) {
 			player->shootCoolTimeB--;
@@ -337,15 +337,15 @@ void BulletB::Shot(Player* player, Map* map) {
 						bulletB[i].pos.y = player->pos.y;
 						bulletB[i].pos.z = player->pos.z;
 						bulletB[i].randPos.x = (rand() % 101 - 50.0f);
-						bulletB[i].randPos.y = (rand() % 100 + 1.0f);
+						bulletB[i].randPos.y = (rand() % 80 + 1.0f);
 						bulletB[i].randPos.z = (rand() % 101 + 1.0f);
 						bulletB[i].stoppageTime = (80.0f + rand() % 31);
 						Novice::GetMousePosition(&bulletB[i].mousePosX, &bulletB[i].mousePosY);
 						bulletB[i].distanceToMouse = sqrtf(static_cast<float>(
-							pow(map->blockPos.x + player->pos.x - bulletB[i].mousePosX, 2) +
-							pow(map->blockPos.y + player->pos.y - bulletB[i].mousePosY, 2)));
-						bulletB[i].frontPos.x = map->blockPos.x + player->pos.x;
-						bulletB[i].frontPos.y = map->blockPos.y + player->pos.y;
+							pow(player->screen_pos.x - bulletB[i].mousePosX, 2) +
+							pow(player->screen_pos.y - bulletB[i].mousePosY, 2)));
+						bulletB[i].frontPos.x = player->screen_pos.x;
+						bulletB[i].frontPos.y = player->screen_pos.y;
 					}
 				}
 			}
@@ -359,11 +359,11 @@ void BulletB::Shot(Player* player, Map* map) {
 				if (bulletB[i].stoppageTimer <= bulletB[i].stoppageTime) {
 					bulletB[i].frontPos.x -= bulletB[i].randPos.x / 48.0f;
 					bulletB[i].frontPos.y -= bulletB[i].randPos.y / 48.0f;
-					bulletB[i].pos.z -= bulletB[i].randPos.z / 5.0f;
-					bulletB[i].frontAltitude += bulletB[i].frontPos.y / 450.0f;
+					bulletB[i].pos.z -= bulletB[i].randPos.z / 48.0f;
+					bulletB[i].frontAltitude += bulletB[i].randPos.y / 32.0f;
 				}
 				else {
-					bulletB[i].pos.z += bulletB[i].speed + bulletB[i].randPos.z / 4.0f;
+					bulletB[i].pos.z += bulletB[i].speed + bulletB[i].randPos.z / 96.0f;
 					bulletB[i].time += bulletB[i].speed / (bulletB[i].distanceToMouse * 3);
 					bulletB[i].altitude += bulletB[i].pos.z / 150.0f; //bulletA[i].pos.z / 7.0f;
 					if (bulletB[i].time > 1.05f) {
@@ -396,4 +396,5 @@ void BulletB::Draw() const {
 			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radius * bulletB[i].scale), static_cast<int>(bulletB[i].radius * bulletB[i].scale), 0.0f, GREEN, kFillModeSolid);
 		}
 	}
+	Novice::ScreenPrintf(100, 240, "%f,%f", bulletB[0].pos.z, bulletB[0].altitude);
 }

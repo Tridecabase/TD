@@ -44,7 +44,7 @@ public:
 
 	void Init();
 
-	void Shot(Player* player, Map* map);
+	void Shot(Player* player);
 
 	void Scroll(Player* player, char keys[256]);
 
@@ -74,7 +74,7 @@ public:
 	Vector2 getShadowPos(Vector2 frontPos1, Vector2 lastPos1, Vector2 screenPos1) {
 		Vector2 shadowPos1;
 		shadowPos1.x = screenPos1.x;
-		shadowPos1.y = ((frontPos1.y - lastPos1.y) / (frontPos1.x - lastPos1.x))*(screenPos1.x - frontPos1.x) + frontPos1.y;
+		shadowPos1.y = ((frontPos1.y - lastPos1.y) * (screenPos1.x - frontPos1.x) / (frontPos1.x - lastPos1.x)) + frontPos1.y;
 		return shadowPos1;
 	};
 
@@ -110,7 +110,7 @@ public:
 
 	void Init();
 
-	void Shot(Player* player, Map* map);
+	void Shot(Player* player);
 
 	void Scroll(Player* player, char keys[256]);
 
@@ -119,7 +119,7 @@ public:
 	Vector2 getShadowPos(Vector2 frontPos1, Vector2 lastPos1, Vector2 screenPos1, float altitude1) {
 		Vector2 shadowPos1;
 		shadowPos1.x = screenPos1.x;
-		shadowPos1.y = ((frontPos1.y + altitude1 - lastPos1.y) / (frontPos1.x - lastPos1.x)) * (screenPos1.x - frontPos1.x) + frontPos1.y + altitude1;
+		shadowPos1.y = ((frontPos1.y + altitude1 - lastPos1.y) * (screenPos1.x - frontPos1.x) / (frontPos1.x - lastPos1.x)) + frontPos1.y + altitude1;
 		return shadowPos1;
 	};
 
