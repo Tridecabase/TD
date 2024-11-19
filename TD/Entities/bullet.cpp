@@ -109,13 +109,13 @@ void BulletA::Scroll(Player* player, char keys[256]) {
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		if (player->isPlayerLeft) {
 			if (keys[DIK_A]) {
-				bulletA[i].mousePosX += static_cast<int>(OUTER_BG_SPEED * (1.0f - bulletA[i].pos.z));
+				bulletA[i].mousePosX += static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletA[i].pos.z) / 1100.0f);
 				
 			}
 		}
 		if (player->isPlayerRight) {
 			if (keys[DIK_D]) {
-				bulletA[i].mousePosX -= static_cast<int>(OUTER_BG_SPEED * (1.0f - bulletA[i].pos.z));
+				bulletA[i].mousePosX -= static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletA[i].pos.z) / 1100.0f);
 		
 			}
 		}
@@ -308,14 +308,14 @@ void BulletB::Scroll(Player* player, char keys[256]) {
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		if (player->isPlayerLeft) {
 			if (keys[DIK_A]) {
-				bulletB[i].mousePosX += static_cast<int>(OUTER_BG_SPEED * (1.0f - bulletB[i].pos.z));
-				bulletB[i].frontPos.x += static_cast<int>(OUTER_BG_SPEED * (1.0f - bulletB[i].pos.z));
+				bulletB[i].mousePosX += static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletB[i].pos.z) / 1100.0f);
+				bulletB[i].frontPos.x += static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletB[i].pos.z) / 1100.0f);
 			}
 		}
 		if (player->isPlayerRight) {
 			if (keys[DIK_D]) {
-				bulletB[i].mousePosX -= static_cast<int>(OUTER_BG_SPEED * (1.0f - bulletB[i].pos.z));
-				bulletB[i].frontPos.x -= static_cast<int>(OUTER_BG_SPEED * (1.0f - bulletB[i].pos.z));
+				bulletB[i].mousePosX -= static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletB[i].pos.z) / 1100.0f);
+				bulletB[i].frontPos.x -= static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletB[i].pos.z) / 1100.0f);
 			}
 		}
 	}

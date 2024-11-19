@@ -69,7 +69,7 @@ void FunnelBullet::Shot(Enemy* enemy) {
 	for (int i = 0; i < MAX_FUNNEL; i++) {
 		if (funnelBullet[i].isShoot) {
 			funnelBullet[i].distanceToPlayer = sqrtf(static_cast<float>(pow(enemy->funnel[i].x - funnelBullet[i].pos.x, 2) + pow(enemy->funnel[i].y - funnelBullet[i].pos.y, 2)));
-			funnelBullet[i].pos.z -= 0.02f;
+			funnelBullet[i].pos.z -= BULLET_VEL_Z;
 			funnelBullet[i].scale = 1.0f - funnelBullet[i].pos.z;
 			//test移動
 			funnelBullet[i].pos.y += 5.0f;
