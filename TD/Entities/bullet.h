@@ -152,7 +152,7 @@ public:
 	//初期化
 	void init();
 	//発射処理
-	void Shot();
+	void Shot(float x, float y, Player* player);
 	//プレイヤーの移動によってスクロール処理
 	void Scroll();
 	//描画処理
