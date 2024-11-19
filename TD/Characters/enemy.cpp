@@ -16,7 +16,7 @@ Enemy::Enemy() {
 	//敵の位置ベクトル
 	pos.x = 640.0f;
 	pos.y = ENEMY_SPAWN_POSY;
-	pos.z = 1000.0f;
+	pos.z = 1090.0f;
 	//敵の長さ
 	width = 40.0f;
 	//敵の深さ
@@ -35,7 +35,7 @@ Enemy::Enemy() {
 	//行動の残り時間
 	action_timer = 1200;
 	//ブレイクゲージ
-	break_meter = ENEMY_MAX_HP /2;
+	break_meter = ENEMY_MAX_HP / 2;
 	//ブレイクゲージの最大値
 	break_meter_max = ENEMY_MAX_HP / 2;
 	//ブレイク状態フラグ
@@ -66,7 +66,7 @@ Enemy::Enemy() {
 
 	wave1 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP, WAVE_LENGTH, WAVE_SPEED, 100, 0xffffffff);
 	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP + 1, WAVE_LENGTH - 20, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
-	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP + 2, WAVE_LENGTH - 40 , float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
+	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP + 2, WAVE_LENGTH - 40, float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
 
 	hpbar_r = 0x00;
 	hpbar_g = 0xFF;
@@ -106,7 +106,7 @@ void Enemy::Init() {
 	//敵の位置ベクトル
 	pos.x = 640.0f;
 	pos.y = ENEMY_SPAWN_POSY;
-	pos.z = 1000.0f;
+	pos.z = 1090.0f;
 	//敵の長さ
 	width = 40.0f;
 	//敵の深さ
@@ -128,7 +128,7 @@ void Enemy::Init() {
 	//SetRandomAction();
 
 	tmp = 0.0f;
-	
+
 	// ============================
 	// 弾丸関数変数
 	// ============================
@@ -163,7 +163,7 @@ void Enemy::Init() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
+void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 
 	//HPを0に超えないように
 	if (hp <= 0) {
@@ -197,37 +197,33 @@ void Enemy::Move(BulletA* bulletA,BulletB* bulletB) {
 	color = WHITE;
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
-		if (bulletA[i].isShoot) {
-			if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radius / 2 &&
-				pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radius / 2) {
-				if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radius / 2 &&
-					pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radius / 2) {
-					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radius / 2 &&
-						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
-						tmp = bulletA->bulletA[i].pos.z;
-						color = RED;
-						bulletA[i].isShoot = false;
-						TakeDamage(PLAYER_ATK);
-					}
+		if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radius / 2 &&
+			pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radius / 2) {
+			if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radius / 2 &&
+				pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radius / 2) {
+				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radius / 2 &&
+					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
+					tmp = bulletA->bulletA[i].pos.z;
+					color = RED;
+					bulletA[i].isShoot = false;
+					TakeDamage(PLAYER_ATK);
 				}
 			}
 		}
 	}
 
 	for (int i = 0; i < MAX_BULLET_B; i++) {
-		if (bulletB[i].isShoot) {
-			if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radius / 2 &&
-				pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radius / 2) {
-				if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
-					pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
-					color = RED;
-					bulletB[i].isShoot = false;
-					TakeDamage(PLAYER_ATK);
-				}
+		if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radius / 2 &&
+			pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radius / 2) {
+			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
+				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
+				color = RED;
+				bulletB[i].isShoot = false;
+				TakeDamage(PLAYER_ATK);
 			}
 		}
 	}
-	
+
 
 	screen_pos.x = pos.x;
 	screen_pos.y = pos.y;
@@ -569,7 +565,7 @@ void Enemy::DrawInfo() {
 		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2),
 		45,
 		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
-		);
+	);
 
 	//右の線
 	Novice::DrawLine(

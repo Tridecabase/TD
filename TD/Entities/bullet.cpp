@@ -171,12 +171,15 @@ void BulletA::Shot(Player* player) {
 					bulletA[i].gravitySpeedY = 0.0f;
 					bulletA[i].altitude = 0.0f;
 				}
-				
+
 				bulletA[i].lastPos = getLastPos(bulletA[i].savePos.z, bulletA[i].speed, bulletA[i].distanceToMouse, bulletA[i].frontPos.x, bulletA[i].frontPos.y, bulletA[i].mousePosX, bulletA[i].mousePosY);
 				bulletA[i].screen_pos.x = bulletA[i].newPos.x;
 				bulletA[i].screen_pos.y = bulletA[i].newPos.y + bulletA[i].gravityY;
 				bulletA[i].shadowPos = getShadowPos(bulletA[i].frontPos, bulletA[i].lastPos, bulletA[i].screen_pos);
 				bulletA[i].shadowPos.y += bulletA[i].altitude;
+			}
+			else {
+				bulletA[i].screen_pos = { NULL };
 			}
 		}
 	}
@@ -379,6 +382,9 @@ void BulletB::Shot(Player* player) {
 				bulletB[i].screen_pos.y = bulletB[i].newPos.y;
 				bulletB[i].shadowPos = getShadowPos(bulletB[i].frontPos, bulletB[i].lastPos, bulletB[i].screen_pos, bulletB[i].frontAltitude);
 				bulletB[i].shadowPos.y += bulletB[i].altitude;
+			}
+			else {
+				bulletB[i].screen_pos = { NULL };
 			}
 		}
 	}
