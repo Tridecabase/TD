@@ -21,6 +21,7 @@ public:
 		float radius;
 		float scale;
 		float speed;
+		float angle;
 		float time;
 		int cooldown;
 		float distanceToPlayer;
@@ -33,7 +34,7 @@ public:
 	//初期化
 	void init();
 	//発射処理
-	void Shot(Enemy* enemy);
+	void Shot(Player* player, Enemy* enemy);
 	//プレイヤーの移動によってスクロール処理
 	void Scroll(Player* player, char keys[256]);
 	//描画処理

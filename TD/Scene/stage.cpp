@@ -57,7 +57,7 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	enemy->Scroll(player, keys);
 	//敵弾丸の更新処理
 	enemy->UpdateFunnel(player, bulletA, bulletB);
-	funnelBullet->Shot(enemy);
+	funnelBullet->Shot(player, enemy);
 	funnelBullet->Scroll(player, keys);
 	//UI処理
 	ui->Updata();
