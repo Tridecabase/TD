@@ -556,31 +556,31 @@ void Enemy::Draw() const {
 
 }
 
-void Enemy::DrawFunnel() {
+void Enemy::DrawFunnel() const {
 
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].isActive) {
-			// 外円の描画 (外周の円)
+			//外円の描画
 			Novice::DrawEllipse(
 				static_cast<int>(funnel[i].x),
 				static_cast<int>(funnel[i].y),
 				static_cast<int>(funnel[i].width / 2),
 				static_cast<int>(funnel[i].height / 2),
 				0.0f,
-				0x005243FF, // 色 (青)
+				0x005243FF,
 				kFillModeSolid);
 
-			// 外円の枠線描画 (外周の枠線)
+			//外円の枠線描画
 			Novice::DrawEllipse(
 				static_cast<int>(funnel[i].x),
 				static_cast<int>(funnel[i].y),
 				static_cast<int>(funnel[i].width / 2),
 				static_cast<int>(funnel[i].height / 2),
 				0.0f,
-				0x00FF00FF, // 色 (緑)
+				0x00FF00FF,
 				kFillModeWireFrame);
 
-			// 内円の描画 (内周の円)
+			//内円の陰影描画
 			float t = 1.0f - float(pow(1.0f - funnel[i].angle / (2 * 3.14159265359f), 2));
 			Novice::DrawEllipse(
 				static_cast<int>(funnel[i].x + (funnel[i].width / 2 - funnel[i].width * 2 / 5) * cos(funnel[i].angle + t * (2 * 3.14159265359f))),
@@ -588,37 +588,37 @@ void Enemy::DrawFunnel() {
 				static_cast<int>(funnel[i].width * 2 / 5),
 				static_cast<int>(funnel[i].height * 2 / 5),
 				0.0f,
-				0x1f313488, // 色 (暗い青)
+				0x1f313488,
 				kFillModeSolid);
 
-			// 内円の陰影描画 (内円の陰影)
+			//内円の描画
 			Novice::DrawEllipse(
 				static_cast<int>(funnel[i].x + (funnel[i].width / 2 - funnel[i].width * 1 / 3) * cos(funnel[i].angle)),
 				static_cast<int>(funnel[i].y + (funnel[i].height / 2 - funnel[i].height * 1 / 3) * sin(funnel[i].angle)),
 				static_cast<int>(funnel[i].width * 1 / 3),
 				static_cast<int>(funnel[i].height * 1 / 3),
 				0.0f,
-				0x000b00FF, // 色 (濃い青)
+				0x000b00FF,
 				kFillModeSolid);
 
-			// 内円の陰影枠線描画 (内円の陰影枠線)
+			//内円の枠線描画
 			Novice::DrawEllipse(
 				static_cast<int>(funnel[i].x + (funnel[i].width / 2 - funnel[i].width * 1 / 3) * cos(funnel[i].angle)),
 				static_cast<int>(funnel[i].y + (funnel[i].height / 2 - funnel[i].height * 1 / 3) * sin(funnel[i].angle)),
 				static_cast<int>(funnel[i].width * 1 / 3),
 				static_cast<int>(funnel[i].height * 1 / 3),
 				0.0f,
-				0x00FF00FF, // 色 (緑)
+				0x00FF00FF,
 				kFillModeWireFrame);
 
-			// 眼球の描画 (白色の眼球)
+			//目の描画
 			Novice::DrawEllipse(
 				static_cast<int>(funnel[i].eyeball.x),
 				static_cast<int>(funnel[i].eyeball.y),
 				static_cast<int>(funnel[i].eyeball_r),
 				static_cast<int>(funnel[i].eyeball_r),
 				0.0f,
-				0xFFFFFFFF, // 色 (白色)
+				0xFFFFFFFF,
 				kFillModeSolid);
 		}
 	}
