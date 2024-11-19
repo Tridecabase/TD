@@ -247,7 +247,23 @@ void Background::Render(Player* player) {
 		resourceManager.Draw(drawX, 0, textureName, 1.0f, 1.0f, 0.0f, 0xffffffff);
 	}
 
+	{
+		int line1 = 208;
+		int line2 = 250;
+		int line3 = 305;
+		int line4 = 380;
+		int line5 = 470;
+
+		Novice::DrawBox(0, 0, 1280, line1, 0.0f, 0x191b19FF, kFillModeSolid);
+		Novice::DrawBox(0, line1, 1280, line2 - line1, 0.0f, 0x161816FF, kFillModeSolid);
+		Novice::DrawBox(0, line2, 1280, line3 - line2, 0.0f, 0x191b19FF, kFillModeSolid);
+		Novice::DrawBox(0, line3, 1280, line4 - line3, 0.0f, 0x1b1e1bFF, kFillModeSolid);
+		Novice::DrawBox(0, line4, 1280, line5 - line4, 0.0f, 0x1d201dFF, kFillModeSolid);
+		Novice::DrawBox(0, line5, 1280, 720 - line5, 0.0f, 0x232a23FF, kFillModeSolid);
+	}
+
 	playerRoad->render(player, 0xFFFFFFFF);
 
 	Novice::ScreenPrintf(10, 60, "scollX %f", scrollX);
+
 };

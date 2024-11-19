@@ -4,7 +4,7 @@ FunnelBullet::FunnelBullet() {
 
 	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
 		funnelBullet[i] = {
-		{0.0f,0.0f,1.0f},	//pos
+		{},	//pos
 		{0.0f,0.0f},		//pos
 		0.0f,	//gravityY 
 		0.0f,	//gravitySpeedY
@@ -71,6 +71,11 @@ void FunnelBullet::Shot(Enemy* enemy) {
 			funnelBullet[i].distanceToPlayer = sqrtf(static_cast<float>(pow(enemy->funnel[i].x - funnelBullet[i].pos.x, 2) + pow(enemy->funnel[i].y - funnelBullet[i].pos.y, 2)));
 			funnelBullet[i].pos.z -= 0.02f;
 			funnelBullet[i].scale = 1.0f - funnelBullet[i].pos.z;
+			//test移動
+			funnelBullet[i].pos.y += 5.0f;
+			if (funnelBullet[i].pos.y > 600.0f) {
+				funnelBullet[i].isShoot = false;
+			}
 
 		}
 	}
@@ -82,7 +87,7 @@ void FunnelBullet::Scroll(Player* player, char keys[256]) {
 			for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
 				if (funnelBullet[i].isShoot) {
 					//test
-					funnelBullet[i].pos.x += OUTER_BG_SPEED;
+					funnelBullet[i].pos.x += OUTER_BG_SPEED * (1.0f -funnelBullet[i].pos.z);
 				}
 			}
 		}
@@ -92,7 +97,7 @@ void FunnelBullet::Scroll(Player* player, char keys[256]) {
 			for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
 				if (funnelBullet[i].isShoot) {
 					//test
-					funnelBullet[i].pos.x -= OUTER_BG_SPEED;
+					funnelBullet[i].pos.x -= OUTER_BG_SPEED * (1.0f - funnelBullet[i].pos.z);
 				}
 			}
 		}
