@@ -14,7 +14,7 @@ SceneManager::~SceneManager() {
 void SceneManager::Init() {
 
     //初期シーンを設定
-    current_scene = SceneState::GAMETITLE;
+    current_scene = SceneState::GAMESTART;
     //ステージ要素の初期化
     stage->Init();
 

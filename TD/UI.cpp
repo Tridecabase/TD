@@ -27,28 +27,28 @@ void Mouse::Updata()
 
 void Mouse::Draw()
 {
-
+	const int L = 10;
 	int color = 0x4bbc54FF;
-	int LTX = int(mousePos_.x) - 10;
-	int LTY = int(mousePos_.y) - 10;
-	int RTX = int(mousePos_.x) + 10;
-	int RTY = int(mousePos_.y) - 10;
-	int LBX = int(mousePos_.x) - 10;
-	int LBY = int(mousePos_.y) + 10;
-	int RBX = int(mousePos_.x) + 10;
-	int RBY = int(mousePos_.y) + 10;
+	int LTX = int(mousePos_.x) - L;
+	int LTY = int(mousePos_.y) - L;
+	int RTX = int(mousePos_.x) + L;
+	int RTY = int(mousePos_.y) - L;
+	int LBX = int(mousePos_.x) - L;
+	int LBY = int(mousePos_.y) + L;
+	int RBX = int(mousePos_.x) + L;
+	int RBY = int(mousePos_.y) + L;
 	Novice::SetMouseCursorVisibility(false);
-	Novice::DrawLine(LTX, LTY, LTX + 5, LTY, color);
-	Novice::DrawLine(LTX, LTY, LTX, LTY + 5, color);
+	Novice::DrawLine(LTX-1, LTY, LTX + L/2, LTY, color);
+	Novice::DrawLine(LTX, LTY, LTX, LTY + L / 2, color);
 
-	Novice::DrawLine(RTX, RTY, RTX - 5, RTY, color);
-	Novice::DrawLine(RTX, RTY, RTX, RTY + 5, color);
+	Novice::DrawLine(RTX, RTY, RTX - L / 2, RTY, color);
+	Novice::DrawLine(RTX, RTY, RTX, RTY + L / 2, color);
 
-	Novice::DrawLine(LBX, LBY, LBX + 5, LBY, color);
-	Novice::DrawLine(LBX, LBY, LBX, LBY - 5, color);
+	Novice::DrawLine(LBX, LBY, LBX + L / 2, LBY, color);
+	Novice::DrawLine(LBX, LBY, LBX, LBY - L / 2, color);
 
-	Novice::DrawLine(RBX, RBY, RBX - 5, RBY, color);
-	Novice::DrawLine(RBX, RBY, RBX, RBY - 5, color);
+	Novice::DrawLine(RBX, RBY, RBX - L / 2, RBY, color);
+	Novice::DrawLine(RBX, RBY, RBX, RBY - L / 2, color);
 
 	Novice::DrawLine(int(mousePos_.x) + 15, int(mousePos_.y), int(mousePos_.x) - 15, int(mousePos_.y), color);
 	Novice::DrawLine(int(mousePos_.x), int(mousePos_.y) + 15, int(mousePos_.x), int(mousePos_.y) - 15, color);

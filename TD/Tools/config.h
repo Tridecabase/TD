@@ -74,12 +74,15 @@ const int PLAYER_ATK = 10;
 
 //敵の位置
 const float ENEMY_SPAWN_POSX = 0.0f;
-const float ENEMY_SPAWN_POSY = 0.0f;
+const float ENEMY_SPAWN_POSY = 100.0f;
 
 //敵の最大HP
 const int ENEMY_MAX_HP = 1000;
 
 //敵のHPBAR
+
+//敵の最大浮遊砲数
+const int MAX_FUNNEL = 12;
 
 
 #endif

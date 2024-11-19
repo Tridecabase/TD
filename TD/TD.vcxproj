@@ -128,6 +128,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="Tools\csv_parser.cpp" />
     <ClCompile Include="Tools\wave_generator.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="drawPolygon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h" />
@@ -159,6 +160,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
     <ClInclude Include="Characters\enemy.h" />
     <ClInclude Include="Characters\player.h" />
+    <ClInclude Include="drawPolygon.h" />
     <ClInclude Include="Entities\bullet.h" />
     <ClInclude Include="Entities\map.h" />
     <ClInclude Include="Entities\obj.h" />

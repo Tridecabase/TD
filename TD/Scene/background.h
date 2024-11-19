@@ -9,12 +9,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include "drawPolygon.h"
 
 class PlayerRoad {
 public:
     PlayerRoad();
 
-    void render(int color);
+    void render(Player* player, int color);
     
 
     ///横線
@@ -45,12 +46,12 @@ public:
     Vector2 ArrowLeftPoint6;
 
     ///矢印(右)
-    Vector2 ArrowLeftPoint7;
-    Vector2 ArrowLeftPoint8;
-    Vector2 ArrowLeftPoint9;
-    Vector2 ArrowLeftPoint10;
-    Vector2 ArrowLeftPoint11;
-    Vector2 ArrowLeftPoint12;
+    Vector2 ArrowRightPoint1;
+    Vector2 ArrowRightPoint2;
+    Vector2 ArrowRightPoint3;
+    Vector2 ArrowRightPoint4;
+    Vector2 ArrowRightPoint5;
+    Vector2 ArrowRightPoint6;
 };
 
 class Background {
@@ -64,7 +65,7 @@ public:
     //背景の更新処理
     void Update(Player* player,Map* map,char keys[256]);
     //背景の描画処理
-    void Render();
+    void Render(Player* player);
     
     float getPlayerScreenX() {
         return scrollX;
