@@ -81,6 +81,12 @@ Enemy::Enemy() {
 		funnel[i].width = 64.0f;
 		funnel[i].height = 64.0f;
 		funnel[i].hp = 0;
+		funnel[i].angle = 0.0f;
+		funnel[i].inner_center = { 0.0f ,0.0f };
+		funnel[i].distance = { 0.0f ,0.0f };
+		funnel[i].eyeball = { 0.0f ,0.0f };
+		funnel[i].eyeball_r = funnel[i].width / 12;
+		funnel[i].angleToPlayer = 0.0f;
 	}
 
 }
@@ -146,13 +152,19 @@ void Enemy::Init() {
 	wave2->color = BASE_COLOR;
 	wave3->color = BASE_COLOR;
 
-	//浮遊砲の初期化
+	// 浮遊砲の初期化
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		funnel[i].isActive = false;
 		funnel[i].x = funnel[i].y = 0.0f;
 		funnel[i].width = 64.0f;
 		funnel[i].height = 64.0f;
 		funnel[i].hp = 0;
+		funnel[i].angle = 0.0f;
+		funnel[i].inner_center = { 0.0f ,0.0f };
+		funnel[i].distance = { 0.0f ,0.0f };
+		funnel[i].eyeball = { 0.0f ,0.0f };
+		funnel[i].eyeball_r = funnel[i].width / 12;
+		funnel[i].angleToPlayer = 0.0f;
 	}
 
 };
@@ -390,6 +402,34 @@ void Enemy::DeployFunnel(float x, float y) {
 	}
 }
 
+//浮遊砲の更新処理
+void Enemy::UpdateFunnel(Player* player) {
+	for (int i = 0; i < MAX_FUNNEL; ++i) {
+		if (funnel[i].isActive) {
+			//内円の中心座標の計算
+			funnel[i].inner_center.x = funnel[i].x + (funnel[i].width / 2 - funnel[i].width * 1 / 3) * cos(funnel[i].angle);
+			funnel[i].inner_center.y = funnel[i].y + (funnel[i].height / 2 - funnel[i].height * 1 / 3) * sin(funnel[i].angle);
+
+			//プレイヤーと内円の相対位置を計算
+			funnel[i].distance.x = player->screen_pos.x - funnel[i].inner_center.x;
+			funnel[i].distance.y = player->screen_pos.y - funnel[i].inner_center.y;
+
+			//プレイヤーと内円の角度を計算
+			funnel[i].angleToPlayer = atan2(funnel[i].distance.y, funnel[i].distance.x);
+
+			///目の位置を計算
+			funnel[i].eyeball.x = funnel[i].inner_center.x + (funnel[i].width * 1 / 3 - funnel[i].eyeball_r) * cos(funnel[i].angleToPlayer);
+			funnel[i].eyeball.y = funnel[i].inner_center.y + (funnel[i].height * 1 / 3 - funnel[i].eyeball_r) * sin(funnel[i].angleToPlayer);
+
+			//内円の角度の更新
+			funnel[i].angle += angular_speed;
+			if (funnel[i].angle >= 2 * static_cast<float>(M_PI)) {
+				funnel[i].angle -= 2 * static_cast<float>(M_PI);
+			}
+		}
+	}
+}
+
 //エネルギー収集と弾幕発射
 void Enemy::FireAtPlayer() {
 	static int chargeTime = 0;
@@ -476,18 +516,7 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Enemy::Draw() {
-
-	for (int i = 0; i < MAX_FUNNEL; ++i) {
-		if (funnel[i].isActive) {
-			Novice::DrawBox(
-				static_cast<int>(funnel[i].x - funnel[i].width / 2),
-				static_cast<int>(funnel[i].y - funnel[i].height / 2),
-				static_cast<int>(funnel[i].width),
-				static_cast<int>(funnel[i].height),
-				0.0f, 0x00FF00FF, kFillModeSolid);
-		}
-	}
+void Enemy::Draw() const {
 
 	//テスト：敵の描画
 	Novice::DrawBox(
@@ -525,6 +554,74 @@ void Enemy::Draw() {
 	Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
 	Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
 
+}
+
+void Enemy::DrawFunnel() {
+
+	for (int i = 0; i < MAX_FUNNEL; ++i) {
+		if (funnel[i].isActive) {
+			// 外円の描画 (外周の円)
+			Novice::DrawEllipse(
+				static_cast<int>(funnel[i].x),
+				static_cast<int>(funnel[i].y),
+				static_cast<int>(funnel[i].width / 2),
+				static_cast<int>(funnel[i].height / 2),
+				0.0f,
+				0x005243FF, // 色 (青)
+				kFillModeSolid);
+
+			// 外円の枠線描画 (外周の枠線)
+			Novice::DrawEllipse(
+				static_cast<int>(funnel[i].x),
+				static_cast<int>(funnel[i].y),
+				static_cast<int>(funnel[i].width / 2),
+				static_cast<int>(funnel[i].height / 2),
+				0.0f,
+				0x00FF00FF, // 色 (緑)
+				kFillModeWireFrame);
+
+			// 内円の描画 (内周の円)
+			float t = 1.0f - float(pow(1.0f - funnel[i].angle / (2 * 3.14159265359f), 2));
+			Novice::DrawEllipse(
+				static_cast<int>(funnel[i].x + (funnel[i].width / 2 - funnel[i].width * 2 / 5) * cos(funnel[i].angle + t * (2 * 3.14159265359f))),
+				static_cast<int>(funnel[i].y + (funnel[i].height / 2 - funnel[i].height * 2 / 5) * sin(funnel[i].angle + t * (2 * 3.14159265359f))),
+				static_cast<int>(funnel[i].width * 2 / 5),
+				static_cast<int>(funnel[i].height * 2 / 5),
+				0.0f,
+				0x1f313488, // 色 (暗い青)
+				kFillModeSolid);
+
+			// 内円の陰影描画 (内円の陰影)
+			Novice::DrawEllipse(
+				static_cast<int>(funnel[i].x + (funnel[i].width / 2 - funnel[i].width * 1 / 3) * cos(funnel[i].angle)),
+				static_cast<int>(funnel[i].y + (funnel[i].height / 2 - funnel[i].height * 1 / 3) * sin(funnel[i].angle)),
+				static_cast<int>(funnel[i].width * 1 / 3),
+				static_cast<int>(funnel[i].height * 1 / 3),
+				0.0f,
+				0x000b00FF, // 色 (濃い青)
+				kFillModeSolid);
+
+			// 内円の陰影枠線描画 (内円の陰影枠線)
+			Novice::DrawEllipse(
+				static_cast<int>(funnel[i].x + (funnel[i].width / 2 - funnel[i].width * 1 / 3) * cos(funnel[i].angle)),
+				static_cast<int>(funnel[i].y + (funnel[i].height / 2 - funnel[i].height * 1 / 3) * sin(funnel[i].angle)),
+				static_cast<int>(funnel[i].width * 1 / 3),
+				static_cast<int>(funnel[i].height * 1 / 3),
+				0.0f,
+				0x00FF00FF, // 色 (緑)
+				kFillModeWireFrame);
+
+			// 眼球の描画 (白色の眼球)
+			Novice::DrawEllipse(
+				static_cast<int>(funnel[i].eyeball.x),
+				static_cast<int>(funnel[i].eyeball.y),
+				static_cast<int>(funnel[i].eyeball_r),
+				static_cast<int>(funnel[i].eyeball_r),
+				0.0f,
+				0xFFFFFFFF, // 色 (白色)
+				kFillModeSolid);
+		}
+	}
 }
 
 //HP BAR 描画
