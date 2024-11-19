@@ -221,7 +221,6 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
 					tmp = bulletA->bulletA[i].pos.z;
 					color = RED;
-					bulletA[i].isShoot = false;
 					TakeDamage(PLAYER_ATK);
 				}
 			}
@@ -234,7 +233,6 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
 				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
 				color = RED;
-				bulletB[i].isShoot = false;
 				TakeDamage(PLAYER_ATK);
 			}
 		}
