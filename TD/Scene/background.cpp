@@ -63,7 +63,7 @@ PlayerRoad::PlayerRoad() {
 
 void PlayerRoad::render(Player* player, int color) {
 	///test
-	Novice::DrawLine(640, 0, 640, 720, color);
+	//Novice::DrawLine(640, 0, 640, 720, color);
 	///横線
 	Novice::DrawLine(int(Line1P1.x), int(Line1P1.y), int(Line1P2.x), int(Line1P2.y), color);
 	//Novice::DrawLine(int(Line2P1.x), int(Line2P1.y), int(Line2P2.x), int(Line2P2.y), color);
