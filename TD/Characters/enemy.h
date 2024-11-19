@@ -39,9 +39,9 @@ public:
 
 
 	//浮遊砲の更新処理
-	void UpdateFunnel(Player* player);
+	void UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB);
 	//浮遊砲を表示する関数
-	void DrawFunnel();
+	void DrawFunnel() const;
 
 	// ============================
 	// 敵の攻撃行動関数
@@ -109,15 +109,19 @@ public:
 	//浮遊砲構造体
 	struct Funnel {
 		bool isActive;       //浮遊砲が有効かどうか
+		bool isHit;
 		float x, y;			 //浮遊砲の位置
 		float width, height; //浮遊砲のサイズ
 		int hp;              //浮遊砲の耐久値
+		unsigned int color;
+		unsigned int line_color;
 		float angle;
 		Vector2 inner_center;//内円の中心位置
 		Vector2 distance;	 //プレイヤーと内円の相対位置
 		Vector2 eyeball;	 //目の位置
 		float eyeball_r;	 //目の半径
 		float angleToPlayer; //プレイヤーと内円の角度
+		float floatTime;
 	};
 
 	//敵クラスのメンバー変数として宣言

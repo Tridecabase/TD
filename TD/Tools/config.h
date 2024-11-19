@@ -64,7 +64,7 @@ const float OUTER_BG_SPEED = 10.0f;
 const int MAX_BULLET_A = 32;
 const int MAX_BULLET_B = 10;
 
-const int PLAYER_ATK = 10;
+const int PLAYER_ATK = 4;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ const int ENEMY_MAX_HP = 1000;
 //敵のHPBAR
 
 //敵の最大浮遊砲数
-const int MAX_FUNNEL = 12;
+const int MAX_FUNNEL = 99;
 //浮遊砲最大弾数
 const int MAX_BULLET_FUNNEL = MAX_FUNNEL;
 //奥移動の速度

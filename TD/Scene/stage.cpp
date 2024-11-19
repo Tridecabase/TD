@@ -56,7 +56,7 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	enemy->Move(bulletA,bulletB);
 	enemy->Scroll(player, keys);
 	//敵弾丸の更新処理
-	enemy->UpdateFunnel(player);
+	enemy->UpdateFunnel(player, bulletA, bulletB);
 	funnelBullet->Shot(enemy);
 	funnelBullet->Scroll(player, keys);
 	//UI処理
@@ -75,18 +75,17 @@ void Stage::Render() {
 	background->Render(player);
 	//敵のUI描画
 	enemy->DrawInfo();
+	enemy->DrawFunnel();
 	//プレイヤーの描画
 	player->Draw();
-	enemy->DrawFunnel();
 	//敵の描画
 	enemy->Draw();
+	funnelBullet->Draw();
 	//プレイヤーマップの描画
 	
 	//プレイヤー弾丸の描画
  	bulletA->Draw();
 	bulletB->Draw();
-
-	funnelBullet->Draw();
 	//UIの描画
 	ui->Draw();
 };
