@@ -8,6 +8,7 @@
 #include "./Entities/map.h"
 #include "UI.h"
 #include "./Entities/bullet.h"
+#include "./Entities/enemy_bullet.h"
 #include "./Tools/config.h"
 #include "Vector2.h"
 #include "UI.h"
@@ -47,6 +48,8 @@ private:
     //プレイヤ弾丸の宣言
     BulletA* bulletA;
     BulletB* bulletB;
+    //敵弾丸の宣言
+    FunnelBullet* funnelBullet;
     //UIの宣言
     UI* ui;
 };

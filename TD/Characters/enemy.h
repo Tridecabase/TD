@@ -32,10 +32,16 @@ public:
 	//敵の移動処理
 	void Move(BulletA*bulletA, BulletB*bulletB);
 	//敵の描画
-	void Draw();
+	void Draw() const;
 	//敵の情報を表示する関数
 	void DrawInfo();
 	//void RenderWaveWithLength(WaveGenerator* wave, int length, unsigned int color);
+
+
+	//浮遊砲の更新処理
+	void UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB);
+	//浮遊砲を表示する関数
+	void DrawFunnel() const;
 
 	// ============================
 	// 敵の攻撃行動関数
@@ -46,7 +52,7 @@ public:
 	//ダメージを受けた際の処理
 	void TakeDamage(int damage);
 	//ブレイクゲージを更新
-	void UpdateBreakMeter();
+	void UpdateBreakMeter() const;
 
 	//プレイヤーの移動によってスクロール関数
 	void Scroll(Player* player, char keys[256]);
@@ -103,13 +109,26 @@ public:
 	//浮遊砲構造体
 	struct Funnel {
 		bool isActive;       //浮遊砲が有効かどうか
+		bool isHit;
 		float x, y;			 //浮遊砲の位置
 		float width, height; //浮遊砲のサイズ
 		int hp;              //浮遊砲の耐久値
+		unsigned int color;
+		unsigned int line_color;
+		float angle;
+		Vector2 inner_center;//内円の中心位置
+		Vector2 distance;	 //プレイヤーと内円の相対位置
+		Vector2 eyeball;	 //目の位置
+		float eyeball_r;	 //目の半径
+		float angleToPlayer; //プレイヤーと内円の角度
+		float floatTime;
 	};
 
 	//敵クラスのメンバー変数として宣言
 	Funnel funnel[MAX_FUNNEL];
+
+	const float angular_speed = 0.01f;
+
 
 	// ============================
 	// 背景用のメンバー変数を

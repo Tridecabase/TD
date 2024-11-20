@@ -95,6 +95,9 @@
     <ClCompile Include="drawPolygon.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Entities\enemy_bullet.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -211,6 +214,12 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="drawPolygon.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\enemy_bullet.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\particle.h">
       <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>

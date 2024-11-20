@@ -76,7 +76,7 @@ private:
 
     ResourceManager resourceManager;
 
-    const float totalWidth = WINDOW_WIDTH * 6;
+    const float totalWidth = WINDOW_WIDTH * MAX_SCROLL;
     const float screenWidth = WINDOW_WIDTH / 2;
 
     float playerScreenX;
