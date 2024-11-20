@@ -219,6 +219,9 @@
     <ClInclude Include="Entities\enemy_bullet.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Tools\particle.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Csv\background.csv">

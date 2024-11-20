@@ -6,6 +6,7 @@
 #include "./Characters/enemy.h"
 #include "./Scene/background.h"
 #include "./Tools/config.h"
+#include "./Tools/particle.h"
 
 class FunnelBullet {
 public:
@@ -43,6 +44,8 @@ public:
 	Bullet funnelBullet[MAX_BULLET_FUNNEL];
 
 private:
+
+	ParticleGenerator particle_generator;
 
 };
 

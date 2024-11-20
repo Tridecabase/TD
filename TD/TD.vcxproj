@@ -172,6 +172,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Scene\stage.h" />
     <ClInclude Include="Tools\config.h" />
     <ClInclude Include="Tools\csv_parser.h" />
+    <ClInclude Include="Tools\particle.h" />
     <ClInclude Include="Tools\shaker.h" />
     <ClInclude Include="Tools\wave_generator.h" />
     <ClInclude Include="UI.h" />
