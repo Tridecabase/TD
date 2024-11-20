@@ -238,7 +238,7 @@ void Background::Update(Player* player, Map* map, char keys[256]) {
 //背景の描画処理
 void Background::Render(Player* player) {
 
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < MAX_SCROLL; ++i) {
 		int drawX = offsetX + i * static_cast<int>(WINDOW_WIDTH);
 
 		int textureIdx = (startIdx + i) % 6 + 1;

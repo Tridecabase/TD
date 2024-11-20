@@ -188,20 +188,20 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 
 	//敵位置をループさせる
 	if (pos.x < 0) {
-		pos.x += WINDOW_WIDTH * 6;
+		pos.x += WINDOW_WIDTH * MAX_SCROLL;
 	}
-	if (pos.x >= WINDOW_WIDTH * 6) {
-		pos.x -= WINDOW_WIDTH * 6;
+	if (pos.x >= WINDOW_WIDTH * MAX_SCROLL) {
+		pos.x -= WINDOW_WIDTH * MAX_SCROLL;
 	}
 
 	//浮遊砲をループさせる
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].isActive) {
 			if (funnel[i].x < 0) {
-				funnel[i].x += WINDOW_WIDTH * 6;
+				funnel[i].x += WINDOW_WIDTH * MAX_SCROLL;
 			}
-			if (funnel[i].x >= WINDOW_WIDTH * 6) {
-				funnel[i].x -= WINDOW_WIDTH * 6;
+			if (funnel[i].x >= WINDOW_WIDTH * MAX_SCROLL) {
+				funnel[i].x -= WINDOW_WIDTH * MAX_SCROLL;
 			}
 		}
 	}
@@ -387,7 +387,7 @@ void Enemy::MoveAndDeploy() {
 	}
 
 	//巻き戻し処理
-	if ((vel > 0 && pos.x >= WINDOW_WIDTH * 6) || (vel < 0.0f && pos.x <= 0.0f)) {
+	if ((vel > 0 && pos.x >= WINDOW_WIDTH * MAX_SCROLL) || (vel < 0.0f && pos.x <= 0.0f)) {
 		//行動終了、リセット
 		vel = 0.0f;
 		current_action = ActionID::IDLE; //次はIDLEに遷移
