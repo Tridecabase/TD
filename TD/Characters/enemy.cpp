@@ -213,12 +213,12 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 	color = WHITE;
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
-		if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radius / 2 &&
-			pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radius / 2) {
-			if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radius / 2 &&
-				pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radius / 2) {
-				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radius / 2 &&
-					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
+		if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radiusX / 2 &&
+			pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radiusX / 2) {
+			if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radiusY / 2 &&
+				pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY / 2) {
+				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX / 2 &&
+					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX / 2) {
 					tmp = bulletA->bulletA[i].pos.z;
 					color = RED;
 					TakeDamage(PLAYER_ATK);
@@ -228,10 +228,10 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 	}
 
 	for (int i = 0; i < MAX_BULLET_B; i++) {
-		if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radius / 2 &&
-			pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radius / 2) {
-			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
-				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
+		if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radiusX / 2 &&
+			pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radiusX / 2) {
+			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radiusY / 2 &&
+				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radiusY / 2) {
 				color = RED;
 				TakeDamage(PLAYER_ATK);
 			}
@@ -461,12 +461,12 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		for (int j = 0; j < MAX_FUNNEL; ++j) {
-			if (funnel[j].x + funnel[j].width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radius / 2 &&
-				funnel[j].x - funnel[j].width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radius / 2) {
-				if (funnel[j].y + funnel[j].height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radius / 2 &&
-					funnel[j].y - funnel[j].height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radius / 2) {
-					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radius / 2 &&
-						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radius / 2) {
+			if (funnel[j].x + funnel[j].width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radiusX / 2 &&
+				funnel[j].x - funnel[j].width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radiusX / 2) {
+				if (funnel[j].y + funnel[j].height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radiusY / 2 &&
+					funnel[j].y - funnel[j].height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY / 2) {
+					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX / 2 &&
+						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX / 2) {
 						tmp = bulletA->bulletA[i].pos.z;
 						funnel[j].isHit = true;
 						funnel[j].hp -= PLAYER_ATK;
@@ -478,12 +478,12 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
 
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		for (int j = 0; j < MAX_FUNNEL; ++j) {
-			if (funnel[j].x + funnel[j].width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radius / 2 &&
-				funnel[j].x - funnel[j].width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radius / 2) {
-				if (funnel[j].y + funnel[j].height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radius / 2 &&
-					funnel[j].y - funnel[j].height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radius / 2) {
-					if (pos.z + depth / 2 >= bulletB->bulletB[i].pos.z - bulletB->bulletB[i].radius / 2 &&
-						pos.z - depth / 2 <= bulletB->bulletB[i].pos.z + bulletB->bulletB[i].radius / 2) {
+			if (funnel[j].x + funnel[j].width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radiusX / 2 &&
+				funnel[j].x - funnel[j].width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radiusX / 2) {
+				if (funnel[j].y + funnel[j].height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radiusY / 2 &&
+					funnel[j].y - funnel[j].height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radiusY / 2) {
+					if (pos.z + depth / 2 >= bulletB->bulletB[i].pos.z - bulletB->bulletB[i].radiusX / 2 &&
+						pos.z - depth / 2 <= bulletB->bulletB[i].pos.z + bulletB->bulletB[i].radiusX / 2) {
 						tmp = bulletB->bulletB[i].pos.z;
 						funnel[j].isHit = true;
 						funnel[j].hp -= PLAYER_ATK;
