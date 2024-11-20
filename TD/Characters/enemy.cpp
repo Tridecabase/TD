@@ -793,7 +793,7 @@ void Enemy::DrawInfo() {
 				(WINDOW_WIDTH / 2) - static_cast<int>(150.0f * break_timer / 600.0f),
 				60 - i,
 				static_cast<int>(300.0f * break_timer / 600.0f),
-				20 - i * 2,
+				10 - i,
 				0.0f,
 				(0xCC << 24) | (0xCC << 16) | (0xCC << 8) | (255 - i * 25),
 				kFillModeSolid
