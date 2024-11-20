@@ -77,7 +77,7 @@ void Stage::Render() {
 	enemy->DrawInfo();
 	enemy->DrawFunnel();
 	//プレイヤーの描画
-	player->Draw();
+	player->Draw(0x4BBC54FF);
 	//敵の描画
 	enemy->Draw();
 	funnelBullet->Draw();
