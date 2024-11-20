@@ -156,7 +156,7 @@ void FunnelBullet::Draw() {
 					static_cast<int>(outerPoints[j][1]),
 					static_cast<int>(outerPoints[next][0]),
 					static_cast<int>(outerPoints[next][1]),
-					0xB443ABFF
+					0x4BBC54FF
 				);
 			}
 

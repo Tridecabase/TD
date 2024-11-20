@@ -28,7 +28,7 @@ public:
             p.vx = speed * cos(direction * static_cast<float>(M_PI) / 180.0f);
             p.vy = speed * sin(direction * static_cast<float>(M_PI) / 180.0f);
             p.angle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
-            p.color = 0xB443AB44;
+            p.color = 0x4BBC5444;
             p.life = rand() % maxlife + 1;
             particles.push_back(p);
         }

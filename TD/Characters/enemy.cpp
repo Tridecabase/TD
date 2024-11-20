@@ -164,7 +164,7 @@ void Enemy::Init() {
 		funnel[i].height = 64.0f;
 		funnel[i].hp = 400;
 		funnel[i].color = 0x005243FF;
-		funnel[i].line_color = 0xB443ABFF;
+		funnel[i].line_color = 0x4BBC54FF;
 		funnel[i].angle = 0.0f;
 		funnel[i].inner_center = { 0.0f ,0.0f };
 		funnel[i].distance = { 0.0f ,0.0f };
@@ -513,7 +513,7 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
 			}
 			else {
 				funnel[i].color = 0x191B19FF;
-				funnel[i].line_color = 0xB443ABFF;
+				funnel[i].line_color = 0x4BBC54FF;
 			}
 		}
 	}
