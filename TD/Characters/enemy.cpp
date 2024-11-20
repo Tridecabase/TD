@@ -83,7 +83,7 @@ Enemy::Enemy() {
 		funnel[i].height = 64.0f;
 		funnel[i].hp = 400;
 		funnel[i].color = 0x005243FF;
-		funnel[i].line_color = 0x005243FF;
+		funnel[i].line_color = 0xB443ABFF;
 		funnel[i].angle = 0x00FF0088;
 		funnel[i].inner_center = { 0.0f ,0.0f };
 		funnel[i].distance = { 0.0f ,0.0f };
@@ -163,6 +163,8 @@ void Enemy::Init() {
 		funnel[i].width = 64.0f;
 		funnel[i].height = 64.0f;
 		funnel[i].hp = 400;
+		funnel[i].color = 0x005243FF;
+		funnel[i].line_color = 0xB443ABFF;
 		funnel[i].angle = 0.0f;
 		funnel[i].inner_center = { 0.0f ,0.0f };
 		funnel[i].distance = { 0.0f ,0.0f };
@@ -506,12 +508,12 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
 		if (funnel[i].isActive) {
 			if (funnel[i].isHit) {
 				funnel[i].color = 0xb7282eFF;
-				funnel[i].line_color = 0xe2041b88;
+				funnel[i].line_color = 0x4BBC54FF;
 				funnel[i].isHit = false;
 			}
 			else {
-				funnel[i].color = 0x005243FF;
-				funnel[i].line_color = 0x00FF0088;
+				funnel[i].color = 0x191B19FF;
+				funnel[i].line_color = 0xB443ABFF;
 			}
 		}
 	}
@@ -615,31 +617,31 @@ void Enemy::Draw() const {
 
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
 
-	int centerX = int(pos.x);
-	int centerY = int(pos.y);
+	//int centerX = int(pos.x);
+	//int centerY = int(pos.y);
 
-	Novice::DrawLine(centerX - 15, centerY - 50, centerX - 30, centerY, GREEN);
-	Novice::DrawLine(centerX - 30, centerY, centerX - 20, centerY + 50, GREEN);
-	Novice::DrawLine(centerX - 20, centerY + 50, centerX + 20, centerY + 50, GREEN);
-	Novice::DrawLine(centerX + 20, centerY + 50, centerX + 30, centerY, GREEN);
-	Novice::DrawLine(centerX + 30, centerY, centerX + 15, centerY - 50, GREEN);
-	Novice::DrawLine(centerX + 15, centerY - 50, centerX - 15, centerY - 50, GREEN);
+	//Novice::DrawLine(centerX - 15, centerY - 50, centerX - 30, centerY, GREEN);
+	//Novice::DrawLine(centerX - 30, centerY, centerX - 20, centerY + 50, GREEN);
+	//Novice::DrawLine(centerX - 20, centerY + 50, centerX + 20, centerY + 50, GREEN);
+	//Novice::DrawLine(centerX + 20, centerY + 50, centerX + 30, centerY, GREEN);
+	//Novice::DrawLine(centerX + 30, centerY, centerX + 15, centerY - 50, GREEN);
+	//Novice::DrawLine(centerX + 15, centerY - 50, centerX - 15, centerY - 50, GREEN);
 
-	Novice::DrawLine(centerX, centerY - 30, centerX - 15, centerY + 30, GREEN);
-	Novice::DrawLine(centerX - 15, centerY + 30, centerX + 15, centerY + 30, GREEN);
-	Novice::DrawLine(centerX + 15, centerY + 30, centerX, centerY - 30, GREEN);
+	//Novice::DrawLine(centerX, centerY - 30, centerX - 15, centerY + 30, GREEN);
+	//Novice::DrawLine(centerX - 15, centerY + 30, centerX + 15, centerY + 30, GREEN);
+	//Novice::DrawLine(centerX + 15, centerY + 30, centerX, centerY - 30, GREEN);
 
-	Novice::DrawEllipse(centerX, centerY, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawEllipse(centerX, centerY, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
 
-	Novice::DrawBox(centerX - 5, centerY - 45, 10, 7, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX - 15, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX + 7, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 5, centerY - 45, 10, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 15, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 7, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
 
-	Novice::DrawBox(centerX - 5, centerY + 50, 7, 12, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX - 12, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX - 20, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 5, centerY + 50, 7, 12, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 12, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 20, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
 
 }
 
@@ -716,7 +718,7 @@ void Enemy::DrawFunnel() const {
 				static_cast<int>(funnel[i].eyeball_r),
 				static_cast<int>(funnel[i].eyeball_r),
 				0.0f,
-				0xFFFFFFFF,
+				funnel[i].line_color,
 				kFillModeSolid);
 
 			//目の枠線描画
@@ -726,7 +728,7 @@ void Enemy::DrawFunnel() const {
 				static_cast<int>(funnel[i].eyeball_r),
 				static_cast<int>(funnel[i].eyeball_r),
 				0.0f,
-				0x000b00FF,
+				funnel[i].line_color,
 				kFillModeWireFrame);
 		}
 	}

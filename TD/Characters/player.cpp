@@ -250,7 +250,7 @@ float easyOut(int a, int b, float c, float t) {
 	return x;
 }
 
-void Player::Draw(int color) {
+void Player::Draw(int color) const {
 	int color2 = 0x191B19FF;
 	int ballPrePosX = int(screen_pos.x);
 

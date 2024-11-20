@@ -76,8 +76,6 @@ void Stage::Render() {
 	//敵のUI描画
 	enemy->DrawInfo();
 	enemy->DrawFunnel();
-	//プレイヤーの描画
-	player->Draw(0x4BBC54FF);
 	//敵の描画
 	enemy->Draw();
 	funnelBullet->Draw();
@@ -86,6 +84,9 @@ void Stage::Render() {
 	//プレイヤー弾丸の描画
  	bulletA->Draw();
 	bulletB->Draw();
+
+	//プレイヤーの描画
+	player->Draw(0x4BBC54FF);
 	//UIの描画
 	ui->Draw();
 };
