@@ -53,6 +53,10 @@ public:
 	int shootCoolTimeB;
 	//弾丸撃つのフラグ
 	bool isShootAbleB;
+	//弾丸のクールダウン
+	int shootCoolTimeC;
+	//弾丸撃つのフラグ
+	bool isShootAbleC;
 
 	// ============================
 	// 背景用のメンバー変数を

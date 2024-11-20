@@ -23,6 +23,8 @@
 const int WINDOW_WIDTH = 1280;
 const int WINDOW_HEIGHT = 720;
 
+//math pie
+const float M_PI1 = 3.141592f;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓フレーム設定↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
@@ -63,6 +65,7 @@ const float OUTER_BG_SPEED = 10.0f;
 //プレイヤーの基準攻撃力
 const int MAX_BULLET_A = 32;
 const int MAX_BULLET_B = 10;
+const int MAX_BULLET_C = 20;
 
 const int PLAYER_ATK = 10;
 

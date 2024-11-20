@@ -27,28 +27,24 @@ BulletA::BulletA() {
 	screen_pos = {};
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
-		bulletA[i] = { 
+		bulletA[i] = {
 		{},		//pos
-		{},		//randPos
 		{},		//savePos
 		{},		//newPos
 		{},		//frontPos
 		{},		//lastPos
-		{},		//screen_pos 
-		{},		//shadowPos 
+		{},		//screen_pos
 		0,		//mousePosX 
 		0,		//mousePosY 
 		0.0f,	//gravityY 
 		0.0f,	//gravitySpeedY
-		20.0f,	//radius 
+		5.0f,	//radiusX
+		12.0f,	//radiusY
+		0.0f,	//theta
 		1.0f,	//scale 
 		30.0f,	//speed
 		0.0f,	//time
 		0.0f,	//distanceToMouse
-		0.0f,	//stoppageTime
-		0.0f,	//stoppageTimer
-		0.0f,	//altitude
-		0.0f,	//frontAltitude
 		false	//isShoot 
 		};
 	}
@@ -80,26 +76,22 @@ void BulletA::Init() {
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		bulletA[i] = {
 		{},		//pos
-		{},		//randPos
 		{},		//savePos
 		{},		//newPos
 		{},		//frontPos
 		{},		//lastPos
-		{},		//screen_pos 
-		{},		//shadowPos 
+		{},		//screen_pos
 		0,		//mousePosX 
 		0,		//mousePosY 
 		0.0f,	//gravityY 
 		0.0f,	//gravitySpeedY
-		20.0f,	//radius 
+		5.0f,	//radiusX
+		12.0f,	//radiusY
+		0.0f,	//theta
 		1.0f,	//scale 
 		30.0f,	//speed
 		0.0f,	//time
 		0.0f,	//distanceToMouse
-		0.0f,	//stoppageTime
-		0.0f,	//stoppageTimer
-		0.0f,	//altitude
-		0.0f,	//frontAltitude
 		false	//isShoot 
 		};
 	}
@@ -110,13 +102,13 @@ void BulletA::Scroll(Player* player, char keys[256]) {
 		if (player->isPlayerLeft) {
 			if (keys[DIK_A]) {
 				bulletA[i].mousePosX += static_cast<int>(OUTER_BG_SPEED) / 2;
-				
+
 			}
 		}
 		if (player->isPlayerRight) {
 			if (keys[DIK_D]) {
 				bulletA[i].mousePosX -= static_cast<int>(OUTER_BG_SPEED) / 2;
-		
+
 			}
 		}
 	}
@@ -147,6 +139,7 @@ void BulletA::Shot(Player* player) {
 							pow(player->screen_pos.y - bulletA[i].mousePosY, 2)));
 						bulletA[i].frontPos.x = player->screen_pos.x;
 						bulletA[i].frontPos.y = player->screen_pos.y;
+						bulletA[i].theta = acosf((-bulletA[i].mousePosX + bulletA[i].frontPos.x) / bulletA[i].distanceToMouse);
 						break;
 					}
 				}
@@ -157,26 +150,36 @@ void BulletA::Shot(Player* player) {
 				bulletA[i].pos.z += bulletA[i].speed;
 				bulletA[i].time += bulletA[i].speed / bulletA[i].distanceToMouse;
 				bulletA[i].scale = 1.0f - bulletA[i].pos.z / 1500.0f;
-				bulletA[i].altitude += bulletA[i].pos.z / 150.0f; //bulletA[i].pos.z / 7.0f;
 				bulletA[i].newPos.x = (1 - bulletA[i].time) * bulletA[i].frontPos.x + bulletA[i].time * bulletA[i].mousePosX;
 				bulletA[i].newPos.y = (1 - bulletA[i].time) * bulletA[i].frontPos.y + bulletA[i].time * bulletA[i].mousePosY;
 				if (bulletA[i].time >= 1.0f) {
 					bulletA[i].gravityY += bulletA[i].gravitySpeedY;
 					bulletA[i].gravitySpeedY += 2.3f;
+
+					if (bulletA[i].frontPos.x - bulletA[i].mousePosX > 50.0f) {
+						bulletA[i].theta -= (M_PI1 / 30.0f);
+					}
+					else if (bulletA[i].mousePosX - bulletA[i].frontPos.x > 50.0f) {
+						bulletA[i].theta += (M_PI1 / 30.0f);
+					}
+
+					if (bulletA[i].screen_pos.y > 500.0f) {
+						bulletA[i].isShoot = false;
+						bulletA[i].time = 0.0f;
+						bulletA[i].gravityY = 0.0f;
+						bulletA[i].gravitySpeedY = 0.0f;
+					}
 				}
 				if (bulletA[i].pos.z > 1100.0f) {
 					bulletA[i].isShoot = false;
 					bulletA[i].time = 0.0f;
 					bulletA[i].gravityY = 0.0f;
 					bulletA[i].gravitySpeedY = 0.0f;
-					bulletA[i].altitude = 0.0f;
 				}
 
 				bulletA[i].lastPos = getLastPos(bulletA[i].savePos.z, bulletA[i].speed, bulletA[i].distanceToMouse, bulletA[i].frontPos.x, bulletA[i].frontPos.y, bulletA[i].mousePosX, bulletA[i].mousePosY);
 				bulletA[i].screen_pos.x = bulletA[i].newPos.x;
 				bulletA[i].screen_pos.y = bulletA[i].newPos.y + bulletA[i].gravityY;
-				bulletA[i].shadowPos = getShadowPos(bulletA[i].frontPos, bulletA[i].lastPos, bulletA[i].screen_pos);
-				bulletA[i].shadowPos.y += bulletA[i].altitude;
 			}
 			else {
 				bulletA[i].screen_pos = { NULL };
@@ -188,13 +191,13 @@ void BulletA::Shot(Player* player) {
 void BulletA::Draw() const {
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		if (bulletA[i].isShoot) {
-		/*	Novice::DrawEllipse(static_cast<int>(bulletA[i].shadowPos.x), static_cast<int>(bulletA[i].shadowPos.y), static_cast<int>(bulletA[i].radius * bulletA[i].scale), static_cast<int>(bulletA[i].radius * bulletA[i].scale), 0.0f, BLACK, kFillModeSolid);*/
 			Novice::DrawEllipse(static_cast<int>(bulletA[i].lastPos.x), static_cast<int>(bulletA[i].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x4bbc54FF, kFillModeWireFrame);
 		}
 	}
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		if (bulletA[i].isShoot) {
-			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radius * bulletA[i].scale), static_cast<int>(bulletA[i].radius * bulletA[i].scale), 0.0f, BLUE, kFillModeSolid);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x + 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x6168F2FF, kFillModeSolid);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x - 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x6168F2FF, kFillModeSolid);
 		}
 	}
 	Novice::ScreenPrintf(100, 200, "bulletA.pos.z = %f,%f", bulletA[0].pos.z, bulletA[0].lastPos.y);
@@ -219,8 +222,6 @@ BulletB::BulletB() {
 	stoppageTime = 0.0f;
 	stoppageTimer = 0.0f;
 	time = 0.0f;
-	altitude = 0.0f;
-	frontAltitude = 0.0f;
 
 	isShoot = false;
 
@@ -230,25 +231,20 @@ BulletB::BulletB() {
 		bulletB[i] = {
 		{},		//pos
 		{},		//randPos
-		{},		//savePos
 		{},		//newPos
 		{},		//frontPos
 		{},		//lastPos
 		{},		//screen_pos 
-		{},		//shadowPos 
 		0,		//mousePosX 
 		0,		//mousePosY 
-		0.0f,	//gravityY 
-		0.0f,	//gravitySpeedY
-		15.0f,	//radius 
+		15.0f,	//radiusX
+		15.0f,	//radiusY
 		1.0f,	//scale 
 		110.0f,	//speed
 		0.0f,	//time
 		0.0f,	//distanceToMouse
 		0.0f,	//stoppageTime
 		0.0f,	//stoppageTimer
-		0.0f,	//altitude
-		0.0f,	//frontAltitude
 		false	//isShoot 
 		};
 	}
@@ -269,8 +265,6 @@ void BulletB::Init() {
 	time = 0.0f;
 	stoppageTime = 0.0f;
 	stoppageTimer = 0.0f;
-	altitude = 0.0f;
-	frontAltitude = 0.0f;
 
 	isShoot = false;
 
@@ -280,25 +274,20 @@ void BulletB::Init() {
 		bulletB[i] = {
 		{},		//pos
 		{},		//randPos
-		{},		//savePos
 		{},		//newPos
 		{},		//frontPos
 		{},		//lastPos
 		{},		//screen_pos 
-		{},		//shadowPos 
 		0,		//mousePosX 
 		0,		//mousePosY 
-		0.0f,	//gravityY 
-		0.0f,	//gravitySpeedY
-		15.0f,	//radius 
+		15.0f,	//radiusX
+		15.0f,	//radiusY
 		1.0f,	//scale 
 		110.0f,	//speed
 		0.0f,	//time
 		0.0f,	//distanceToMouse
 		0.0f,	//stoppageTime
 		0.0f,	//stoppageTimer
-		0.0f,	//altitude
-		0.0f,	//frontAltitude
 		false	//isShoot 
 		};
 	}
@@ -332,7 +321,7 @@ void BulletB::Shot(Player* player) {
 		if (Novice::IsPressMouse(1)) {
 			if (player->isShootAbleB) {
 				player->isShootAbleB = false;
-				player->shootCoolTimeB = 30;
+				player->shootCoolTimeB = 500;
 				for (int i = 0; i < MAX_BULLET_B; i++) {
 					if (!bulletB[i].isShoot) {
 						bulletB[i].isShoot = true;
@@ -342,7 +331,7 @@ void BulletB::Shot(Player* player) {
 						bulletB[i].randPos.x = (rand() % 101 - 50.0f);
 						bulletB[i].randPos.y = (rand() % 80 + 1.0f);
 						bulletB[i].randPos.z = (rand() % 101 + 1.0f);
-						bulletB[i].stoppageTime = (80.0f + rand() % 31);
+						bulletB[i].stoppageTime = (70.0f + rand() % 31);
 						Novice::GetMousePosition(&bulletB[i].mousePosX, &bulletB[i].mousePosY);
 						bulletB[i].distanceToMouse = sqrtf(static_cast<float>(
 							pow(player->screen_pos.x - bulletB[i].mousePosX, 2) +
@@ -363,25 +352,19 @@ void BulletB::Shot(Player* player) {
 					bulletB[i].frontPos.x -= bulletB[i].randPos.x / 48.0f;
 					bulletB[i].frontPos.y -= bulletB[i].randPos.y / 48.0f;
 					bulletB[i].pos.z -= bulletB[i].randPos.z / 48.0f;
-					bulletB[i].frontAltitude += bulletB[i].randPos.y / 32.0f;
 				}
 				else {
 					bulletB[i].pos.z += bulletB[i].speed + bulletB[i].randPos.z / 96.0f;
 					bulletB[i].time += bulletB[i].speed / (bulletB[i].distanceToMouse * 3);
-					bulletB[i].altitude += bulletB[i].pos.z / 150.0f; //bulletA[i].pos.z / 7.0f;
 					if (bulletB[i].time > 1.05f) {
 						bulletB[i].isShoot = false;
 						bulletB[i].time = 0.0f;
 						bulletB[i].stoppageTimer = 0.0f;
-						bulletB[i].altitude = 0.0f;
-						bulletB[i].frontAltitude = 0.0f;
 					}
 				}
-				bulletB[i].lastPos = { static_cast<float>(bulletB[i].mousePosX) , static_cast<float>(bulletB[i].mousePosY)};
+				bulletB[i].lastPos = { static_cast<float>(bulletB[i].mousePosX) , static_cast<float>(bulletB[i].mousePosY) };
 				bulletB[i].screen_pos.x = bulletB[i].newPos.x;
 				bulletB[i].screen_pos.y = bulletB[i].newPos.y;
-				bulletB[i].shadowPos = getShadowPos(bulletB[i].frontPos, bulletB[i].lastPos, bulletB[i].screen_pos, bulletB[i].frontAltitude);
-				bulletB[i].shadowPos.y += bulletB[i].altitude;
 			}
 			else {
 				bulletB[i].screen_pos = { NULL };
@@ -393,14 +376,173 @@ void BulletB::Shot(Player* player) {
 void BulletB::Draw() const {
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		if (bulletB[i].isShoot) {
-		/*	Novice::DrawEllipse(static_cast<int>(bulletB[i].shadowPos.x), static_cast<int>(bulletB[i].shadowPos.y), static_cast<int>(bulletB[i].radius * bulletB[i].scale), static_cast<int>(bulletB[i].radius * bulletB[i].scale), 0.0f, BLACK, kFillModeSolid);*/
 			Novice::DrawEllipse(static_cast<int>(bulletB[i].lastPos.x), static_cast<int>(bulletB[i].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x4bbc54FF, kFillModeWireFrame);
 		}
 	}
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		if (bulletB[i].isShoot) {
-			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radius * bulletB[i].scale), static_cast<int>(bulletB[i].radius * bulletB[i].scale), 0.0f, GREEN, kFillModeSolid);
+			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radiusX * bulletB[i].scale), static_cast<int>(bulletB[i].radiusY * bulletB[i].scale), 0.0f, 0xB961F2FF, kFillModeSolid);
 		}
 	}
-	Novice::ScreenPrintf(100, 240, "bulletB.pos.Z = %f,bulletB.altitude = %f", bulletB[0].pos.z, bulletB[0].altitude);
+	Novice::ScreenPrintf(100, 240, "bulletB.pos.Z = %f", bulletB[0].pos.z);
 }
+///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+
+//BulletC::BulletC() {
+//	for (int i = 0; i < MAX_BULLET_C; i++) {
+//		bulletC[i] = {
+//		{},		//pos
+//		{},		//savePos
+//		{},		//newPos
+//		{},		//frontPos
+//		{},		//lastPos
+//		{},		//screen_pos
+//		0,		//mousePosX 
+//		0,		//mousePosY 
+//		0.0f,	//gravityY 
+//		0.0f,	//gravitySpeedY
+//		5.0f,	//radiusX
+//		12.0f,	//radiusY
+//		0.0f,	//theta
+//		1.0f,	//scale 
+//		30.0f,	//speed
+//		0.0f,	//time
+//		0.0f,	//distanceToMouse
+//		false	//isShoot 
+//		};
+//	}
+//}
+//BulletC::~BulletC() {}
+//
+//void BulletC::Init() {
+//	for (int i = 0; i < MAX_BULLET_C; i++) {
+//		bulletC[i] = {
+//		{},		//pos
+//		{},		//savePos
+//		{},		//newPos
+//		{},		//frontPos
+//		{},		//lastPos
+//		{},		//screen_pos
+//		0,		//mousePosX 
+//		0,		//mousePosY 
+//		0.0f,	//gravityY 
+//		0.0f,	//gravitySpeedY
+//		5.0f,	//radiusX
+//		12.0f,	//radiusY
+//		0.0f,	//theta
+//		1.0f,	//scale 
+//		30.0f,	//speed
+//		0.0f,	//time
+//		0.0f,	//distanceToMouse
+//		false	//isShoot 
+//		};
+//	}
+//}
+//
+//void BulletC::Scroll(Player* player, char keys[256]) {
+//	for (int i = 0; i < MAX_BULLET_C; i++) {
+//		if (player->isPlayerLeft) {
+//			if (keys[DIK_A]) {
+//				bulletC[i].mousePosX += static_cast<int>(OUTER_BG_SPEED) / 2;
+//
+//			}
+//		}
+//		if (player->isPlayerRight) {
+//			if (keys[DIK_D]) {
+//				bulletC[i].mousePosX -= static_cast<int>(OUTER_BG_SPEED) / 2;
+//
+//			}
+//		}
+//	}
+//}
+//
+//void BulletC::Shot(Player* player) {
+//	if (player->isAlive) {
+//		if (player->shootCoolTimeC > 0) {
+//			player->shootCoolTimeC--;
+//		}
+//		else {
+//			player->isShootAbleC = true;
+//		}
+//		if (Novice::IsPressMouse(0)) {
+//			if (player->isShootAbleC) {
+//				player->isShootAbleC = false;
+//				player->shootCoolTimeA = 3;
+//				for (int i = 0; i < MAX_BULLET_A; i++) {
+//					if (!bulletC[i].isShoot) {
+//						bulletC[i].isShoot = true;
+//						bulletC[i].pos.x = player->pos.x;
+//						bulletC[i].pos.y = player->pos.y;
+//						bulletC[i].pos.z = player->pos.z;
+//						bulletC[i].savePos.z = player->pos.z;
+//						Novice::GetMousePosition(&bulletC[i].mousePosX, &bulletC[i].mousePosY);
+//						bulletC[i].distanceToMouse = sqrtf(static_cast<float>(
+//							pow(player->screen_pos.x - bulletC[i].mousePosX, 2) +
+//							pow(player->screen_pos.y - bulletC[i].mousePosY, 2)));
+//						bulletC[i].frontPos.x = player->screen_pos.x;
+//						bulletC[i].frontPos.y = player->screen_pos.y;
+//						bulletC[i].theta = acosf((-bulletA[i].mousePosX + bulletA[i].frontPos.x) / bulletA[i].distanceToMouse);
+//						break;
+//					}
+//				}
+//			}
+//		}
+//		for (int i = 0; i < MAX_BULLET_A; i++) {
+//			if (bulletC[i].isShoot) {
+//				bulletA[i].pos.z += bulletA[i].speed;
+//				bulletA[i].time += bulletA[i].speed / bulletA[i].distanceToMouse;
+//				bulletA[i].scale = 1.0f - bulletA[i].pos.z / 1500.0f;
+//				bulletA[i].newPos.x = (1 - bulletA[i].time) * bulletA[i].frontPos.x + bulletA[i].time * bulletA[i].mousePosX;
+//				bulletA[i].newPos.y = (1 - bulletA[i].time) * bulletA[i].frontPos.y + bulletA[i].time * bulletA[i].mousePosY;
+//				if (bulletA[i].time >= 1.0f) {
+//					bulletA[i].gravityY += bulletA[i].gravitySpeedY;
+//					bulletA[i].gravitySpeedY += 2.3f;
+//
+//					if (bulletA[i].frontPos.x - bulletA[i].mousePosX > 50.0f) {
+//						bulletA[i].theta -= (M_PI1 / 30.0f);
+//					}
+//					else if (bulletA[i].mousePosX - bulletA[i].frontPos.x > 50.0f) {
+//						bulletA[i].theta += (M_PI1 / 30.0f);
+//					}
+//
+//					if (bulletA[i].screen_pos.y > 500.0f) {
+//						bulletA[i].isShoot = false;
+//						bulletA[i].time = 0.0f;
+//						bulletA[i].gravityY = 0.0f;
+//						bulletA[i].gravitySpeedY = 0.0f;
+//					}
+//				}
+//				if (bulletA[i].pos.z > 1100.0f) {
+//					bulletA[i].isShoot = false;
+//					bulletA[i].time = 0.0f;
+//					bulletA[i].gravityY = 0.0f;
+//					bulletA[i].gravitySpeedY = 0.0f;
+//				}
+//
+//				/*bulletA[i].lastPos = ;*/
+//				bulletA[i].screen_pos.x = bulletA[i].newPos.x;
+//				bulletA[i].screen_pos.y = bulletA[i].newPos.y + bulletA[i].gravityY;
+//			}
+//			else {
+//				bulletA[i].screen_pos = { NULL };
+//			}
+//		}
+//	}
+//}
+//
+//void BulletC::Draw() const {
+//	for (int i = 0; i < MAX_BULLET_C; i++) {
+//		if (bulletC[i].isShoot) {
+//			Novice::DrawEllipse(static_cast<int>(bulletC[i].lastPos.x), static_cast<int>(bulletC[i].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x4bbc54FF, kFillModeWireFrame);
+//		}
+//	}
+//	for (int i = 0; i < MAX_BULLET_C; i++) {
+//		if (bulletC[i].isShoot) {
+//			Novice::DrawEllipse(static_cast<int>(bulletC[i].screen_pos.x), static_cast<int>(bulletC[i].screen_pos.y), static_cast<int>(bulletC[i].radiusX * bulletC[i].scale), static_cast<int>(bulletC[i].radiusY * bulletC[i].scale), M_PI1 / 2 + bulletC[i].theta, 0x6168F2FF, kFillModeSolid);
+//		}
+//	}
+//	Novice::ScreenPrintf(100, 200, "bulletA.pos.z = %f,%f", bulletC[0].pos.z, bulletC[0].lastPos.y);
+//	Novice::ScreenPrintf(100, 220, "%d,%d", bulletC[0].mousePosX, bulletC[0].mousePosY);
+//}
