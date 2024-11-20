@@ -88,7 +88,7 @@ Enemy::Enemy() {
 		funnel[i].inner_center = { 0.0f ,0.0f };
 		funnel[i].distance = { 0.0f ,0.0f };
 		funnel[i].eyeball = { 0.0f ,0.0f };
-		funnel[i].eyeball_r = funnel[i].width / 12;
+		funnel[i].eyeball_r = funnel[i].width / 6;
 		funnel[i].angleToPlayer = 0.0f;
 	}
 
@@ -167,7 +167,7 @@ void Enemy::Init() {
 		funnel[i].inner_center = { 0.0f ,0.0f };
 		funnel[i].distance = { 0.0f ,0.0f };
 		funnel[i].eyeball = { 0.0f ,0.0f };
-		funnel[i].eyeball_r = funnel[i].width / 12;
+		funnel[i].eyeball_r = funnel[i].width / 6;
 		funnel[i].angleToPlayer = 0.0f;
 	}
 
@@ -213,27 +213,31 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 	color = WHITE;
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
-		if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radiusX / 2 &&
-			pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radiusX / 2) {
-			if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radiusY / 2 &&
-				pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY / 2) {
-				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX / 2 &&
-					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX / 2) {
-					tmp = bulletA->bulletA[i].pos.z;
-					color = RED;
-					TakeDamage(PLAYER_ATK);
+		if (bulletA->bulletA[i].isShoot) {
+			if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radiusX / 2 &&
+				pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radiusX / 2) {
+				if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radiusY / 2 &&
+					pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY / 2) {
+					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX / 2 &&
+						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX / 2) {
+						tmp = bulletA->bulletA[i].pos.z;
+						color = RED;
+						TakeDamage(PLAYER_ATK);
+					}
 				}
 			}
 		}
 	}
 
 	for (int i = 0; i < MAX_BULLET_B; i++) {
-		if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radiusX / 2 &&
-			pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radiusX / 2) {
-			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radiusY / 2 &&
-				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radiusY / 2) {
-				color = RED;
-				TakeDamage(PLAYER_ATK);
+		if (bulletB->bulletB[i].isShoot) {
+			if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radiusX / 2 &&
+				pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radiusX / 2) {
+				if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radiusY / 2 &&
+					pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radiusY / 2) {
+					color = RED;
+					TakeDamage(PLAYER_ATK);
+				}
 			}
 		}
 	}
