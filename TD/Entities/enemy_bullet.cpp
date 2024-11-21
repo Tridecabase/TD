@@ -13,7 +13,7 @@ FunnelBullet::FunnelBullet() {
 		1.0f,	//scale 
 		3.0f,	//speed
 		0.0f,	//angle
-		300.0f,	//time
+		150.0f,	//time
 		100,	//cooldown
 		0.0f,	//distanceToMouse
 		0.0f,	//altitude
@@ -38,7 +38,7 @@ void FunnelBullet::init() {
 		1.0f,	//scale 
 		3.0f,	//speed
 		0.0f,	//angle
-		300.0f,	//time
+		150.0f,	//time
 		200,	//cooldown
 		0.0f,	//distanceToMouse
 		0.0f,	//altitude
@@ -55,13 +55,15 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 			funnelBullet[i].cooldown--;
 		}
 
+
 		funnelBullet[i].angle += 0.1f;
 		if (funnelBullet[i].angle >= 2 * static_cast<float>(M_PI)) {
 			funnelBullet[i].angle -= 2 * static_cast<float>(M_PI);
 		}
 
-		if (funnelBullet[i].cooldown <= 0) {
-			funnelBullet[i].cooldown = 300;
+		if (funnelBullet[i].cooldown <= 0 && !funnelBullet[i].isShoot) {
+			funnelBullet[i].cooldown = 150;
+
 
 			funnelBullet[i].pos.x = enemy->funnel[i].x;
 			funnelBullet[i].pos.y = enemy->funnel[i].y;
