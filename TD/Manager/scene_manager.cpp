@@ -1,9 +1,10 @@
 #include "scene_manager.h"
 
-SceneManager::SceneManager(): current_scene(SceneState::GAMETITLE), stage(new Stage) {
+SceneManager::SceneManager(): current_scene(SceneState::GAMETITLE), stage(new Stage),title(new Title) {
 
 }
 SceneManager::~SceneManager() {
+    delete title;
     delete stage;
 }
 
@@ -14,8 +15,9 @@ SceneManager::~SceneManager() {
 void SceneManager::Init() {
 
     //初期シーンを設定
-    current_scene = SceneState::GAMESTART;
+    current_scene = SceneState::GAMETITLE;
     //ステージ要素の初期化
+    title->Init();
     stage->Init();
 
     is_stage_off = true;
@@ -33,6 +35,8 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 
     switch (current_scene) {
     case SceneState::GAMETITLE:
+        //Title要素の更新処理
+        title->Update();
 
         //テスト用シーン切り替え
         if (keys[DIK_M] && !preKeys[DIK_M]) {
@@ -100,11 +104,13 @@ void SceneManager::Render() {
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : GAMETITLE");
 
+        title->Render();
+
         break;
     case SceneState::GAMESTART:
 
         //テスト用背景
-        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x808080ff, kFillModeSolid);
+        //Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x808080ff, kFillModeSolid);
         //テスト用シーン切り替え
         Novice::ScreenPrintf(10, 30, "current_scene : GAMESTART");
 
