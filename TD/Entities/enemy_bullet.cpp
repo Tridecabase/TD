@@ -14,7 +14,7 @@ FunnelBullet::FunnelBullet() {
 		3.0f,	//speed
 		0.0f,	//angle
 		300.0f,	//time
-		300,	//cooldown
+		200,	//cooldown
 		0.0f,	//distanceToMouse
 		0.0f,	//altitude
 		0.0f,	//frontAltitude
@@ -39,7 +39,7 @@ void FunnelBullet::init() {
 		3.0f,	//speed
 		0.0f,	//angle
 		300.0f,	//time
-		300,	//cooldown
+		200,	//cooldown
 		0.0f,	//distanceToMouse
 		0.0f,	//altitude
 		0.0f,	//frontAltitude
@@ -85,70 +85,51 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 	}
 
 
+	//for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
+	//	if (funnelBullet[i].isShoot) {
+
+	//		funnelBullet[i].pos.x += funnelBullet[i].velocity.x;
+	//		funnelBullet[i].pos.y += funnelBullet[i].velocity.y;
+	//		funnelBullet[i].pos.z -= BULLET_VEL_Z;
+
+	//		funnelBullet[i].scale = 0.5f + 0.5f * (1.0f - funnelBullet[i].pos.z);
+	//		particle_generator.GenerateParticles(
+	//			funnelBullet[i].pos.x,
+	//			funnelBullet[i].pos.y
+	//		);
+	//	}	
+	//}
+
 	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
 		if (funnelBullet[i].isShoot) {
 
 			funnelBullet[i].pos.x += funnelBullet[i].velocity.x;
 			funnelBullet[i].pos.y += funnelBullet[i].velocity.y;
-			funnelBullet[i].pos.z -= BULLET_VEL_Z;
 
+			float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
+			float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
+			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+
+			funnelBullet[i].time = magnitude / funnelBullet[i].speed;
+			funnelBullet[i].velocity.x = dirX / funnelBullet[i].time;
+			funnelBullet[i].velocity.y = dirY / funnelBullet[i].time;
+
+			funnelBullet[i].pos.z = 1.0f - (funnelBullet[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
+			funnelBullet[i].pos.z = max(0.0f, funnelBullet[i].pos.z);
 			funnelBullet[i].scale = 0.5f + 0.5f * (1.0f - funnelBullet[i].pos.z);
 			particle_generator.GenerateParticles(
 				funnelBullet[i].pos.x,
 				funnelBullet[i].pos.y
 			);
-		}	
+
+			float dx = funnelBullet[i].pos.x - funnelBullet[i].target_pos.x;
+			float dy = funnelBullet[i].pos.y - funnelBullet[i].target_pos.y;
+			if (sqrtf(dx * dx + dy * dy) < 0.5f) {
+				funnelBullet[i].isShoot = false;
+			}
+		}
 	}
 }
-
-//void FunnelBullet::Shot(Player* player, Enemy* enemy) {
-//	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
-//		if (enemy->funnel[i].isActive) {
-//			funnelBullet[i].cooldown--;
-//		}
-//
-//		if (funnelBullet[i].cooldown <= 0) {
-//			funnelBullet[i].cooldown = 300;
-//
-//			funnelBullet[i].pos.x = enemy->funnel[i].x;
-//			funnelBullet[i].pos.y = enemy->funnel[i].y;
-//			funnelBullet[i].pos.z = 1.0f;
-//
-//			funnelBullet[i].target_pos.x = player->screen_pos.x;
-//			funnelBullet[i].target_pos.y = player->screen_pos.y;
-//
-//			float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
-//			float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
-//			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
-//
-//			funnelBullet[i].velocity.x = dirX / magnitude * funnelBullet[i].speed;
-//			funnelBullet[i].velocity.y = dirY / magnitude * funnelBullet[i].speed;
-//
-//			funnelBullet[i].isShoot = true;
-//		}
-//	}
-//
-//	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
-//		if (funnelBullet[i].isShoot) {
-//
-//			funnelBullet[i].pos.x += funnelBullet[i].velocity.x;
-//			funnelBullet[i].pos.y += funnelBullet[i].velocity.y;
-//
-//			funnelBullet[i].pos.z = 1.0f - (funnelBullet[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
-//			funnelBullet[i].pos.z = max(0.0f, funnelBullet[i].pos.z);
-//
-//
-//			float dx = funnelBullet[i].pos.x - funnelBullet[i].target_pos.x;
-//			float dy = funnelBullet[i].pos.y - funnelBullet[i].target_pos.y;
-//			if (sqrtf(dx * dx + dy * dy) < 0.5f) {
-//				funnelBullet[i].isShoot = false;
-//			}
-//		}
-//	}
-//}
-
-
-
 
 void FunnelBullet::Scroll(Player* player, char keys[256]) {
 	for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
@@ -160,15 +141,17 @@ void FunnelBullet::Scroll(Player* player, char keys[256]) {
 
 			float theta = atan2(dy, dx);
 
-			float scrollFactor = OUTER_BG_SPEED * (1.0f / dz) * sin(theta);
+			float scrollFactor = OUTER_BG_SPEED * dz * sin(theta);
 
-			if (player->isPlayerLeft && keys[DIK_A]) {
-				funnelBullet[i].pos.x += scrollFactor;
-				funnelBullet[i].target_pos.x += OUTER_BG_SPEED;
-			}
-			if (player->isPlayerRight && keys[DIK_D]) {
-				funnelBullet[i].pos.x -= scrollFactor;
-				funnelBullet[i].target_pos.x -= OUTER_BG_SPEED;
+			if (funnelBullet[i].pos.y < 530.0f) {
+				if (player->isPlayerLeft && keys[DIK_A]) {
+					funnelBullet[i].pos.x -= scrollFactor;
+//				funnelBullet[i].target_pos.x += OUTER_BG_SPEED;
+				}
+				if (player->isPlayerRight && keys[DIK_D]) {
+					funnelBullet[i].pos.x += scrollFactor;
+//				funnelBullet[i].target_pos.x -= OUTER_BG_SPEED;
+				}
 			}
 		}
 	}
