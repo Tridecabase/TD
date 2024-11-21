@@ -48,22 +48,22 @@ void DrawLineNew(const Vector2 point1, const Vector2 point2, const int px, int c
 ///////////////////////////////////////////////////////////////0/1
 
 /// <summary>
-/// 0を描く
+/// 数字を描く
 /// </summary>
-/// <param name="posX">描きたい0の中心点posX</param>
-/// <param name="posY">描きたい0の中心点posY</param>
-/// <param name="width">描きたい0の横幅</param>
-/// <param name="height">描きたい0の縦幅</param>
+/// <param name="posX">描きたい数字の中心点posX</param>
+/// <param name="posY">描きたい数字の中心点posY</param>
+/// <param name="width">描きたい数字の横幅</param>
+/// <param name="height">描きたい数字の縦幅</param>
 /// <param name="color">描きたい色</param>
 /// <param name="Num">描きたい数字、今は0が1しができない</param>
 void DrawNum(const int posX, const int posY, const int width, const int height, const int color, int Num);
 
 /// <summary>
-/// 0を描く、箱は正方形
+/// 数字を描く、箱は正方形
 /// </summary>
-/// <param name="posX">描きたい0の中心点posX</param>
-/// <param name="posY">描きたい0の中心点posY</param>
-/// <param name="width">描きたい0の横幅</param>
+/// <param name="posX">描きたい数字の中心点posX</param>
+/// <param name="posY">描きたい数字の中心点posY</param>
+/// <param name="width">描きたい数字の横幅</param>
 /// <param name="color">描きたい色</param>
 /// <param name="Num">描きたい数字、今は0が1しができない</param>
 void DrawNum(const int posX, const int posY, const int width, const int color, int Num);
