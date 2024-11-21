@@ -14,7 +14,7 @@ FunnelBullet::FunnelBullet() {
 		3.0f,	//speed
 		0.0f,	//angle
 		300.0f,	//time
-		200,	//cooldown
+		100,	//cooldown
 		0.0f,	//distanceToMouse
 		0.0f,	//altitude
 		0.0f,	//frontAltitude
@@ -85,21 +85,6 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 	}
 
 
-	//for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
-	//	if (funnelBullet[i].isShoot) {
-
-	//		funnelBullet[i].pos.x += funnelBullet[i].velocity.x;
-	//		funnelBullet[i].pos.y += funnelBullet[i].velocity.y;
-	//		funnelBullet[i].pos.z -= BULLET_VEL_Z;
-
-	//		funnelBullet[i].scale = 0.5f + 0.5f * (1.0f - funnelBullet[i].pos.z);
-	//		particle_generator.GenerateParticles(
-	//			funnelBullet[i].pos.x,
-	//			funnelBullet[i].pos.y
-	//		);
-	//	}	
-	//}
-
 	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
 		if (funnelBullet[i].isShoot) {
 
@@ -116,7 +101,7 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 
 			funnelBullet[i].pos.z = 1.0f - (funnelBullet[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
 			funnelBullet[i].pos.z = max(0.0f, funnelBullet[i].pos.z);
-			funnelBullet[i].scale = 0.5f + 0.5f * (1.0f - funnelBullet[i].pos.z);
+			funnelBullet[i].scale = 0.2f + 0.8f * (1.0f - funnelBullet[i].pos.z);
 			particle_generator.GenerateParticles(
 				funnelBullet[i].pos.x,
 				funnelBullet[i].pos.y
@@ -124,7 +109,11 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 
 			float dx = funnelBullet[i].pos.x - funnelBullet[i].target_pos.x;
 			float dy = funnelBullet[i].pos.y - funnelBullet[i].target_pos.y;
-			if (sqrtf(dx * dx + dy * dy) < 0.5f) {
+			if (sqrtf(dx * dx + dy * dy) < 32.0f) {
+				particle_generator.Destroy(
+					funnelBullet[i].pos.x,
+					funnelBullet[i].pos.y
+				);
 				funnelBullet[i].isShoot = false;
 			}
 		}
@@ -146,11 +135,9 @@ void FunnelBullet::Scroll(Player* player, char keys[256]) {
 			if (funnelBullet[i].pos.y < 530.0f) {
 				if (player->isPlayerLeft && keys[DIK_A]) {
 					funnelBullet[i].pos.x -= scrollFactor;
-//				funnelBullet[i].target_pos.x += OUTER_BG_SPEED;
 				}
 				if (player->isPlayerRight && keys[DIK_D]) {
 					funnelBullet[i].pos.x += scrollFactor;
-//				funnelBullet[i].target_pos.x -= OUTER_BG_SPEED;
 				}
 			}
 		}

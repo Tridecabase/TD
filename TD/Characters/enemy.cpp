@@ -18,7 +18,7 @@ Enemy::Enemy() {
 	pos.y = ENEMY_SPAWN_POSY;
 	pos.z = 1090.0f;
 	//敵の長さ
-	width = 40.0f;
+	width = 60.0f;
 	//敵の深さ
 	depth = 20.0f;
 	//敵の高さ
@@ -26,7 +26,7 @@ Enemy::Enemy() {
 	//敵の速度
 	vel = 0.0f;
 	//敵の色
-	color = WHITE;
+	color = 0x191B19FF;
 	//敵の生存フラグ
 	isAlive = true;
 
@@ -92,6 +92,66 @@ Enemy::Enemy() {
 		funnel[i].angleToPlayer = 0.0f;
 	}
 
+	center = {
+	{640.0f,360.0f},		//位置
+	{640.0f,360.0f},		//位置
+	{5.0f,5.0f},			//半径
+	0.0f,					//角度
+	0XFF0000FF,				//色
+	0.0f,					//運動傾斜角度
+	0.0f,					//傾斜角度のラジアン
+	0.0f,					//中心点の回転角度
+	0.0f,					//回転カウンター
+	{0.0f,20.0f},			//楕円の半径
+	{0.0f,0.0f},			//速度
+	0.5f,					//加速度
+	};
+
+	drone1 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		30.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		0.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{150.0f,60.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
+	drone2 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		345.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		10.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{180.0f,110.0f},		//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
+	drone3 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		0.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		10.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{0.0f,15.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
 }
 //デストラクタ
 Enemy::~Enemy() {
@@ -99,7 +159,6 @@ Enemy::~Enemy() {
 	delete wave2;
 	delete wave3;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
@@ -117,7 +176,7 @@ void Enemy::Init() {
 	pos.y = ENEMY_SPAWN_POSY;
 	pos.z = 1090.0f;
 	//敵の長さ
-	width = 40.0f;
+	width = 60.0f;
 	//敵の深さ
 	depth = 20.0f;
 	//敵の高さ
@@ -125,7 +184,7 @@ void Enemy::Init() {
 	//敵の速度
 	vel = 0.0f;
 	//敵の色
-	color = WHITE;
+	color = 0x191B19FF;
 	//敵の生存フラグ
 	isAlive = true;
 	//敵のブレイクゲージ
@@ -173,6 +232,66 @@ void Enemy::Init() {
 		funnel[i].angleToPlayer = 0.0f;
 	}
 
+	center = {
+	{640.0f,360.0f},		//位置
+	{640.0f,360.0f},		//位置
+	{5.0f,5.0f},			//半径
+	0.0f,					//角度
+	0XFF0000FF,				//色
+	0.0f,					//運動傾斜角度
+	0.0f,					//傾斜角度のラジアン
+	0.0f,					//中心点の回転角度
+	0.0f,					//回転カウンター
+	{0.0f,20.0f},			//楕円の半径
+	{0.0f,0.0f},			//速度
+	0.5f,					//加速度
+	};
+
+	drone1 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		30.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		0.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{150.0f,60.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
+	drone2 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		345.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		10.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{180.0f,110.0f},		//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
+	drone3 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		0.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		10.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{0.0f,15.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -182,6 +301,20 @@ void Enemy::Init() {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
+
+	center.pos.x = pos.x;
+	center.pos.y = pos.y;
+
+	if (current_action == ActionID::IDLE || current_action == ActionID::Figure_Eight || current_action == ActionID::FIRE_AT_PLAYER) {
+		FloatingOver(drone1, center.pos.x, center.pos.y, 0.5f);
+		FloatingOver(drone2, center.pos.x, center.pos.y, -1.2f);
+		FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 1.0f);
+	}
+	else {
+		FloatingOver(drone1, center.pos.x, center.pos.y, 0.0f);
+		FloatingOver(drone2, center.pos.x, center.pos.y, 0.0f);
+		FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 0.0f);
+	}
 
 	//HPを0に超えないように
 	if (hp <= 0) {
@@ -212,7 +345,7 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 	// 当たり判定
 	// ============================
 
-	color = WHITE;
+	color = 0x191B19FF;
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		if (bulletA->bulletA[i].isShoot) {
@@ -606,7 +739,20 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Enemy::Draw() const {
+void Enemy::Draw() {
+
+	if (drone1.w >= static_cast<float>(M_PI)) {
+		DrawRound(drone1, drone1.color);
+		DrawCircle(drone1, 0x4BBC54FF);
+	}
+	if (drone2.w >= static_cast<float>(M_PI)) {
+		DrawRound(drone2, drone2.color);
+		DrawCircle(drone2, 0x4BBC54FF);
+	}
+	if (drone3.w >= static_cast<float>(M_PI)) {
+		DrawRound(drone3, drone3.color);
+		DrawCircle(drone3, 0x4BBC54FF);
+	}
 
 	//テスト：敵の描画
 	Novice::DrawBox(
@@ -615,6 +761,26 @@ void Enemy::Draw() const {
 		static_cast<int>(width),
 		static_cast<int>(height),
 		0.0f, color, kFillModeSolid);
+	Novice::DrawBox(
+		static_cast<int>(screen_pos.x - width / 2),
+		static_cast<int>(screen_pos.y - height / 2),
+		static_cast<int>(width),
+		static_cast<int>(height),
+		0.0f, 0x4BBC54FF, kFillModeWireFrame);
+
+	if (drone1.w < static_cast<float>(M_PI)) {
+		DrawRound(drone1, drone1.color);
+		DrawCircle(drone1, 0x4BBC54FF);
+	}
+
+	if (drone2.w < static_cast<float>(M_PI)) {
+		DrawRound(drone2, drone2.color);
+		DrawCircle(drone2, 0x4BBC54FF);
+	}
+	if (drone3.w < static_cast<float>(M_PI)) {
+		DrawRound(drone3, drone3.color);
+		DrawCircle(drone3, 0x4BBC54FF);
+	}
 
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
 
