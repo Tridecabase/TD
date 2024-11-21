@@ -305,15 +305,18 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 	center.pos.x = pos.x;
 	center.pos.y = pos.y;
 
-	if (current_action == ActionID::IDLE || current_action == ActionID::Figure_Eight || current_action == ActionID::FIRE_AT_PLAYER) {
+	if (current_action == ActionID::IDLE || current_action == ActionID::FIRE_AT_PLAYER) {
 		FloatingOver(drone1, center.pos.x, center.pos.y, 0.5f);
 		FloatingOver(drone2, center.pos.x, center.pos.y, -1.2f);
 		FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 1.0f);
 	}
 	else {
-		FloatingOver(drone1, center.pos.x, center.pos.y, 0.0f);
-		FloatingOver(drone2, center.pos.x, center.pos.y, 0.0f);
-		FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 0.0f);
+		//FloatingOver(drone1, center.pos.x, center.pos.y, 0.0f);
+		//FloatingOver(drone2, center.pos.x, center.pos.y, 0.0f);
+		//FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 0.0f);
+		drone1.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
+		//drone2.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
+		//drone3.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
 	}
 
 	//HPを0に超えないように
