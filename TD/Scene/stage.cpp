@@ -2,13 +2,16 @@
 
 //コンストラクタ
 Stage::Stage()
-	: background(new Background), map(new Map), ui(new UI), player(new Player()),bulletA(new BulletA),bulletB(new BulletB), funnelBullet(new FunnelBullet), enemy(new Enemy()) {}
+	: background(new Background), map(new Map), ui(new UI), player(new Player()),bullet(new Bullet),bulletA(new BulletA),bulletB(new BulletB), bulletC(new BulletC), bulletD(new BulletD), funnelBullet(new FunnelBullet), enemy(new Enemy()) {}
 //デストラクタ
 Stage::~Stage() {
 	delete background;
 	delete player;
+	delete bullet;
 	delete bulletA;
 	delete bulletB;
+	delete bulletC;
+	delete bulletD;
 	delete funnelBullet;
 	delete map;
 	delete enemy;
@@ -25,8 +28,11 @@ void Stage::Init() {
 	//プレイヤーの初期化
 	player->Init(map);
 	//プレイヤー弾丸の初期化
+	bullet->Init();
 	bulletA->Init();
 	bulletB->Init();
+	bulletC->Init();
+	bulletD->Init();
 	funnelBullet->init();
 	ui = new UI;
 	map = new Map;
@@ -48,10 +54,15 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	//プレイヤーの移動処理
 	player->Move(map, keys, preKeys);
 	//プレイヤー弾丸の更新処理
-	bulletA->Shot(player);
+	bullet->Update();
+	bulletA->Shot(player,bullet);
 	bulletA->Scroll(player, keys);
-	bulletB->Shot(player);
+	bulletB->Shot(player, bullet);
 	bulletB->Scroll(player, keys);
+	bulletC->Shot(player, bullet);
+	bulletC->Scroll(player, keys);
+	bulletD->Shot(player, bullet);
+	bulletD->Scroll(player, keys);
 	//敵の更新処理
 	enemy->Move(bulletA,bulletB);
 	enemy->Scroll(player, keys);
@@ -84,9 +95,13 @@ void Stage::Render() {
 	//プレイヤー弾丸の描画
  	bulletA->Draw();
 	bulletB->Draw();
+	bulletC->Draw();
+	bulletD->Draw();
+
 
 	//プレイヤーの描画
 	player->Draw(0x4BBC54FF);
+
 	//UIの描画
 	ui->Draw();
 };

@@ -57,7 +57,6 @@ typedef struct Bullet_C {
 	Vector2 frontPos;
 	Vector2 lastPos;
 	Vector2 screen_pos;
-	Vector2 shadowPos;
 	int mousePosX;
 	int mousePosY;
 	float gravityY;
@@ -69,12 +68,42 @@ typedef struct Bullet_C {
 	float speed;
 	float time;
 	float distanceToMouse;
-	float stoppageTime;
-	float stoppageTimer;
 
 	bool isShoot;
 }Bullet_C;
 
+typedef struct Bullet_D {
+	Vector3 pos;
+	Vector3 randPos;
+	Vector2 newPos;
+	Vector2 frontPos;
+	Vector2 screen_pos;
+	int mousePosX;
+	int mousePosY;
+	float radiusX;
+	float radiusY;
+	float scale;
+	float speed;
+	int randTime;
+	float time;
+	
+	bool isShoot;
+}Bullet_D;
+
+class Bullet {
+public:
+
+	Bullet();
+	~Bullet();
+
+	void Init();
+
+	void Update();
+
+	int mouseValue;
+	bool mouseType;
+
+};
 
 class BulletA {
 public:
@@ -84,7 +113,7 @@ public:
 
 	void Init();
 
-	void Shot(Player* player);
+	void Shot(Player* player, Bullet* bullet);
 
 	void Scroll(Player* player, char keys[256]);
 
@@ -103,7 +132,7 @@ public:
 			lastPos1.y = (1 - timer1) * frontPosY1 + timer1 * mousePosY1;
 			if (timer1 >= 1.0f) {
 				lastPos2.y += gravitySpeedY1;
-				gravitySpeedY1 += 2.3f;
+				gravitySpeedY1 += 2.0f;
 			}
 		}
 		lastPos3.x = lastPos1.x;
@@ -118,26 +147,6 @@ public:
 		return shadowPos1;
 	};*/
 
-	Vector3 pos;
-	Vector3 savePos;
-	Vector2 newPos;
-	Vector2 frontPos;
-	Vector2 lastPos;
-	Vector2 screen_pos;
-	Vector2 shadowPos;
-	int mousePosX;
-	int mousePosY;
-	float gravityY;
-	float gravitySpeedY;
-	float radius;
-	float scale;
-	float speed;
-	float time;
-	float distanceToMouse;
-	float altitude;
-	
-	bool isShoot;
-
 	Bullet_A bulletA[MAX_BULLET_A]{};
 
 };
@@ -150,31 +159,11 @@ public:
 
 	void Init();
 
-	void Shot(Player* player);
+	void Shot(Player* player, Bullet* bullet);
 
 	void Scroll(Player* player, char keys[256]);
 
 	void Draw() const;
-
-
-	Vector3 pos;
-	Vector3 randPos;
-	Vector2 newPos;
-	Vector2 frontPos;
-	Vector2 screen_pos;
-	int mousePosX;
-	int mousePosY;
-	float radius;
-	float scale;
-	float speed;
-	float time;
-	float stoppageTime;
-	float stoppageTimer;
-	float distanceToMouse;
-	float altitude;
-	float frontAltitude;
-
-	bool isShoot;
 
 	Bullet_B bulletB[MAX_BULLET_B]{};
 
@@ -189,36 +178,72 @@ public:
 
 	void Init();
 
-	void Shot(Player* player);
+	void Shot(Player* player, Bullet* bullet);
+
+	void Scroll(Player* player, char keys[256]);
+
+	void Draw() const;
+
+	Vector2 getLastPos(float posZ1, float speed1, float distanceToMouse1, float frontPosX1, float frontPosY1, int mousePosX1, int mousePosY1) {
+		Vector2 lastPos1 = {};
+		Vector2 lastPos2 = {};
+		Vector2 lastPos3 = {};
+		float timer1 = 0.0f;
+		float gravitySpeedY1 = 0.0f;
+		while (posZ1 <= 800.0f) {
+			posZ1 += speed1;
+			timer1 += speed1 / distanceToMouse1;
+			lastPos1.x = (1 - timer1) * frontPosX1 + timer1 * mousePosX1;
+			lastPos1.y = (1 - timer1) * frontPosY1 + timer1 * mousePosY1;
+			if (timer1 >= 1.0f) {
+				lastPos2.y += gravitySpeedY1;
+				gravitySpeedY1 += 3.0f;
+			}
+		}
+		lastPos3.x = lastPos1.x;
+		lastPos3.y = lastPos1.y + lastPos2.y;
+		return lastPos3;
+	};
+
+	Bullet_C bulletC[MAX_SHELL_C][MAX_BULLET_C]{};
+
+};
+
+class BulletD {
+public:
+
+	BulletD();
+	~BulletD();
+
+	void Init();
+
+	void Shot(Player* player, Bullet* bullet);
 
 	void Scroll(Player* player, char keys[256]);
 
 	void Draw() const;
 
 	Vector3 pos;
-	Vector3 savePos;
 	Vector2 newPos;
 	Vector2 frontPos;
 	Vector2 lastPos;
 	Vector2 screen_pos;
-	Vector2 shadowPos;
 	int mousePosX;
 	int mousePosY;
-	float gravityY;
-	float gravitySpeedY;
-	float radius;
+	float radiusX;
+	float radiusY;
 	float scale;
 	float speed;
 	float time;
+	float stoppageTime;
+	float stoppageTimer;
 	float distanceToMouse;
-	float altitude;
 
 	bool isShoot;
 
-	Bullet_A bulletC[MAX_BULLET_C]{};
+	Bullet_D bulletD[MAX_BULLET_D]{};
 
 };
-
 
 //class FunnelBullet {
 //public:

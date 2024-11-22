@@ -46,8 +46,11 @@ private:
     //プレイヤーマップの宣言
     Map* map;
     //プレイヤ弾丸の宣言
+    Bullet* bullet;
     BulletA* bulletA;
     BulletB* bulletB;
+    BulletC* bulletC;
+    BulletD* bulletD;
     //敵弾丸の宣言
     FunnelBullet* funnelBullet;
     //UIの宣言
