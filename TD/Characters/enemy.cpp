@@ -302,46 +302,67 @@ void Enemy::Init() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 
+
+	// ============================
+	// 敵描画関する計算
+	// ============================
+
+	//中心点の位置を記録
 	center.pos.x = pos.x;
 	center.pos.y = pos.y;
 
+	drone3.tmp_pos.x = center.pos.x + 50.0f;
+	drone3.tmp_pos.y = center.pos.y - 70.0f;
+
 	if (current_action == ActionID::IDLE || current_action == ActionID::FIRE_AT_PLAYER) {
+		drone1.tmp_pos.x = drone1.pos.x;
+		drone1.tmp_pos.y = drone1.pos.y;
+		drone2.tmp_pos.x = drone2.pos.x;
+		drone2.tmp_pos.y = drone2.pos.y;
+
+		//回転
 		FloatingOver(drone1, center.pos.x, center.pos.y, 0.5f);
 		FloatingOver(drone2, center.pos.x, center.pos.y, -1.2f);
 		FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 1.0f);
 	}
+	else if (current_action == ActionID::BREAK_STATE) {
+
+
+	}
 	else {
-		//FloatingOver(drone1, center.pos.x, center.pos.y, 0.0f);
-		//FloatingOver(drone2, center.pos.x, center.pos.y, 0.0f);
-		//FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 0.0f);
-		drone1.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
-		//drone2.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
-		//drone3.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
+		//追跡
+		drone1.pos = EaseOutBack(center.pos, drone1.pos, 1.0f);
+		drone2.pos = EaseOutBack(center.pos , drone2.pos, 1.0f);
+		drone3.pos = EaseOutBack(drone3.tmp_pos, drone3.pos, 1.0f);
 	}
 
-	//HPを0に超えないように
-	if (hp <= 0) {
-		hp = 0;
-	}
+
+	// ============================
+	// スクロールによってループ
+	// ============================
+
 
 	//敵位置をループさせる
-	if (pos.x < 0) {
-		pos.x += WINDOW_WIDTH * MAX_SCROLL;
-	}
-	if (pos.x >= WINDOW_WIDTH * MAX_SCROLL) {
-		pos.x -= WINDOW_WIDTH * MAX_SCROLL;
-	}
+	Loop(pos.x);
+	Loop(drone1.pos.x);
+	Loop(drone2.pos.x);
+	Loop(drone3.pos.x);
 
 	//浮遊砲をループさせる
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].isActive) {
-			if (funnel[i].x < 0) {
-				funnel[i].x += WINDOW_WIDTH * MAX_SCROLL;
-			}
-			if (funnel[i].x >= WINDOW_WIDTH * MAX_SCROLL) {
-				funnel[i].x -= WINDOW_WIDTH * MAX_SCROLL;
-			}
+			Loop(funnel[i].x);
 		}
+	}
+
+
+	// ============================
+	// 敵HP
+	// ============================
+
+	//HPを0に超えないように
+	if (hp <= 0) {
+		hp = 0;
 	}
 
 	// ============================
@@ -510,22 +531,24 @@ void Enemy::SetRandomAction() {
 }
 
 void Enemy::MoveAndDeploy() {
-	const float maxSpeed = 8.0f;
+	const float maxSpeed = MAX_SPEED_;
 	const float deployInterval = 1280.0f; //浮遊砲設置間隔
 	static float distanceTraveled = 0.0f;
 
-	//横の加速
-	if (fabs(vel) < maxSpeed) {
-		vel += (vel < 0 ? -0.2f : 0.2f);
-	}
+	if (action_timer >= 100) {
+		//横の加速
+		if (fabs(vel) < maxSpeed) {
+			vel += (vel < 0 ? -0.2f : 0.2f);
+		}
 
-	pos.x += vel; // 位置更新
+		pos.x += vel; // 位置更新
 
-	//浮遊砲を設置
-	distanceTraveled += fabs(vel);
-	if (distanceTraveled >= deployInterval) {
-		DeployFunnel(pos.x, pos.y); //浮遊砲を設置
-		distanceTraveled = 0.0f;
+		//浮遊砲を設置
+		distanceTraveled += fabs(vel);
+		if (distanceTraveled >= deployInterval || distanceTraveled == 0.0f) {
+			DeployFunnel(pos.x, pos.y); //浮遊砲を設置
+			distanceTraveled = 0.0f;
+		}
 	}
 
 	//巻き戻し処理
@@ -675,15 +698,17 @@ void Enemy::FigureEight() {
 	const float amplitudeY = 150.0f; //縦の振幅
 	static float angle = 0.0f;       //角度
 
-	angle += 0.05f;
+	if (action_timer > 100) {
+		angle += 0.05f;
 
-	//移動
-	float deltaX = cos(angle) * amplitudeX * 0.05f;		//横の変化量
-	float deltaY = sin(2 * angle) * amplitudeY * 0.05f; //縦の変化量
+		//移動
+		float deltaX = cos(angle) * amplitudeX * 0.05f;		//横の変化量
+		float deltaY = sin(2 * angle) * amplitudeY * 0.05f; //縦の変化量
 
-	//現在位置を更新
-	pos.x += speed + deltaX; //振動を追加
-	pos.y += deltaY;         //縦方向の振動
+		//現在位置を更新
+		pos.x += speed + deltaX; //振動を追加
+		pos.y += deltaY;         //縦方向の振動
+	}
 }
 
 
@@ -716,6 +741,9 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 	if (player->isPlayerLeft) {
 		if (keys[DIK_A]) {
 			pos.x += OUTER_BG_SPEED;
+			drone1.pos.x += OUTER_BG_SPEED;
+			drone2.pos.x += OUTER_BG_SPEED;
+			drone3.pos.x += OUTER_BG_SPEED;
 			for (int i = 0; i < MAX_FUNNEL; ++i) {
 				if (funnel[i].isActive) {
 					funnel[i].x += OUTER_BG_SPEED;
@@ -726,6 +754,9 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 	if (player->isPlayerRight) {
 		if (keys[DIK_D]) {
 			pos.x -= OUTER_BG_SPEED;
+			drone1.pos.x -= OUTER_BG_SPEED;
+			drone2.pos.x -= OUTER_BG_SPEED;
+			drone3.pos.x -= OUTER_BG_SPEED;
 			for (int i = 0; i < MAX_FUNNEL; ++i) {
 				if (funnel[i].isActive) {
 					funnel[i].x -= OUTER_BG_SPEED;
@@ -786,33 +817,6 @@ void Enemy::Draw() {
 	}
 
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
-
-	//int centerX = int(pos.x);
-	//int centerY = int(pos.y);
-
-	//Novice::DrawLine(centerX - 15, centerY - 50, centerX - 30, centerY, GREEN);
-	//Novice::DrawLine(centerX - 30, centerY, centerX - 20, centerY + 50, GREEN);
-	//Novice::DrawLine(centerX - 20, centerY + 50, centerX + 20, centerY + 50, GREEN);
-	//Novice::DrawLine(centerX + 20, centerY + 50, centerX + 30, centerY, GREEN);
-	//Novice::DrawLine(centerX + 30, centerY, centerX + 15, centerY - 50, GREEN);
-	//Novice::DrawLine(centerX + 15, centerY - 50, centerX - 15, centerY - 50, GREEN);
-
-	//Novice::DrawLine(centerX, centerY - 30, centerX - 15, centerY + 30, GREEN);
-	//Novice::DrawLine(centerX - 15, centerY + 30, centerX + 15, centerY + 30, GREEN);
-	//Novice::DrawLine(centerX + 15, centerY + 30, centerX, centerY - 30, GREEN);
-
-	//Novice::DrawEllipse(centerX, centerY, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
-
-	//Novice::DrawBox(centerX - 5, centerY - 45, 10, 7, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX - 15, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX + 7, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
-
-	//Novice::DrawBox(centerX - 5, centerY + 50, 7, 12, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX - 12, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX - 20, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
-	//Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
-
 }
 
 void Enemy::DrawFunnel() const {
@@ -980,3 +984,61 @@ void Enemy::DrawInfo() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑描画処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
 ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/**
+* フォロワーが中心点の動きにEaseOutBackの動きで追従する関数
+*
+* この関数は、フォロワーが中心点の動きにスムーズに追従し、特定の条件で
+* 「回復運動（EaseOutBack）」を行うよう設計されています。
+*
+* 中心点が停止した場合、フォロワーは慣性で元のオフセット距離に戻ります。
+* 中心点がランダムな方向に動く場合でも、フォロワーはその動きに対応します。
+*
+* 現在の中心点の位置（Vector2）
+* フォロワーの現在の位置（Vector2）
+* 緩和係数（0〜1の値でスムーズさを調整可能）
+* @return 更新されたフォロワーの位置（Vector2）
+*/
+Vector2 Enemy::EaseOutBack(Vector2 centerPos, Vector2 followerPos, float easeAmount) {
+	//中心点の前フレームの位置
+	static Vector2 preCenterPos = { 0.0f, 0.0f };
+	//フォロワーの速度
+	static Vector2 velocity = { 0.0f, 0.0f };
+	//相対位置
+	static Vector2 initialOffset = { 10.0f, 10.0f };
+
+	//中心点の前フレームから現在のフレームまでの移動量
+	Vector2 centerDelta = Subtract(centerPos, preCenterPos);
+	//フォロワー目標位置を計算
+	Vector2 targetPosition = Add(preCenterPos, initialOffset);
+	//フォロワーから目標位置への方向ベクトルを計算
+	Vector2 toTarget = Subtract(targetPosition, followerPos);
+	Vector2 direction = Normalize(toTarget);
+
+	//加速によってフォロワーの速度を更新
+	velocity.x += direction.x * ACCELERATION_ * easeAmount;
+	velocity.y += direction.y * ACCELERATION_ * easeAmount;
+
+	//速度を最大速度で制限
+	float speed = Magnitude(velocity);
+	if (speed > MAX_SPEED_) {
+		velocity = Multiply(velocity, MAX_SPEED_ / speed);
+	}
+
+	//フォロワーの位置を更新
+	followerPos = Add(followerPos, velocity);
+
+	//中心点がほぼ停止している場合、フォロワーを初期オフセットに戻す
+	if (Magnitude(centerDelta) < 0.01f) {
+		Vector2 offset = Subtract(followerPos, centerPos);
+		Vector2 restoreDirection = Normalize(Subtract(initialOffset, offset));
+		Vector2 restoreForce = Multiply(restoreDirection, RESTORE_STRENGTH_ * easeAmount);
+		followerPos = Add(followerPos, restoreForce);
+	}
+
+	//前フレームの中心点の位置を更新
+	preCenterPos = centerPos;
+
+	return followerPos;
+}
