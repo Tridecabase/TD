@@ -57,6 +57,17 @@ public:
 	//プレイヤーの移動によってスクロール関数
 	void Scroll(Player* player, char keys[256]);
 
+	//位置をループさせる
+	void Loop(float &x) {
+		if (x < 0.0f) {
+			x += WINDOW_WIDTH * MAX_SCROLL;
+		}
+		if (x >= WINDOW_WIDTH * MAX_SCROLL) {
+			x -= WINDOW_WIDTH * MAX_SCROLL;
+		}
+	}
+
+
 
 	// ============================
 	// 敵基本情報
@@ -206,10 +217,60 @@ private:
 	WaveGenerator* wave2;
 	WaveGenerator* wave3;
 
+
+	// ============================
+	// 敵描画変数
+	// ============================
+
 	Obj center;
 	Obj drone1;
 	Obj drone2;
 	Obj drone3;
+
+	// ============================
+	// 敵運動関するローカル定数
+	// ============================
+
+	const float MAX_SPEED_ = 10.0f;
+	const float ACCELERATION_ = 0.2f;
+	const float DECELERATION_ = 0.2f;
+	const float RESTORE_STRENGTH_ = 3.0f;
+	const float MAX_FOLLOW_DISTANCE_ = 30.0f;
+
+	// ============================
+	// 敵運動関するベクトル計算関数
+	// ============================
+
+	Vector2 Add(const Vector2& a, const Vector2& b) {
+		return { a.x + b.x, a.y + b.y };
+	}
+
+	Vector2 Subtract(const Vector2& a, const Vector2& b) {
+		return { a.x - b.x, a.y - b.y };
+	}
+
+	Vector2 Multiply(const Vector2& v, float scalar) {
+		return { v.x * scalar, v.y * scalar };
+	}
+
+	Vector2 Divide(const Vector2& v, float scalar) {
+		return { v.x / scalar, v.y / scalar };
+	}
+
+	float Magnitude(const Vector2& v) {
+		return sqrtf(v.x * v.x + v.y * v.y);
+	}
+
+	Vector2 Normalize(const Vector2& v) {
+		float mag = Magnitude(v);
+		return mag > 0.0f ? Divide(v, mag) : Vector2{ 0.0f, 0.0f };
+	}
+
+	float Lerp(float a, float b, float t) {
+		return a + (b - a) * t;
+	}
+
+	Vector2 EaseOutBack(Vector2 centerPos, Vector2 followerPos, float easeAmount);
 
 	void DrawRound(Obj obj, unsigned int colora) {
 		Novice::DrawEllipse(static_cast<int>(obj.pos.x), static_cast<int>(obj.pos.y), static_cast<int>(obj.r.x), static_cast<int>(obj.r.y), obj.angle, colora, kFillModeSolid);
@@ -240,80 +301,6 @@ private:
 		if (obj.timer >= 360.0f) {
 			obj.timer = 0.0f;
 		}
-	}
-
-
-	const float MAX_SPEED = 10.0f;
-	const float ACCELERATION = 0.1f;
-	const float DECELERATION = 0.1f;
-	const float RESTORE_STRENGTH = 3.0f;
-	const float MAX_FOLLOW_DISTANCE = 100.0f;
-
-	Vector2 Add(const Vector2& a, const Vector2& b) {
-		return { a.x + b.x, a.y + b.y };
-	}
-
-	Vector2 Subtract(const Vector2& a, const Vector2& b) {
-		return { a.x - b.x, a.y - b.y };
-	}
-
-	Vector2 Multiply(const Vector2& v, float scalar) {
-		return { v.x * scalar, v.y * scalar };
-	}
-
-	Vector2 Divide(const Vector2& v, float scalar) {
-		return { v.x / scalar, v.y / scalar };
-	}
-
-	float Magnitude(const Vector2& v) {
-		return std::sqrt(v.x * v.x + v.y * v.y);
-	}
-
-	Vector2 Normalize(const Vector2& v) {
-		float mag = Magnitude(v);
-		return mag > 0.0f ? Divide(v, mag) : Vector2{ 0.0f, 0.0f };
-	}
-
-	float Lerp(float a, float b, float t) {
-		return a + (b - a) * t;
-	}
-
-	Vector2 EaseOutBack(float centerX, float centerY, float easeAmount) {
-
-		static Vector2 followerPos = { 0.0f, 0.0f };
-		static Vector2 previousCenterPos = { 0.0f, 0.0f };
-		static Vector2 velocity = { 0.0f, 0.0f };
-		static Vector2 initialOffset = { 10.0f, 10.0f };
-
-		Vector2 currentCenterPos = { centerX, centerY };
-
-		Vector2 centerDelta = Subtract(currentCenterPos, previousCenterPos);
-
-		Vector2 targetPosition = Add(previousCenterPos, initialOffset);
-
-		Vector2 toTarget = Subtract(targetPosition, followerPos);
-		Vector2 direction = Normalize(toTarget);
-
-		velocity.x += direction.x * ACCELERATION * easeAmount;
-		velocity.y += direction.y * ACCELERATION * easeAmount;
-
-		float speed = Magnitude(velocity);
-		if (speed > MAX_SPEED) {
-			velocity = Multiply(velocity, MAX_SPEED / speed);
-		}
-
-		followerPos = Add(followerPos, velocity);
-
-		if (Magnitude(centerDelta) < 0.01f) {
-			Vector2 offset = Subtract(followerPos, currentCenterPos);
-			Vector2 restoreDirection = Normalize(Subtract(initialOffset, offset));
-			Vector2 restoreForce = Multiply(restoreDirection, RESTORE_STRENGTH * easeAmount);
-			followerPos = Add(followerPos, restoreForce);
-		}
-
-		previousCenterPos = currentCenterPos;
-
-		return followerPos;
 	}
 
 };
