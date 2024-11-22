@@ -70,7 +70,7 @@ const int MAX_PARTICLES = 20;
 const int MAX_BULLET_A = 32;
 const int MAX_BULLET_B = 10;
 const int MAX_SHELL_C = 5;
-const int MAX_BULLET_C = 20;
+const int MAX_BULLET_C = 15;
 const int MAX_BULLET_D = 32;
 
 

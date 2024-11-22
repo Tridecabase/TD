@@ -16,7 +16,7 @@ void Bullet::Init() {
 
 void Bullet::Update(){
 	mouseValue += Novice::GetWheel();
-	if (mouseValue > 1000 || mouseValue < -1000) {
+	if (mouseValue > 700 || mouseValue < -700) {
 		mouseValue = 0;
 		if (mouseType) {
 			mouseType = false;
@@ -468,15 +468,8 @@ void BulletC::Shot(Player* player, Bullet* bullet) {
 						else if (bulletC[i][j].mousePosX - bulletC[i][j].frontPos.x > 50.0f) {
 							bulletC[i][j].theta += (M_PI1 / 30.0f);
 						}
-
-						if (bulletC[i][j].screen_pos.y > 500.0f) {
-							bulletC[i][j].isShoot = false;
-							bulletC[i][j].time = 0.0f;
-							bulletC[i][j].gravityY = 0.0f;
-							bulletC[i][j].gravitySpeedY = 0.0f;
-						}
 					}
-					if (bulletC[i][j].pos.z > 800.0f) {
+					if (bulletC[i][j].pos.z > 700.0f) {
 						bulletC[i][j].isShoot = false;
 						bulletC[i][j].time = 0.0f;
 						bulletC[i][j].gravityY = 0.0f;
@@ -508,7 +501,9 @@ void BulletC::Draw() const {
 	for (int i = 0; i < MAX_SHELL_C; i++) {
 		if (bulletC[i][0].isShoot) {
 			for (int j = 0; j < MAX_BULLET_C; j++) {
-				Novice::DrawEllipse(static_cast<int>(bulletC[i][j].screen_pos.x), static_cast<int>(bulletC[i][j].screen_pos.y), static_cast<int>(bulletC[i][j].radiusX * bulletC[i][j].scale), static_cast<int>(bulletC[i][j].radiusY * bulletC[i][j].scale), M_PI1 / 2 + bulletC[i][j].theta, 0x6168F2FF, kFillModeSolid);
+				if (bulletC[i][j].screen_pos.y <= 500.0f) {
+					Novice::DrawEllipse(static_cast<int>(bulletC[i][j].screen_pos.x), static_cast<int>(bulletC[i][j].screen_pos.y), static_cast<int>(bulletC[i][j].radiusX * bulletC[i][j].scale), static_cast<int>(bulletC[i][j].radiusY * bulletC[i][j].scale), M_PI1 / 2 + bulletC[i][j].theta, 0x6168F2FF, kFillModeSolid);
+				}
 			}
 		}
 	}
