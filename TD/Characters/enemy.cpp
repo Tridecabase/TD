@@ -300,7 +300,7 @@ void Enemy::Init() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
+void Enemy::Move(BulletA* bulletA, BulletB* bulletB, BulletC* bulletC, BulletD* bulletD) {
 
 	center.pos.x = pos.x;
 	center.pos.y = pos.y;
@@ -358,7 +358,6 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 					pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY / 2) {
 					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX / 2 &&
 						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX / 2) {
-						tmp = bulletA->bulletA[i].pos.z;
 						color = RED;
 						TakeDamage(PLAYER_ATK);
 					}
@@ -380,6 +379,31 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 		}
 	}
 
+	for (int i = 0; i < MAX_BULLET_C; i++) {
+		if (bulletC->bulletC[i][0].isShoot) {
+			/*if (pos.x + width / 2 >= bulletC->bulletC[i].screen_pos.x - bulletC->bulletC[i].radiusX / 2 &&
+				pos.x - width / 2 <= bulletC->bulletC[i].screen_pos.x + bulletC->bulletC[i].radiusX / 2) {
+				if (pos.y + height / 2 >= bulletC->bulletC[i].screen_pos.y - bulletC->bulletC[i].radiusY / 2 &&
+					pos.y - height / 2 <= bulletC->bulletC[i].screen_pos.y + bulletC->bulletC[i].radiusY / 2) {
+					color = RED;
+					TakeDamage(PLAYER_ATK);
+				}
+			}*/
+		}
+	}
+
+	for (int i = 0; i < MAX_BULLET_D; i++) {
+		if (bulletD->isShoot) {
+			if (pos.x + width / 2 >= bulletD->screen_pos.x - bulletD->radiusX / 2 &&
+				pos.x - width / 2 <= bulletD->screen_pos.x + bulletD->radiusX / 2) {
+				if (pos.y + height / 2 >= bulletD->screen_pos.y - bulletD->radiusY / 2 &&
+					pos.y - height / 2 <= bulletD->screen_pos.y + bulletD->radiusY / 2) {
+					color = RED;
+					TakeDamage(PLAYER_ATK);
+				}
+			}
+		}
+	}
 
 	screen_pos.x = pos.x;
 	screen_pos.y = pos.y;
@@ -450,7 +474,7 @@ void Enemy::TakeDamage(int damage) {
 	hp -= damage;
 	//ブレイクメーターはHPダメージの半分減少
 	if (!is_break) {
-	break_meter -= damage * 2;
+		break_meter -= damage * 2;
 	}
 	if (break_meter <= 0 && !is_break) {
 		EnterBreakState();
@@ -551,7 +575,7 @@ void Enemy::DeployFunnel(float x, float y) {
 }
 
 //浮遊砲の更新処理
-void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
+void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, BulletC* bulletC, BulletD* bulletD) {
 
 	// ============================
 	// 動く
@@ -609,7 +633,6 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
 					funnel[j].y - funnel[j].height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY / 2) {
 					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX / 2 &&
 						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX / 2) {
-						tmp = bulletA->bulletA[i].pos.z;
 						funnel[j].isHit = true;
 						funnel[j].hp -= PLAYER_ATK;
 					}
@@ -624,17 +647,40 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
 				funnel[j].x - funnel[j].width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radiusX / 2) {
 				if (funnel[j].y + funnel[j].height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radiusY / 2 &&
 					funnel[j].y - funnel[j].height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radiusY / 2) {
-					if (pos.z + depth / 2 >= bulletB->bulletB[i].pos.z - bulletB->bulletB[i].radiusX / 2 &&
-						pos.z - depth / 2 <= bulletB->bulletB[i].pos.z + bulletB->bulletB[i].radiusX / 2) {
-						tmp = bulletB->bulletB[i].pos.z;
+					funnel[j].isHit = true;
+					funnel[j].hp -= PLAYER_ATK;
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < MAX_SHELL_C; i++) {
+		for (int k = 0; k < MAX_BULLET_C; k++) {
+			for (int j = 0; j < MAX_FUNNEL; ++j) {
+				if (funnel[j].x + funnel[j].width / 2 >= bulletC->bulletC[i][k].screen_pos.x - bulletC->bulletC[i][k].radiusX / 2 &&
+					funnel[j].x - funnel[j].width / 2 <= bulletC->bulletC[i][k].screen_pos.x + bulletC->bulletC[i][k].radiusX / 2) {
+					if (funnel[j].y + funnel[j].height / 2 >= bulletC->bulletC[i][k].screen_pos.y - bulletC->bulletC[i][k].radiusY / 2 &&
+						funnel[j].y - funnel[j].height / 2 <= bulletC->bulletC[i][k].screen_pos.y + bulletC->bulletC[i][k].radiusY / 2) {
 						funnel[j].isHit = true;
 						funnel[j].hp -= PLAYER_ATK;
-
 					}
 				}
 			}
 		}
 	}
+
+
+	for (int j = 0; j < MAX_FUNNEL; ++j) {
+		if (funnel[j].x + funnel[j].width / 2 >= bulletD->screen_pos.x - bulletD->radiusX / 2 &&
+			funnel[j].x - funnel[j].width / 2 <= bulletD->screen_pos.x + bulletD->radiusX / 2) {
+			if (funnel[j].y + funnel[j].height / 2 >= bulletD->screen_pos.y - bulletD->radiusY / 2 &&
+				funnel[j].y - funnel[j].height / 2 <= bulletD->screen_pos.y + bulletD->radiusY / 2) {
+				funnel[j].isHit = true;
+				funnel[j].hp -= PLAYER_ATK;
+			}
+		}
+	}
+
 
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].hp <= 0) {
