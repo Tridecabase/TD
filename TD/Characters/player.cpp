@@ -40,11 +40,13 @@ Player::Player() {
 	//弾丸のクールダウン
 	shootCoolTimeA = 3;
 	shootCoolTimeB = 500;
-	shootCoolTimeC = 5;
+	shootCoolTimeC = 30;
+	shootCoolTimeD = 360;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
 	isShootAbleB = false;
 	isShootAbleC = false;
+	isShootAbleD = false;
 
 	// ============================
 	// 背景用のメンバー変数を
@@ -99,11 +101,13 @@ void Player::Init(Map* map) {
 	//弾丸のクールダウン
 	shootCoolTimeA = 3;
 	shootCoolTimeB = 500;
-	shootCoolTimeC = 5;
+	shootCoolTimeC = 30;
+	shootCoolTimeD = 360;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
 	isShootAbleB = false;
 	isShootAbleC = false;
+	isShootAbleD = false;
 
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,6 +238,11 @@ void Player::Draw() {
 	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4/3),
 		static_cast<int>(screen_pos.y - height), static_cast<int>(10.0f),
 		static_cast<int>((50 -shootCoolTimeB / 10)* height/25),
+		0.0f, 0xB961F2FF, kFillModeSolid);
+
+	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
+		static_cast<int>(screen_pos.y - height), static_cast<int>(10.0f),
+		static_cast<int>((36 - shootCoolTimeD / 10) * height / 18),
 		0.0f, 0xB961F2FF, kFillModeSolid);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
