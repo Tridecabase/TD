@@ -64,7 +64,7 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	bulletD->Shot(player, bullet);
 	bulletD->Scroll(player, keys);
 	//敵の更新処理
-	enemy->Move(bulletA,bulletB);
+	enemy->Move(player, bulletA,bulletB);
 	enemy->Scroll(player, keys);
 	//敵弾丸の更新処理
 	enemy->UpdateFunnel(player, bulletA, bulletB);

@@ -30,7 +30,7 @@ public:
 	//敵の初期化
 	void Init();
 	//敵の移動処理
-	void Move(BulletA*bulletA, BulletB*bulletB);
+	void Move(Player* player, BulletA*bulletA, BulletB*bulletB);
 	//敵の描画
 	void Draw();
 	//敵の情報を表示する関数
@@ -162,6 +162,15 @@ public:
 		float acc;			//加速度
 	};
 
+	struct Subobj {
+		Vector2 pos;		//位置
+		Vector2 tmp_pos;	//位置
+		Vector2 r;			//半径
+		float angle;		//角度
+		unsigned int color;	//色
+		Vector2 vel;		//速度
+		float acc;			//加速度
+	};
 
 private:
 
@@ -227,6 +236,14 @@ private:
 	Obj drone2;
 	Obj drone3;
 
+	Vector2 drone1_shift;
+	Vector2 drone2_shift;
+
+	Subobj drone_aura[3];
+	Subobj drone_eye[3];
+
+
+
 	// ============================
 	// 敵運動関するローカル定数
 	// ============================
@@ -277,6 +294,14 @@ private:
 	}
 
 	void DrawCircle(Obj obj, unsigned int colora) {
+		Novice::DrawEllipse(static_cast<int>(obj.pos.x), static_cast<int>(obj.pos.y), static_cast<int>(obj.r.x), static_cast<int>(obj.r.y), obj.angle, colora, kFillModeWireFrame);
+	}
+
+	void DrawRound(Subobj obj, unsigned int colora) {
+		Novice::DrawEllipse(static_cast<int>(obj.pos.x), static_cast<int>(obj.pos.y), static_cast<int>(obj.r.x), static_cast<int>(obj.r.y), obj.angle, colora, kFillModeSolid);
+	}
+
+	void DrawCircle(Subobj obj, unsigned int colora) {
 		Novice::DrawEllipse(static_cast<int>(obj.pos.x), static_cast<int>(obj.pos.y), static_cast<int>(obj.r.x), static_cast<int>(obj.r.y), obj.angle, colora, kFillModeWireFrame);
 	}
 

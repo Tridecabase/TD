@@ -93,18 +93,18 @@ Enemy::Enemy() {
 	}
 
 	center = {
-	{640.0f,360.0f},		//位置
-	{640.0f,360.0f},		//位置
-	{5.0f,5.0f},			//半径
-	0.0f,					//角度
-	0XFF0000FF,				//色
-	0.0f,					//運動傾斜角度
-	0.0f,					//傾斜角度のラジアン
-	0.0f,					//中心点の回転角度
-	0.0f,					//回転カウンター
-	{0.0f,20.0f},			//楕円の半径
-	{0.0f,0.0f},			//速度
-	0.5f,					//加速度
+		{640.0f,360.0f},		//位置
+		{640.0f,360.0f},		//位置
+		{5.0f,5.0f},			//半径
+		0.0f,					//角度
+		0XFF0000FF,				//色
+		0.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		0.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{0.0f,20.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
 	};
 
 	drone1 = {
@@ -152,6 +152,30 @@ Enemy::Enemy() {
 		0.5f,					//加速度
 	};
 
+	drone1_shift = { 0.0f,0.0f };
+	drone2_shift = { 0.0f,0.0f };
+
+	for (int i = 0; i < 3; i++) {
+		drone_aura[i] = {
+			{ 0.0f, 0.0f },		//位置
+			{ 0.0f, 0.0f },		//位置
+			{ 24.0f, 24.0f},	//半径
+			0.0f,				//角度
+			0x4BBC54FF,			//色
+			{0.0f,0.0f},		//速度
+			0.4f,				//加速度
+		};
+
+		drone_eye[i] = {
+			{ 0.0f, 0.0f },		//位置
+			{ 0.0f, 0.0f },		//位置
+			{ 10.0f, 10.0f},	//半径
+			0.0f,				//角度
+			0x4BBC54FF,			//色
+			{0.0f,0.0f},		//速度
+			0.3f,				//加速度
+		};
+	}
 }
 //デストラクタ
 Enemy::~Enemy() {
@@ -233,18 +257,18 @@ void Enemy::Init() {
 	}
 
 	center = {
-	{640.0f,360.0f},		//位置
-	{640.0f,360.0f},		//位置
-	{5.0f,5.0f},			//半径
-	0.0f,					//角度
-	0XFF0000FF,				//色
-	0.0f,					//運動傾斜角度
-	0.0f,					//傾斜角度のラジアン
-	0.0f,					//中心点の回転角度
-	0.0f,					//回転カウンター
-	{0.0f,20.0f},			//楕円の半径
-	{0.0f,0.0f},			//速度
-	0.5f,					//加速度
+		{640.0f,360.0f},		//位置
+		{640.0f,360.0f},		//位置
+		{5.0f,5.0f},			//半径
+		0.0f,					//角度
+		0XFF0000FF,				//色
+		0.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		0.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{0.0f,20.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
 	};
 
 	drone1 = {
@@ -292,6 +316,30 @@ void Enemy::Init() {
 		0.5f,					//加速度
 	};
 
+	drone1_shift = { 0.0f,0.0f };
+	drone2_shift = { 0.0f,0.0f };
+
+	for (int i = 0; i < 3; i++) {
+		drone_aura[i] = {
+			{ 0.0f, 0.0f },		//位置
+			{ 0.0f, 0.0f },		//位置
+			{ 24.0f, 24.0f},	//半径
+			0.0f,				//角度
+			0x4BBC54FF,			//色
+			{0.0f,0.0f},		//速度
+			0.4f,				//加速度
+		};
+
+		drone_eye[i] = {
+			{ 0.0f, 0.0f },		//位置
+			{ 0.0f, 0.0f },		//位置
+			{ 10.0f, 10.0f},	//半径
+			0.0f,				//角度
+			0x4BBC54FF,			//色
+			{0.0f,0.0f},		//速度
+			0.3f,				//加速度
+		};
+	}
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -300,7 +348,7 @@ void Enemy::Init() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
+void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB) {
 
 
 	// ============================
@@ -314,11 +362,10 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 	drone3.tmp_pos.x = center.pos.x + 50.0f;
 	drone3.tmp_pos.y = center.pos.y - 70.0f;
 
-	if (current_action == ActionID::IDLE || current_action == ActionID::FIRE_AT_PLAYER) {
-		drone1.tmp_pos.x = drone1.pos.x;
-		drone1.tmp_pos.y = drone1.pos.y;
-		drone2.tmp_pos.x = drone2.pos.x;
-		drone2.tmp_pos.y = drone2.pos.y;
+	if (current_action == ActionID::IDLE || current_action == ActionID::FIRE_AT_PLAYER || current_action == ActionID::Figure_Eight) {
+
+		drone1_shift = { center.pos.x - drone1.pos.x , center.pos.y - drone1.pos.y };
+		drone2_shift = { center.pos.x - drone2.pos.x , center.pos.y - drone2.pos.y };
 
 		//回転
 		FloatingOver(drone1, center.pos.x, center.pos.y, 0.5f);
@@ -327,26 +374,49 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 	}
 	else if (current_action == ActionID::BREAK_STATE) {
 
-
 	}
 	else {
+		drone1.tmp_pos = { center.pos.x - drone1_shift.x , center.pos.y - drone1_shift.y };
+		drone2.tmp_pos = { center.pos.x - drone2_shift.x , center.pos.y - drone2_shift.y };
+
 		//追跡
-		drone1.pos = EaseOutBack(center.pos, drone1.pos, 1.0f);
-		drone2.pos = EaseOutBack(center.pos , drone2.pos, 1.0f);
-		drone3.pos = EaseOutBack(drone3.tmp_pos, drone3.pos, 1.0f);
+		drone1.pos = EaseOutBack(drone1.tmp_pos, drone1.pos, 2.0f);
+		drone2.pos = EaseOutBack(drone2.tmp_pos, drone2.pos, 2.0f);
+		drone3.pos = EaseOutBack(drone3.tmp_pos, drone3.pos, 2.0f);
 	}
 
+	//test pos = drone.pos - shift
+
+	drone_aura[0].pos = drone1.pos;
+	drone_aura[1].pos = drone2.pos;
+	drone_aura[2].pos = drone3.pos;
+
+
+	for (int i = 0; i < 3; i++) {
+
+		drone_aura[i].tmp_pos.x = player->screen_pos.x - drone_aura[i].pos.x;
+		drone_aura[i].tmp_pos.y = player->screen_pos.y - drone_aura[i].pos.y;
+
+		drone_aura[i].angle = atan2(drone_aura[i].tmp_pos.y, drone_aura[i].tmp_pos.x);
+
+		float eyeMaxOffset = drone_aura[i].r.x - drone_eye[i].r.x;
+		drone_eye[i].pos.x = drone_aura[i].pos.x + eyeMaxOffset * cos(drone_aura[i].angle);
+		drone_eye[i].pos.y = drone_aura[i].pos.y + eyeMaxOffset * sin(drone_aura[i].angle) - 10.0f;
+	}
 
 	// ============================
 	// スクロールによってループ
 	// ============================
-
 
 	//敵位置をループさせる
 	Loop(pos.x);
 	Loop(drone1.pos.x);
 	Loop(drone2.pos.x);
 	Loop(drone3.pos.x);
+	for (int i = 0; i < 3; i++) {
+		Loop(drone_aura[i].pos.x);
+		Loop(drone_eye[i].pos.x);
+	}
 
 	//浮遊砲をループさせる
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
@@ -607,7 +677,7 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
 			funnel[i].angleToPlayer = atan2(funnel[i].distance.y, funnel[i].distance.x);
 
 			//目の位置を計算
-			float eyeballMaxOffset = funnel[i].width * 1 / 3 - funnel[i].eyeball_r; // 目が内円内に収まる最大距離
+			float eyeballMaxOffset = funnel[i].width * 1 / 3 - funnel[i].eyeball_r; //目が内円内に収まる最大距離
 			funnel[i].eyeball.x = funnel[i].inner_center.x + eyeballMaxOffset * cos(funnel[i].angleToPlayer);
 			funnel[i].eyeball.y = funnel[i].inner_center.y + eyeballMaxOffset * sin(funnel[i].angleToPlayer);
 
@@ -776,16 +846,25 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 void Enemy::Draw() {
 
 	if (drone1.w >= static_cast<float>(M_PI)) {
+		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
 		DrawRound(drone1, drone1.color);
 		DrawCircle(drone1, 0x4BBC54FF);
+		DrawCircle(drone_aura[0], 0x4BBC54FF);
+		DrawRound(drone_eye[0], 0x4BBC54FF);
 	}
 	if (drone2.w >= static_cast<float>(M_PI)) {
+		Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
 		DrawRound(drone2, drone2.color);
 		DrawCircle(drone2, 0x4BBC54FF);
+		DrawCircle(drone_aura[1], 0x4BBC54FF);
+		DrawRound(drone_eye[1], 0x4BBC54FF);
 	}
 	if (drone3.w >= static_cast<float>(M_PI)) {
+		Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
 		DrawRound(drone3, drone3.color);
 		DrawCircle(drone3, 0x4BBC54FF);
+		DrawCircle(drone_aura[2], 0x4BBC54FF);
+		DrawRound(drone_eye[2], 0x4BBC54FF);
 	}
 
 	//テスト：敵の描画
@@ -803,17 +882,26 @@ void Enemy::Draw() {
 		0.0f, 0x4BBC54FF, kFillModeWireFrame);
 
 	if (drone1.w < static_cast<float>(M_PI)) {
+		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
 		DrawRound(drone1, drone1.color);
 		DrawCircle(drone1, 0x4BBC54FF);
+		DrawCircle(drone_aura[0], 0x4BBC54FF);
+		DrawRound(drone_eye[0], 0x4BBC54FF);
 	}
 
 	if (drone2.w < static_cast<float>(M_PI)) {
+		Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
 		DrawRound(drone2, drone2.color);
 		DrawCircle(drone2, 0x4BBC54FF);
+		DrawCircle(drone_aura[1], 0x4BBC54FF);
+		DrawRound(drone_eye[1], 0x4BBC54FF);
 	}
 	if (drone3.w < static_cast<float>(M_PI)) {
+		Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
 		DrawRound(drone3, drone3.color);
 		DrawCircle(drone3, 0x4BBC54FF);
+		DrawCircle(drone_aura[2], 0x4BBC54FF);
+		DrawRound(drone_eye[2], 0x4BBC54FF);
 	}
 
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
