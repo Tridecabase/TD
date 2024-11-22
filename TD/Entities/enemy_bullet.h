@@ -16,7 +16,8 @@ public:
 
 	typedef struct Bullet {
 		Vector3 pos;
-		Vector2 screen_pos;
+		Vector2 velocity;
+		Vector2 target_pos;
 		float gravityY;
 		float gravitySpeedY;
 		float radius;

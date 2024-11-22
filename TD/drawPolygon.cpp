@@ -65,4 +65,87 @@ void DrawLineNew(const Vector2 point1, const Vector2 point2, const int px,int co
 		}
 	}
 
-};
+}
+void DrawNum(const int posX, const int posY, const int width, const int height, const int color, int Num){
+	float boxSizeX = float(width / 5);
+	float boxSizeY = float(height / 7);
+	float RTX = float(posX - width / 2);
+	float RTY = float(posY - height / 2);
+
+	if (Num == 0) {
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 5), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 2),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 3), int(RTY + boxSizeY * 4),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 4), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 5), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 6),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+	} else if (Num == 1) {
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 1), int(boxSizeY * 6), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 6),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+	} else {
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 2), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 3), int(RTY + boxSizeY * 4),
+			int(boxSizeX * 1), int(boxSizeY * 2), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 4), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
+	}
+}
+void DrawNum(const int posX, const int posY, const int width, const int color,int Num){
+	int height = int(width * 1.4f);
+	float boxSizeX = float(width / 5);
+	float boxSizeY = float(height / 7);
+	float RTX = float(posX - width / 2);
+	float RTY = float(posY - height / 2);
+
+	if(Num == 0){
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 5), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 2),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 3), int(RTY + boxSizeY * 4),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 4), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 5), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 6),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+	} else if(Num == 1){
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 1), int(boxSizeY * 6), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 6),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+	} else {
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 2), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 3), int(RTY + boxSizeY * 4),
+			int(boxSizeX * 1), int(boxSizeY * 2), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 4), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
+	}
+}

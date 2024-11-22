@@ -1,4 +1,4 @@
-#include <Novice.h>
+﻿#include <Novice.h>
 #include "obj.h"
 
 

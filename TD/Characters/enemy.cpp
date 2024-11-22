@@ -18,7 +18,7 @@ Enemy::Enemy() {
 	pos.y = ENEMY_SPAWN_POSY;
 	pos.z = 1090.0f;
 	//敵の長さ
-	width = 40.0f;
+	width = 60.0f;
 	//敵の深さ
 	depth = 20.0f;
 	//敵の高さ
@@ -26,7 +26,7 @@ Enemy::Enemy() {
 	//敵の速度
 	vel = 0.0f;
 	//敵の色
-	color = WHITE;
+	color = 0x191B19FF;
 	//敵の生存フラグ
 	isAlive = true;
 
@@ -83,14 +83,74 @@ Enemy::Enemy() {
 		funnel[i].height = 64.0f;
 		funnel[i].hp = 400;
 		funnel[i].color = 0x005243FF;
-		funnel[i].line_color = 0x005243FF;
+		funnel[i].line_color = 0xB443ABFF;
 		funnel[i].angle = 0x00FF0088;
 		funnel[i].inner_center = { 0.0f ,0.0f };
 		funnel[i].distance = { 0.0f ,0.0f };
 		funnel[i].eyeball = { 0.0f ,0.0f };
-		funnel[i].eyeball_r = funnel[i].width / 12;
+		funnel[i].eyeball_r = funnel[i].width / 6;
 		funnel[i].angleToPlayer = 0.0f;
 	}
+
+	center = {
+	{640.0f,360.0f},		//位置
+	{640.0f,360.0f},		//位置
+	{5.0f,5.0f},			//半径
+	0.0f,					//角度
+	0XFF0000FF,				//色
+	0.0f,					//運動傾斜角度
+	0.0f,					//傾斜角度のラジアン
+	0.0f,					//中心点の回転角度
+	0.0f,					//回転カウンター
+	{0.0f,20.0f},			//楕円の半径
+	{0.0f,0.0f},			//速度
+	0.5f,					//加速度
+	};
+
+	drone1 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		30.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		0.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{150.0f,60.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
+	drone2 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		345.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		10.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{180.0f,110.0f},		//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
+	drone3 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		0.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		10.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{0.0f,15.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
 
 }
 //デストラクタ
@@ -99,7 +159,6 @@ Enemy::~Enemy() {
 	delete wave2;
 	delete wave3;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
@@ -117,7 +176,7 @@ void Enemy::Init() {
 	pos.y = ENEMY_SPAWN_POSY;
 	pos.z = 1090.0f;
 	//敵の長さ
-	width = 40.0f;
+	width = 60.0f;
 	//敵の深さ
 	depth = 20.0f;
 	//敵の高さ
@@ -125,7 +184,7 @@ void Enemy::Init() {
 	//敵の速度
 	vel = 0.0f;
 	//敵の色
-	color = WHITE;
+	color = 0x191B19FF;
 	//敵の生存フラグ
 	isAlive = true;
 	//敵のブレイクゲージ
@@ -163,13 +222,75 @@ void Enemy::Init() {
 		funnel[i].width = 64.0f;
 		funnel[i].height = 64.0f;
 		funnel[i].hp = 400;
+		funnel[i].color = 0x005243FF;
+		funnel[i].line_color = 0x4BBC54FF;
 		funnel[i].angle = 0.0f;
 		funnel[i].inner_center = { 0.0f ,0.0f };
 		funnel[i].distance = { 0.0f ,0.0f };
 		funnel[i].eyeball = { 0.0f ,0.0f };
-		funnel[i].eyeball_r = funnel[i].width / 12;
+		funnel[i].eyeball_r = funnel[i].width / 6;
 		funnel[i].angleToPlayer = 0.0f;
 	}
+
+	center = {
+	{640.0f,360.0f},		//位置
+	{640.0f,360.0f},		//位置
+	{5.0f,5.0f},			//半径
+	0.0f,					//角度
+	0XFF0000FF,				//色
+	0.0f,					//運動傾斜角度
+	0.0f,					//傾斜角度のラジアン
+	0.0f,					//中心点の回転角度
+	0.0f,					//回転カウンター
+	{0.0f,20.0f},			//楕円の半径
+	{0.0f,0.0f},			//速度
+	0.5f,					//加速度
+	};
+
+	drone1 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		30.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		0.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{150.0f,60.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
+	drone2 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		345.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		10.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{180.0f,110.0f},		//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
+
+	drone3 = {
+		{0.0f,0.0f},			//位置
+		{0.0f,0.0f},			//位置
+		{32.0f,32.0f},			//半径
+		0.0f,					//角度
+		0x191B19FF,				//色
+		0.0f,					//運動傾斜角度
+		0.0f,					//傾斜角度のラジアン
+		10.0f,					//中心点の回転角度
+		0.0f,					//回転カウンター
+		{0.0f,15.0f},			//楕円の半径
+		{0.0f,0.0f},			//速度
+		0.5f,					//加速度
+	};
 
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,6 +301,23 @@ void Enemy::Init() {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
+
+	center.pos.x = pos.x;
+	center.pos.y = pos.y;
+
+	if (current_action == ActionID::IDLE || current_action == ActionID::FIRE_AT_PLAYER) {
+		FloatingOver(drone1, center.pos.x, center.pos.y, 0.5f);
+		FloatingOver(drone2, center.pos.x, center.pos.y, -1.2f);
+		FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 1.0f);
+	}
+	else {
+		//FloatingOver(drone1, center.pos.x, center.pos.y, 0.0f);
+		//FloatingOver(drone2, center.pos.x, center.pos.y, 0.0f);
+		//FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 0.0f);
+		drone1.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
+		//drone2.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
+		//drone3.pos = EaseOutBack(center.pos.x, center.pos.y, 1.0f);
+	}
 
 	//HPを0に超えないように
 	if (hp <= 0) {
@@ -210,30 +348,34 @@ void Enemy::Move(BulletA* bulletA, BulletB* bulletB) {
 	// 当たり判定
 	// ============================
 
-	color = WHITE;
+	color = 0x191B19FF;
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
-		if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radiusX / 2 &&
-			pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radiusX / 2) {
-			if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radiusY / 2 &&
-				pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY / 2) {
-				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX / 2 &&
-					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX / 2) {
-					tmp = bulletA->bulletA[i].pos.z;
-					color = RED;
-					TakeDamage(PLAYER_ATK);
+		if (bulletA->bulletA[i].isShoot) {
+			if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radiusX / 2 &&
+				pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radiusX / 2) {
+				if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radiusY / 2 &&
+					pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY / 2) {
+					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX / 2 &&
+						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX / 2) {
+						tmp = bulletA->bulletA[i].pos.z;
+						color = RED;
+						TakeDamage(PLAYER_ATK);
+					}
 				}
 			}
 		}
 	}
 
 	for (int i = 0; i < MAX_BULLET_B; i++) {
-		if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radiusX / 2 &&
-			pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radiusX / 2) {
-			if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radiusY / 2 &&
-				pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radiusY / 2) {
-				color = RED;
-				TakeDamage(PLAYER_ATK);
+		if (bulletB->bulletB[i].isShoot) {
+			if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radiusX / 2 &&
+				pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radiusX / 2) {
+				if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radiusY / 2 &&
+					pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radiusY / 2) {
+					color = RED;
+					TakeDamage(PLAYER_ATK);
+				}
 			}
 		}
 	}
@@ -502,12 +644,12 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB) {
 		if (funnel[i].isActive) {
 			if (funnel[i].isHit) {
 				funnel[i].color = 0xb7282eFF;
-				funnel[i].line_color = 0xe2041b88;
+				funnel[i].line_color = 0x4BBC54FF;
 				funnel[i].isHit = false;
 			}
 			else {
-				funnel[i].color = 0x005243FF;
-				funnel[i].line_color = 0x00FF0088;
+				funnel[i].color = 0x191B19FF;
+				funnel[i].line_color = 0x4BBC54FF;
 			}
 		}
 	}
@@ -570,6 +712,7 @@ void Enemy::Idle() {
 
 //プレイヤーの移動によってスクロール関数
 void Enemy::Scroll(Player* player, char keys[256]) {
+
 	if (player->isPlayerLeft) {
 		if (keys[DIK_A]) {
 			pos.x += OUTER_BG_SPEED;
@@ -599,7 +742,20 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Enemy::Draw() const {
+void Enemy::Draw() {
+
+	if (drone1.w >= static_cast<float>(M_PI)) {
+		DrawRound(drone1, drone1.color);
+		DrawCircle(drone1, 0x4BBC54FF);
+	}
+	if (drone2.w >= static_cast<float>(M_PI)) {
+		DrawRound(drone2, drone2.color);
+		DrawCircle(drone2, 0x4BBC54FF);
+	}
+	if (drone3.w >= static_cast<float>(M_PI)) {
+		DrawRound(drone3, drone3.color);
+		DrawCircle(drone3, 0x4BBC54FF);
+	}
 
 	//テスト：敵の描画
 	Novice::DrawBox(
@@ -608,34 +764,54 @@ void Enemy::Draw() const {
 		static_cast<int>(width),
 		static_cast<int>(height),
 		0.0f, color, kFillModeSolid);
+	Novice::DrawBox(
+		static_cast<int>(screen_pos.x - width / 2),
+		static_cast<int>(screen_pos.y - height / 2),
+		static_cast<int>(width),
+		static_cast<int>(height),
+		0.0f, 0x4BBC54FF, kFillModeWireFrame);
+
+	if (drone1.w < static_cast<float>(M_PI)) {
+		DrawRound(drone1, drone1.color);
+		DrawCircle(drone1, 0x4BBC54FF);
+	}
+
+	if (drone2.w < static_cast<float>(M_PI)) {
+		DrawRound(drone2, drone2.color);
+		DrawCircle(drone2, 0x4BBC54FF);
+	}
+	if (drone3.w < static_cast<float>(M_PI)) {
+		DrawRound(drone3, drone3.color);
+		DrawCircle(drone3, 0x4BBC54FF);
+	}
 
 	Novice::ScreenPrintf(100, 140, "%f", tmp);
 
-	int centerX = int(pos.x);
-	int centerY = int(pos.y);
+	//int centerX = int(pos.x);
+	//int centerY = int(pos.y);
 
-	Novice::DrawLine(centerX - 15, centerY - 50, centerX - 30, centerY, GREEN);
-	Novice::DrawLine(centerX - 30, centerY, centerX - 20, centerY + 50, GREEN);
-	Novice::DrawLine(centerX - 20, centerY + 50, centerX + 20, centerY + 50, GREEN);
-	Novice::DrawLine(centerX + 20, centerY + 50, centerX + 30, centerY, GREEN);
-	Novice::DrawLine(centerX + 30, centerY, centerX + 15, centerY - 50, GREEN);
-	Novice::DrawLine(centerX + 15, centerY - 50, centerX - 15, centerY - 50, GREEN);
+	//Novice::DrawLine(centerX - 15, centerY - 50, centerX - 30, centerY, GREEN);
+	//Novice::DrawLine(centerX - 30, centerY, centerX - 20, centerY + 50, GREEN);
+	//Novice::DrawLine(centerX - 20, centerY + 50, centerX + 20, centerY + 50, GREEN);
+	//Novice::DrawLine(centerX + 20, centerY + 50, centerX + 30, centerY, GREEN);
+	//Novice::DrawLine(centerX + 30, centerY, centerX + 15, centerY - 50, GREEN);
+	//Novice::DrawLine(centerX + 15, centerY - 50, centerX - 15, centerY - 50, GREEN);
 
-	Novice::DrawLine(centerX, centerY - 30, centerX - 15, centerY + 30, GREEN);
-	Novice::DrawLine(centerX - 15, centerY + 30, centerX + 15, centerY + 30, GREEN);
-	Novice::DrawLine(centerX + 15, centerY + 30, centerX, centerY - 30, GREEN);
+	//Novice::DrawLine(centerX, centerY - 30, centerX - 15, centerY + 30, GREEN);
+	//Novice::DrawLine(centerX - 15, centerY + 30, centerX + 15, centerY + 30, GREEN);
+	//Novice::DrawLine(centerX + 15, centerY + 30, centerX, centerY - 30, GREEN);
 
-	Novice::DrawEllipse(centerX, centerY, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawEllipse(centerX, centerY, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
 
-	Novice::DrawBox(centerX - 5, centerY - 45, 10, 7, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX - 15, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX + 7, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 5, centerY - 45, 10, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 15, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 7, centerY + 5, 7, 7, 0.0f, GREEN, kFillModeWireFrame);
 
-	Novice::DrawBox(centerX - 5, centerY + 50, 7, 12, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX - 12, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX - 20, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
-	Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 5, centerY + 50, 7, 12, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 12, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX - 20, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 7, centerY + 65, 5, 7, 0.0f, GREEN, kFillModeWireFrame);
+	//Novice::DrawBox(centerX + 15, centerY + 75, 5, 5, 0.0f, GREEN, kFillModeWireFrame);
 
 }
 
@@ -712,7 +888,7 @@ void Enemy::DrawFunnel() const {
 				static_cast<int>(funnel[i].eyeball_r),
 				static_cast<int>(funnel[i].eyeball_r),
 				0.0f,
-				0xFFFFFFFF,
+				funnel[i].line_color,
 				kFillModeSolid);
 
 			//目の枠線描画
@@ -722,7 +898,7 @@ void Enemy::DrawFunnel() const {
 				static_cast<int>(funnel[i].eyeball_r),
 				static_cast<int>(funnel[i].eyeball_r),
 				0.0f,
-				0x000b00FF,
+				funnel[i].line_color,
 				kFillModeWireFrame);
 		}
 	}
@@ -793,7 +969,7 @@ void Enemy::DrawInfo() {
 				(WINDOW_WIDTH / 2) - static_cast<int>(150.0f * break_timer / 600.0f),
 				60 - i,
 				static_cast<int>(300.0f * break_timer / 600.0f),
-				20 - i * 2,
+				10 - i,
 				0.0f,
 				(0xCC << 24) | (0xCC << 16) | (0xCC << 8) | (255 - i * 25),
 				kFillModeSolid

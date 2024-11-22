@@ -32,7 +32,7 @@ public:
 	//敵の移動処理
 	void Move(BulletA*bulletA, BulletB*bulletB);
 	//敵の描画
-	void Draw() const;
+	void Draw();
 	//敵の情報を表示する関数
 	void DrawInfo();
 	//void RenderWaveWithLength(WaveGenerator* wave, int length, unsigned int color);
@@ -136,6 +136,22 @@ public:
 
 	Vector2 screen_pos;
 
+	struct Obj {
+		Vector2 pos;		//位置
+		Vector2 tmp_pos;	//位置
+		Vector2 r;			//半径
+		float angle;		//角度
+		unsigned int color;	//色
+		float tilt;			//運動傾斜角度
+		float tilt_rad;		//傾斜角度のラジアン
+		float w;			//中心点の回転角度
+		float timer;		//回転カウンター
+		Vector2 ellipse;	//楕円の半径
+		Vector2 vel;		//速度
+		float acc;			//加速度
+	};
+
+
 private:
 
 	// ============================
@@ -189,5 +205,115 @@ private:
 	WaveGenerator* wave1;
 	WaveGenerator* wave2;
 	WaveGenerator* wave3;
+
+	Obj center;
+	Obj drone1;
+	Obj drone2;
+	Obj drone3;
+
+	void DrawRound(Obj obj, unsigned int colora) {
+		Novice::DrawEllipse(static_cast<int>(obj.pos.x), static_cast<int>(obj.pos.y), static_cast<int>(obj.r.x), static_cast<int>(obj.r.y), obj.angle, colora, kFillModeSolid);
+	}
+
+	void DrawCircle(Obj obj, unsigned int colora) {
+		Novice::DrawEllipse(static_cast<int>(obj.pos.x), static_cast<int>(obj.pos.y), static_cast<int>(obj.r.x), static_cast<int>(obj.r.y), obj.angle, colora, kFillModeWireFrame);
+	}
+
+	/// <summary>
+	/// 楕円運動関数
+	/// </summary>
+	/// <param name="">構造体</param>
+	/// <param name="">回転中心点のX座標</param>
+	/// <param name="">回転中心点のY座標</param>
+	/// <param name="">回転速度</param>
+	/// <returns></returns>
+	void FloatingOver(Obj& obj, float x, float y, float flaoting_speed) {
+
+		obj.tilt_rad = obj.tilt / 180.0F * static_cast<float>(M_PI);
+
+		obj.w = obj.timer / 180.0F * static_cast<float>(M_PI);
+		obj.pos.x = static_cast<float>(obj.ellipse.x * cosf(obj.w) * cosf(obj.tilt_rad) - obj.ellipse.y * sinf(obj.w) * sinf(obj.tilt_rad) + x);
+		obj.pos.y = static_cast<float>(obj.ellipse.x * cosf(obj.w) * sinf(obj.tilt_rad) + obj.ellipse.y * sinf(obj.w) * cosf(obj.tilt_rad) + y);
+
+		//回転
+		obj.timer += flaoting_speed;
+		if (obj.timer >= 360.0f) {
+			obj.timer = 0.0f;
+		}
+	}
+
+
+	const float MAX_SPEED = 10.0f;
+	const float ACCELERATION = 0.1f;
+	const float DECELERATION = 0.1f;
+	const float RESTORE_STRENGTH = 3.0f;
+	const float MAX_FOLLOW_DISTANCE = 100.0f;
+
+	Vector2 Add(const Vector2& a, const Vector2& b) {
+		return { a.x + b.x, a.y + b.y };
+	}
+
+	Vector2 Subtract(const Vector2& a, const Vector2& b) {
+		return { a.x - b.x, a.y - b.y };
+	}
+
+	Vector2 Multiply(const Vector2& v, float scalar) {
+		return { v.x * scalar, v.y * scalar };
+	}
+
+	Vector2 Divide(const Vector2& v, float scalar) {
+		return { v.x / scalar, v.y / scalar };
+	}
+
+	float Magnitude(const Vector2& v) {
+		return std::sqrt(v.x * v.x + v.y * v.y);
+	}
+
+	Vector2 Normalize(const Vector2& v) {
+		float mag = Magnitude(v);
+		return mag > 0.0f ? Divide(v, mag) : Vector2{ 0.0f, 0.0f };
+	}
+
+	float Lerp(float a, float b, float t) {
+		return a + (b - a) * t;
+	}
+
+	Vector2 EaseOutBack(float centerX, float centerY, float easeAmount) {
+
+		static Vector2 followerPos = { 0.0f, 0.0f };
+		static Vector2 previousCenterPos = { 0.0f, 0.0f };
+		static Vector2 velocity = { 0.0f, 0.0f };
+		static Vector2 initialOffset = { 10.0f, 10.0f };
+
+		Vector2 currentCenterPos = { centerX, centerY };
+
+		Vector2 centerDelta = Subtract(currentCenterPos, previousCenterPos);
+
+		Vector2 targetPosition = Add(previousCenterPos, initialOffset);
+
+		Vector2 toTarget = Subtract(targetPosition, followerPos);
+		Vector2 direction = Normalize(toTarget);
+
+		velocity.x += direction.x * ACCELERATION * easeAmount;
+		velocity.y += direction.y * ACCELERATION * easeAmount;
+
+		float speed = Magnitude(velocity);
+		if (speed > MAX_SPEED) {
+			velocity = Multiply(velocity, MAX_SPEED / speed);
+		}
+
+		followerPos = Add(followerPos, velocity);
+
+		if (Magnitude(centerDelta) < 0.01f) {
+			Vector2 offset = Subtract(followerPos, currentCenterPos);
+			Vector2 restoreDirection = Normalize(Subtract(initialOffset, offset));
+			Vector2 restoreForce = Multiply(restoreDirection, RESTORE_STRENGTH * easeAmount);
+			followerPos = Add(followerPos, restoreForce);
+		}
+
+		previousCenterPos = currentCenterPos;
+
+		return followerPos;
+	}
 
 };

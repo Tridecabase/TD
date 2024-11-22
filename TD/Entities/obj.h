@@ -1,4 +1,6 @@
-#pragma once
+#ifndef OBJ_H
+#define OBJ_H
+
 #include <Vector2.h>
 
 class Obj
@@ -16,3 +18,4 @@ public:
 	bool isAlive_;
 };
 
+#endif

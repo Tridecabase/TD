@@ -1,8 +1,10 @@
 #pragma once
 #include "Vector2.h"
 #include "Vector3.h"
+#include <math.h>
 #include "./Entities/map.h" 
 #include "./Tools/config.h" 
+#include "drawPolygon.h"
 
 class Player {
 public:
@@ -16,7 +18,7 @@ public:
 	//プレイヤーの移動処理
 	void Move(Map* map, char keys[256], char preKeys[256]);
 	//プレイヤーの描画
-	void Draw();
+	void Draw(int color) const;
 
 	// ============================
 	// プレイヤ基本情報
@@ -35,8 +37,14 @@ public:
 	float height;
 	//プレイヤーの動きクールタイム
 	int moveCooltime;
+	//プレイヤーのHP
+	int hp;
 	//プレイヤーの生存フラグ
 	bool isAlive;
+	//アニメタイマー
+	int clock;
+	int timer;
+	int velocity;
 
 	bool isPlayerLeft;
 	bool isPlayerRight;

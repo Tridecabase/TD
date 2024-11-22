@@ -1,104 +1,83 @@
-#ifndef PARTICLE_H
-#define PARTICLE_H
+#ifndef PARTICLE_GENERATOR_H
+#define PARTICLE_GENERATOR_H
 
-#define _USE_MATH_DEFINES
-#include <novice.h>
+#include <vector>
 #include <cstdlib>
 #include <cmath>
-#include "./Tools/config.h"
+#include "Novice.h"
 
-//パーティクル構造体
 struct Particle {
     float x, y;         //位置
     float vx, vy;       //速度
-    float life;         //命
     float angle;        //回転角度
     unsigned int color; //色
+    int life;       //命
 };
 
 class ParticleGenerator {
 public:
-    ParticleGenerator() : particleCount(0) {}
+    ParticleGenerator() {}
 
-    //ランダムな方向にパーティクルを生成する関数
     void GenerateParticles(float x, float y) {
-        for (int i = 0; i < 10; ++i) {
-            if (particleCount >= MAX_PARTICLES) break;
-
-            float angle = randomFloat(0.0f, 360.0f);
-            float speed = randomFloat(1.0f, 3.0f);
-            particles[particleCount++] = {
-                x, y,
-                cosf(angle * static_cast<float>(M_PI) / 180.0f) * speed,
-                sinf(angle * static_cast<float>(M_PI) / 180.0f) * speed,
-                randomFloat(0.2f, 0.6f),
-                0.0f,
-                0xAAAAAAFF
-            };
+        for (int i = 0; i < particlesPerFrame; ++i) {
+            Particle p;
+            p.x = x;
+            p.y = y;
+            float speed = static_cast<float>(rand()) / RAND_MAX * maxSpeed;
+            float direction = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+            p.vx = speed * cos(direction * static_cast<float>(M_PI) / 180.0f);
+            p.vy = speed * sin(direction * static_cast<float>(M_PI) / 180.0f);
+            p.angle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+            p.color = 0x4BBC5444;
+            p.life = rand() % maxlife + 1;
+            particles.push_back(p);
         }
-
-        //パーティクルの更新
-        updateParticles();
     }
 
-    //指定した方向パーティクルを生成する関数
-    void GenerateDirectParticle(float x, float y, float angle) {
-        if (particleCount >= MAX_PARTICLES) return;
-
-        float speed = randomFloat(2.0f, 5.0f);
-        particles[particleCount++] = {
-            x, y,
-            cosf(angle * static_cast<float>(M_PI) / 180.0f) * speed,
-            sinf(angle * static_cast<float>(M_PI) / 180.0f) * speed,
-            randomFloat(0.3f, 1.0f),
-            angle,
-            0xAAAAAAFF
-        };
-
-        //パーティクルの更新
-        updateParticles();
+    void Destroy(float x, float y) {
+        for (int i = 0; i < particlesPerFrame; ++i) {
+            Particle p;
+            p.x = x;
+            p.y = y;
+            float speed = static_cast<float>(rand()) / RAND_MAX * maxSpeed;
+            float direction = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+            p.vx = 2 * speed * cos(direction * static_cast<float>(M_PI) / 180.0f);
+            p.vy = 2 * speed * sin(direction * static_cast<float>(M_PI) / 180.0f);
+            p.angle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+            p.color = 0x4BBC5444;
+            p.life = rand() % maxlife + 30;
+            particles.push_back(p);
+        }
     }
 
-    //パーティクルを描画する関数
-    void Render() const {
-        for (int i = 0; i < particleCount; ++i) {
-            const Particle& p = particles[i];
+    void Render() {
+        for (auto it = particles.begin(); it != particles.end();) {
             Novice::DrawBox(
-                static_cast<int>(p.x), static_cast<int>(p.y),    //位置
-                10, 10,      //幅と高さ
-                p.angle,     //回転角度
-                p.color,     //色
-                kFillModeSolid
+                static_cast<int>(it->x), static_cast<int>(it->y),
+                10, 10, 
+                it->angle,
+                it->color,
+                kFillModeSolid 
             );
-        }
-    }
 
-private:
-    //固定サイズのパーティクル配列
-    Particle particles[MAX_PARTICLES];
-    //現在のパーティクル数
-    int particleCount;
+            it->x += it->vx;
+            it->y += it->vy;
+            --(it->life);
 
-    //パーティクルの更新
-    void updateParticles() {
-        for (int i = 0; i < particleCount; ++i) {
-            Particle& p = particles[i];
-            p.x += p.vx; 
-            p.y += p.vy;
-            p.life -= 0.024f;
-
-            if (p.life <= 0.0f) {
-                //配列の最後のパーティクルで上書き
-                particles[i] = particles[--particleCount]; 
-                --i;
+            if (it->life <= 0) {
+                it = particles.erase(it); //削除
+            }
+            else {
+                ++it;
             }
         }
     }
 
-    //浮動小数点数を生成する関数
-    static float randomFloat(float min, float max) {
-        return min + static_cast<float>(rand()) / static_cast<float>(RAND_MAX / (max - min));
-    }
+private:
+    std::vector<Particle> particles; //粒子リスト
+    const int particlesPerFrame = 3; //生成数/フレーム
+    const int maxlife = 60;      //最大フレーム
+    const float maxSpeed = 3.0f;     //最大速度
 };
 
-#endif // PARTICLE_GENERATOR_H
+#endif
