@@ -2,6 +2,7 @@
 #include <Novice.h>
 #include <Vector2.h>
 #include <math.h>
+#include <ctype.h>
 
 ///////////////////////////////////////////////////////////////Polygon
 
@@ -61,6 +62,7 @@ void DrawNum(const int posX, const int posY, const int width, const int height, 
 /// <param name="Num">描きたい数字、今は0が1しができない</param>
 void DrawNum(const int posX, const int posY, const int width, const int color, int Num);
 
+void DrawApla(const int posX, const int posY, const int width, const int color, const char Apla);
 
 ///////////////////////////////////////////////////////////////Line
 

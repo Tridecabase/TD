@@ -6,7 +6,6 @@ Title::Title() {
 	for (int i = 0; i < 4; i++) {
 		window[i] = new Obj;
 	}
-
 	openClock = {};
 	openTime = {};
 
@@ -16,6 +15,7 @@ Title::Title() {
 		changeClockClock[i] = {};
 		changeClockTime[i] = {};
 	}
+
 }
 
 Title::~Title() {
@@ -50,6 +50,25 @@ void Title::Init() {
 	changeClockClock[3] = 30;
 	changeClockClock[4] = 20;
 	changeClockClock[5] = 10;
+}
+
+void Title::DrawTitle(const int posX, const int posY,const int width, int color){
+	char b[] = "NeoHorizon";
+	//char b[] = "e";
+	float w = float(float(width) / 41.0f);
+	float number = 0;
+	for (int i = 0; i < 10;i++) {
+		if(isupper(b[i])) {
+			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
+			number += 6.0f;
+		}
+		if (islower(b[i])) {
+			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
+			number += 4.0f;
+		}
+
+	}
+
 }
 
 void Title::Update() {
@@ -116,4 +135,7 @@ void Title::Render() {
 		window[0]->drawWindow(0x4BBC54FF);
 		Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
 	}
+
+	///文字
+	DrawTitle(360, 200,520, 0x4BBC54FF);
 }

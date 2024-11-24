@@ -14,6 +14,10 @@ public:
 
 	//タイトルの初期化処理
 	void Init();
+
+
+	void DrawTitle(const int posX, const int posY, const int width, int color);
+
 	//タイトルの更新処理
 	void Update();
 	//ステージチェンジャー
@@ -32,5 +36,6 @@ public:
 	int changeNum[6];
 	int changeClockClock[6];
 	int changeClockTime[6];
+
 };
 

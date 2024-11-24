@@ -33,7 +33,7 @@ void Obj::drawWindow(int color) {
 
 
 
-	Novice::DrawEllipse(int(center.x), int(center.y), 5, 5, 0.0f, BLUE, kFillModeSolid);
+	//Novice::DrawEllipse(int(center.x), int(center.y), 5, 5, 0.0f, BLUE, kFillModeSolid);
 }
 
 void Obj::drawChase(int color) {
