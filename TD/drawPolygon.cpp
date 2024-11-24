@@ -153,7 +153,18 @@ void DrawApla(const int posX, const int posY, const int width, const int color, 
 	float RTX = float(posX - width / 2);
 	float RTY = float(posY - height / 2);
 
-	if (Apla == 'H') {
+	if (Apla == 'C') {
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 5), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 4), int(RTY + boxSizeY * 1),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 4), int(RTY + boxSizeY * 5),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 6),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+	} else if (Apla == 'H') {
 		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 0),
 			int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
 		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 3),
@@ -171,6 +182,28 @@ void DrawApla(const int posX, const int posY, const int width, const int color, 
 			int(boxSizeX * 1), int(boxSizeY * 2), 0.0f, color, kFillModeSolid);
 		Novice::DrawBox(int(RTX + boxSizeX * 4), int(RTY + boxSizeY * 0),
 			int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
+
+
+	}else if (Apla == 'a') {
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 3), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 2),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 6),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 4), 0.0f, color, kFillModeSolid);
+	}else if (Apla == 'c') {
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 2),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 3), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 5),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 6),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
 	}else if (Apla == 'e') {
 		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 2),
 			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
@@ -194,6 +227,18 @@ void DrawApla(const int posX, const int posY, const int width, const int color, 
 				int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
 			Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 4),
 				int(boxSizeX * 1), int(boxSizeY * 3), 0.0f, color, kFillModeSolid);
+	} else if (Apla == 'k') {
+			Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 0),
+				int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
+			Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 4),
+				int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+			Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 2),
+				int(boxSizeX * 1), int(boxSizeY * 2), 0.0f, color, kFillModeSolid);
+			Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 5),
+				int(boxSizeX * 1), int(boxSizeY * 2), 0.0f, color, kFillModeSolid);
+	} else if (Apla == 'l') {
+			Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 0),
+				int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
 	} else if (Apla == 'o') {
 		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 3),
 			int(boxSizeX * 1), int(boxSizeY * 3), 0.0f, color, kFillModeSolid);
@@ -209,6 +254,26 @@ void DrawApla(const int posX, const int posY, const int width, const int color, 
 		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 3),
 			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
 		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 2),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+	} else if (Apla == 's') {
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 2),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 3),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 4),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 5),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 6),
+			int(boxSizeX * 3), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+	} else if (Apla == 't') {
+		Novice::DrawBox(int(RTX + boxSizeX * 1), int(RTY + boxSizeY * 0),
+			int(boxSizeX * 1), int(boxSizeY * 7), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 2),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 2),
+			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
+		Novice::DrawBox(int(RTX + boxSizeX * 2), int(RTY + boxSizeY * 6),
 			int(boxSizeX * 1), int(boxSizeY * 1), 0.0f, color, kFillModeSolid);
 	} else if (Apla == 'z') {
 		Novice::DrawBox(int(RTX + boxSizeX * 0), int(RTY + boxSizeY * 2),

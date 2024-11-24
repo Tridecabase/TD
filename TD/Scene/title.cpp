@@ -71,6 +71,25 @@ void Title::DrawTitle(const int posX, const int posY,const int width, int color)
 
 }
 
+void Title::DrawGameStart(const int posX, const int posY, const int width, int color){
+	char b[] = "Click to start";
+	float w = float(float(width) / 47.0f);
+	float number = 0;
+	for (int i = 0; i < 14; i++) {
+		if (isupper(b[i])) {
+			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
+			number += 6.0f;
+		}
+		if (islower(b[i])) {
+			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
+			number += 4.0f;
+		}
+		if (b[i] == ' ') {
+			number += 2.0f;
+		}
+	}
+}
+
 void Title::Update() {
 	/////////////////////////////opening処理
 	///opening時計
@@ -133,9 +152,13 @@ void Title::Render() {
 		window[2]->drawWindow(0x4BBC54FF);
 		window[3]->drawWindow(0x4BBC54FF);
 		window[0]->drawWindow(0x4BBC54FF);
-		Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
+		//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
 	}
 
 	///文字
-	DrawTitle(360, 200,520, 0x4BBC54FF);
+	if(openClock == 0){
+		int y = 40;
+		DrawTitle(360, 250 + y, 520, 0x4BBC54FF);
+		DrawGameStart(WINDOW_WIDTH/2 - 150 - 25 , 400 + y, 300, 0x4BBC54FF);
+	}
 }

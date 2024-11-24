@@ -15,8 +15,9 @@ public:
 	//タイトルの初期化処理
 	void Init();
 
-
+	
 	void DrawTitle(const int posX, const int posY, const int width, int color);
+	void DrawGameStart(const int posX, const int posY, const int width, int color);
 
 	//タイトルの更新処理
 	void Update();
