@@ -1142,6 +1142,9 @@ Vector2 Enemy::EaseOutBack(Vector2 centerPos, Vector2 followerPos, float easeAmo
 	//相対位置
 	static Vector2 initialOffset = { 10.0f, 10.0f };
 
+	//最大距离
+	float maxDistance = 2.0f * Magnitude(initialOffset);
+
 	//中心点の前フレームから現在のフレームまでの移動量
 	Vector2 centerDelta = Subtract(centerPos, preCenterPos);
 	//フォロワー目標位置を計算
@@ -1169,6 +1172,13 @@ Vector2 Enemy::EaseOutBack(Vector2 centerPos, Vector2 followerPos, float easeAmo
 		Vector2 restoreDirection = Normalize(Subtract(initialOffset, offset));
 		Vector2 restoreForce = Multiply(restoreDirection, RESTORE_STRENGTH_ * easeAmount);
 		followerPos = Add(followerPos, restoreForce);
+	}
+
+	Vector2 toCenter = Subtract(followerPos, centerPos);
+	float currentDistance = Magnitude(toCenter);
+	if (currentDistance > maxDistance) {
+		Vector2 constrainedPosition = Add(centerPos, Multiply(Normalize(toCenter), maxDistance));
+		followerPos = constrainedPosition;
 	}
 
 	//前フレームの中心点の位置を更新
