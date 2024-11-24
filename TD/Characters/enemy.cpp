@@ -30,6 +30,8 @@ Enemy::Enemy() {
 	//敵の生存フラグ
 	isAlive = true;
 
+	is_spawned = false;
+
 	//現在の行動
 	current_action = ActionID::IDLE;
 	//行動の残り時間
@@ -218,6 +220,7 @@ void Enemy::Init() {
 	//敵のブレイク状態
 	break_timer = 0;
 	//SetRandomAction();
+	is_spawned = false;
 
 	tmp = 0.0f;
 
@@ -606,21 +609,29 @@ void Enemy::SetRandomAction() {
 	static std::mt19937 gen(rd());
 	std::uniform_int_distribution<int> dist(1, 3);
 
-	int actionChoice = dist(gen);
-	if (actionChoice == 1) {
-		current_action = ActionID::MOVE_AND_DEPLOY;
-		//行動の持続時間を設定
-		action_timer = 600;
+	if (!is_spawned) {
+		current_action = ActionID::IDLE;
+		action_timer = 100;
+		is_spawned = true;
+		return;
 	}
-	else if (actionChoice == 2) {
-		current_action = ActionID::FIRE_AT_PLAYER;
-		//行動の持続時間を設定
-		action_timer = 600; // 行动持续时间
-	}
-	else if (actionChoice == 3) {
-		current_action = ActionID::Figure_Eight;
-		//行動の持続時間を設定
-		action_timer = 300;
+	else {
+		int actionChoice = dist(gen);
+		if (actionChoice == 1) {
+			current_action = ActionID::MOVE_AND_DEPLOY;
+			//行動の持続時間を設定
+			action_timer = 600;
+		}
+		else if (actionChoice == 2) {
+			current_action = ActionID::FIRE_AT_PLAYER;
+			//行動の持続時間を設定
+			action_timer = 600; // 行动持续时间
+		}
+		else if (actionChoice == 3) {
+			current_action = ActionID::Figure_Eight;
+			//行動の持続時間を設定
+			action_timer = 300;
+		}
 	}
 }
 
@@ -805,6 +816,14 @@ void Enemy::FireAtPlayer() {
 		current_action = ActionID::IDLE; //IDLEに遷移
 		action_timer = 300;              //IDLE時間設定
 	}
+
+	//巻き戻し処理
+	if ((vel > 0 && pos.x >= WINDOW_WIDTH * MAX_SCROLL) || (vel < 0.0f && pos.x <= 0.0f)) {
+		//行動終了、リセット
+		vel = 0.0f;
+		current_action = ActionID::IDLE; //次はIDLEに遷移
+		action_timer = 100;             //IDLEの時間設定
+	}
 }
 
 
@@ -824,6 +843,13 @@ void Enemy::FigureEight() {
 		//現在位置を更新
 		pos.x += speed + deltaX; //振動を追加
 		pos.y += deltaY;         //縦方向の振動
+	}
+
+	if ((vel > 0 && pos.x >= WINDOW_WIDTH * MAX_SCROLL) || (vel < 0.0f && pos.x <= 0.0f)) {
+		//行動終了、リセット
+		vel = 0.0f;
+		current_action = ActionID::IDLE; //次はIDLEに遷移
+		action_timer = 100;             //IDLEの時間設定
 	}
 }
 
