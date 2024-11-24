@@ -40,13 +40,6 @@ void DrawPolygon(const Vector2 point1, const Vector2 point2, const Vector2 point
 void DrawPolygon(const Vector2 point1, const Vector2 point2, const Vector2 point3, const Vector2 point4
 	, const Vector2 point5, const Vector2 point6, const int color);
 
-///////////////////////////////////////////////////////////////Line
-
-
-void DrawLineNew(const Vector2 point1, const Vector2 point2, const int px, int color);
-
-///////////////////////////////////////////////////////////////0/1
-
 /// <summary>
 /// 数字を描く
 /// </summary>
@@ -67,3 +60,20 @@ void DrawNum(const int posX, const int posY, const int width, const int height, 
 /// <param name="color">描きたい色</param>
 /// <param name="Num">描きたい数字、今は0が1しができない</param>
 void DrawNum(const int posX, const int posY, const int width, const int color, int Num);
+
+
+///////////////////////////////////////////////////////////////Line
+
+/// <summary>
+/// 太さが変えられる線を描く
+/// </summary>
+/// <param name="point1">Vector2</param>
+/// <param name="point2">Vector2</param>
+/// <param name="px">太さ</param>
+/// <param name="color"></param>
+void DrawLineNew(const Vector2 point1, const Vector2 point2, const int px, int color);
+
+///////////////////////////////////////////////////////////////color
+
+
+int colorChanger(const int color1, const int color2, const int clock, const int time);
