@@ -5,6 +5,7 @@
 #include "./Tools/config.h"
 #include "./Entities/obj.h"
 #include "drawPolygon.h"
+#include "effect.h"
 
 class Title {
 public:
@@ -37,6 +38,9 @@ public:
 	int changeNum[6];
 	int changeClockClock[6];
 	int changeClockTime[6];
+
+	RuningBinary* runingBinary;
+
 
 };
 

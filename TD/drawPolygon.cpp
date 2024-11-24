@@ -324,7 +324,6 @@ void DrawLineNew(const Vector2 point1, const Vector2 point2, const int px, int c
 			Novice::DrawLine(int(point1.x + a * (i / 2)), int(point1.y + (i / 2)), int(point2.x + a * (i / 2)), int(point1.y + (i / 2)), color);
 		}
 	}
-
 }
 
 ///////////////////////////////////////////////////////////////color
@@ -333,3 +332,4 @@ int colorChanger(const int color1, const int color2, const int clock, const int 
 	int changeColor = int((color2 - color1) / float(time));
 	return color2 - changeColor * clock;
 }
+

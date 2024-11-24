@@ -2,7 +2,6 @@
 #include <Novice.h>
 #include <Vector2.h>
 #include <math.h>
-#include <ctype.h>
 
 ///////////////////////////////////////////////////////////////Polygon
 
@@ -79,3 +78,7 @@ void DrawLineNew(const Vector2 point1, const Vector2 point2, const int px, int c
 
 
 int colorChanger(const int color1, const int color2, const int clock, const int time);
+
+
+///////////////////////////////////////////////////////////////effect
+

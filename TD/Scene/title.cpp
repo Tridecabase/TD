@@ -6,6 +6,7 @@ Title::Title() {
 	for (int i = 0; i < 4; i++) {
 		window[i] = new Obj;
 	}
+	runingBinary = new(RuningBinary);
 	openClock = {};
 	openTime = {};
 
@@ -36,6 +37,9 @@ void Title::Init() {
 	window[3]->Init(400, 0);
 	window[3]->pos_ = { WINDOW_WIDTH / 2 + 300,670 };
 
+	runingBinary->Init(180, 270, 270, 200, 20);
+
+
 	openTime = 15;
 	openClock = openTime;
 
@@ -52,13 +56,13 @@ void Title::Init() {
 	changeClockClock[5] = 10;
 }
 
-void Title::DrawTitle(const int posX, const int posY,const int width, int color){
+void Title::DrawTitle(const int posX, const int posY, const int width, int color) {
 	char b[] = "NeoHorizon";
 	//char b[] = "e";
 	float w = float(float(width) / 41.0f);
 	float number = 0;
-	for (int i = 0; i < 10;i++) {
-		if(isupper(b[i])) {
+	for (int i = 0; i < 10; i++) {
+		if (isupper(b[i])) {
 			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
 			number += 6.0f;
 		}
@@ -71,7 +75,7 @@ void Title::DrawTitle(const int posX, const int posY,const int width, int color)
 
 }
 
-void Title::DrawGameStart(const int posX, const int posY, const int width, int color){
+void Title::DrawGameStart(const int posX, const int posY, const int width, int color) {
 	char b[] = "Click to start";
 	float w = float(float(width) / 47.0f);
 	float number = 0;
@@ -118,7 +122,7 @@ void Title::Update() {
 		}
 	}
 
-
+	runingBinary->Updata();
 }
 
 void Title::StageChanger() {
@@ -147,18 +151,22 @@ void Title::Render() {
 	}
 
 	///Window
-	{
-		window[1]->drawWindow(0x4BBC54FF);
-		window[2]->drawWindow(0x4BBC54FF);
-		window[3]->drawWindow(0x4BBC54FF);
-		window[0]->drawWindow(0x4BBC54FF);
-		//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
+	window[1]->drawWindow(0x4BBC54FF);
+	if (openClock == 0) {
+		runingBinary->Render();
 	}
+	///Window
+	window[2]->drawWindow(0x4BBC54FF);
+	///Window
+	window[3]->drawWindow(0x4BBC54FF);
 
-	///文字
-	if(openClock == 0){
+	///WindowTitle
+	window[0]->drawWindow(0x4BBC54FF);
+	if (openClock == 0) {
 		int y = 40;
 		DrawTitle(360, 250 + y, 520, 0x4BBC54FF);
-		DrawGameStart(WINDOW_WIDTH/2 - 150 - 25 , 400 + y, 300, 0x4BBC54FF);
+		DrawGameStart(WINDOW_WIDTH / 2 - 150 - 25, 400 + y, 300, 0x4BBC54FF);
 	}
+	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
+
 }
