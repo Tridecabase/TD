@@ -1,35 +1,36 @@
 ﻿#pragma once
 #include <Novice.h>
 #include <Vector2.h>
+#include <time.h>
 #include "./Tools/config.h"
 #include "./Entities/obj.h"
 #include "drawPolygon.h"
 
-class Title{
+class Title {
 public:
 	Title();
+	~Title();
 	///メンバー関数
 
-    //タイトルの初期化処理
-    void Init();
-    //タイトルの更新処理
-    void Update();
-    //ステージチェンジャー
-    void StageChanger();
-    //タイトルの描画処理
-    void Render();
+	//タイトルの初期化処理
+	void Init();
+	//タイトルの更新処理
+	void Update();
+	//ステージチェンジャー
+	void StageChanger();
+	//タイトルの描画処理
+	void Render();
 
 	///メンバー変数
-    Vector2 Window1;
-    int w1Width;
-    int w1Height;
-    Vector2 Window2;
-    int w2Width;
-    int w2Height;
-    Vector2 Window3;
-    int w3Width;
-    int w3Height;
+	int randNumber;
 
+	Obj* window[4];
+	int openClock;
+	int openTime;
 
+	int yMoveNum[6];
+	int changeNum[6];
+	int changeClockClock[6];
+	int changeClockTime[6];
 };
 
