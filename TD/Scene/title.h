@@ -4,6 +4,7 @@
 #include <time.h>
 #include "./Tools/config.h"
 #include "./Entities/obj.h"
+#include "./Characters/player.h"
 #include "drawPolygon.h"
 #include "effect.h"
 
@@ -16,7 +17,7 @@ public:
 	//タイトルの初期化処理
 	void Init();
 
-	
+
 	void DrawTitle(const int posX, const int posY, const int width, int color);
 	void DrawGameStart(const int posX, const int posY, const int width, int color);
 
@@ -34,6 +35,9 @@ public:
 	int openClock;
 	int openTime;
 
+	int aniClock;
+	int aniTime;
+
 	int yMoveNum[6];
 	int changeNum[6];
 	int changeClockClock[6];
@@ -41,6 +45,6 @@ public:
 
 	RuningBinary* runingBinary;
 
-
+	Player* player;
 };
 

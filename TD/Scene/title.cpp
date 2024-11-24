@@ -10,6 +10,9 @@ Title::Title() {
 	openClock = {};
 	openTime = {};
 
+	aniClock = {};
+	aniTime  = {};
+
 	for (int i = 0; i < 6; i++) {
 		changeNum[i] = {};
 		yMoveNum[i] = {};
@@ -17,12 +20,15 @@ Title::Title() {
 		changeClockTime[i] = {};
 	}
 
+	player = new(Player);
 }
 
 Title::~Title() {
 	for (int i = 0; i < 4; i++) {
 		delete window[i];
 	}
+	delete runingBinary;
+	delete player;
 }
 
 void Title::Init() {
@@ -43,6 +49,9 @@ void Title::Init() {
 	openTime = 15;
 	openClock = openTime;
 
+	aniClock = 0;
+	aniTime = 60;
+
 	for (int i = 0; i < 6; i++) {
 		changeNum[i] = {};
 		changeClockTime[i] = { 60 };
@@ -54,6 +63,14 @@ void Title::Init() {
 	changeClockClock[3] = 30;
 	changeClockClock[4] = 20;
 	changeClockClock[5] = 10;
+
+	player->InitDisplay();
+	player->velocity = 2;
+	player->screen_pos = { 1050 ,600};
+	player->width = 48.0f;
+	player->height = 24.0f;
+	player->clock = 0;
+	player->timer = 1;
 }
 
 void Title::DrawTitle(const int posX, const int posY, const int width, int color) {
@@ -101,7 +118,14 @@ void Title::Update() {
 		openClock--;
 	}
 
-	///
+	///aniClock
+	if (aniClock != aniTime) {
+		aniClock++;
+	}else {
+		aniClock = 0;
+	}
+
+	///window変形
 	{
 		float t = float(openClock) / float(openTime);
 		window[0]->height_ = (t * 0 + (1 - t) * 500);
@@ -159,6 +183,9 @@ void Title::Render() {
 	window[2]->drawWindow(0x4BBC54FF);
 	///Window
 	window[3]->drawWindow(0x4BBC54FF);
+	if (openClock == 0) {
+		player->Draw(0x4BBC54FF);
+	}
 
 	///WindowTitle
 	window[0]->drawWindow(0x4BBC54FF);
@@ -167,6 +194,7 @@ void Title::Render() {
 		DrawTitle(360, 250 + y, 520, 0x4BBC54FF);
 		DrawGameStart(WINDOW_WIDTH / 2 - 150 - 25, 400 + y, 300, 0x4BBC54FF);
 	}
+	//Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
 	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
 
 }

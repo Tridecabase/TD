@@ -116,6 +116,54 @@ void Player::Init(Map* map) {
 	isShootAbleD = false;
 
 };
+
+void Player::InitDisplay() {
+
+	// ============================
+	// プレイヤ基本情報
+	// ============================
+	float blockSize = 96.0f;
+	//プレイヤーの位置ベクトル
+	pos.x = blockSize * 2.0f;
+	pos.y = blockSize;
+	pos.z = 50.0f;
+	posNum.x = 0.0f;
+	posNum.y = 0.0f;
+	tmpPos.x = 0.0f;
+	tmpPos.y = 0.0f;
+	blockPos.x = blockSize * 2.0f;
+	blockPos.y = blockSize;
+	//プレイヤーの速度ベクトル
+	speed.x = blockSize;
+	speed.y = blockSize;
+	//プレイヤーの長さ
+	width = 40.0f;
+	//プレイヤーの高さ
+	height = 20.0f;
+	//プレイヤーの動きクールタイム
+	moveCooltime = 0;
+	//プレイヤーの生存フラグ
+	isAlive = true;
+
+	isPlayerLeft = false;
+	isPlayerRight = false;
+
+	// ============================
+	// 弾丸関数変数
+	// ============================
+
+	//弾丸のクールダウン
+	shootCoolTimeA = 3;
+	shootCoolTimeB = 500;
+	shootCoolTimeC = 30;
+	shootCoolTimeD = 360;
+	//弾丸撃つのフラグ
+	isShootAbleA = false;
+	isShootAbleB = false;
+	isShootAbleC = false;
+	isShootAbleD = false;
+
+};
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
 ////////////////////////////////////////////////////////////////////////////////////////////

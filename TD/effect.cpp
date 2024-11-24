@@ -47,7 +47,7 @@ void RuningBinary::Updata() {
 		clock_ = time_;
 	}
 
-	Novice::ScreenPrintf(10, 700, "%d /%d", clock_, time_);
+	//Novice::ScreenPrintf(10, 700, "%d /%d", clock_, time_);
 }
 
 void RuningBinary::Render(){
@@ -55,7 +55,7 @@ void RuningBinary::Render(){
 		if(wordFloat[i]->pos_ .y < height_){
 			wordFloat[i]->Render(pos_.x, pos_.y, width_, clock_, time_, 0x4BBC54FF);
 		}
-		Novice::ScreenPrintf(10, 680 - i * 20, "%c", wordFloat[i]->word_[i]);
+		//Novice::ScreenPrintf(10, 680 - i * 20, "%c", wordFloat[i]->word_[i]);
 	}
 
 }

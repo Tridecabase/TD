@@ -78,6 +78,7 @@ WordFloat::WordFloat()
 	pos_ = {};
 	nPos_ = {};
 	width_ = {};
+	height_ = {};
 	viewFlat_ = true;
 }
 
