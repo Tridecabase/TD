@@ -198,7 +198,7 @@ void FunnelBullet::Draw() {
 					static_cast<int>(outerPoints[j][1]),
 					static_cast<int>(outerPoints[next][0]),
 					static_cast<int>(outerPoints[next][1]),
-					0x4BBC54FF
+					0x191B19FF
 				);
 			}
 
@@ -213,7 +213,7 @@ void FunnelBullet::Draw() {
 					static_cast<int>(outerPoints[next][1]),
 					static_cast<int>(posX),
 					static_cast<int>(posY),
-					0x191B19FF,
+					0x4BBC54FF,
 					kFillModeSolid
 				);
 			}
@@ -354,7 +354,9 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
 				player->screen_pos.x - player->width / 2 <= droneBullets[i].pos.x + droneBullets[i].radius * droneBullets[i].scale) {
 				if (player->screen_pos.y + player->height / 2 >= droneBullets[i].pos.y - droneBullets[i].radius * droneBullets[i].scale &&
 					player->screen_pos.y - player->height / 2 <= droneBullets[i].pos.y + droneBullets[i].radius * droneBullets[i].scale) {
-					player->isHit = true;
+					if (!player->isHit) {
+						player->isHit = true;
+					}
 					droneBullets[i].isShoot = false;
 				}
 			}
@@ -417,7 +419,7 @@ void DroneBullet::Draw() {
 					static_cast<int>(outerPoints[j][1]),
 					static_cast<int>(outerPoints[next][0]),
 					static_cast<int>(outerPoints[next][1]),
-					0x4BBC54FF
+					0x191B19FF
 				);
 			}
 
@@ -432,7 +434,7 @@ void DroneBullet::Draw() {
 					static_cast<int>(outerPoints[next][1]),
 					static_cast<int>(posX),
 					static_cast<int>(posY),
-					0x191B19FF,
+					0x4BBC54FF,
 					kFillModeSolid
 				);
 			}
