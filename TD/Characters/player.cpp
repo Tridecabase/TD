@@ -51,7 +51,7 @@ Player::Player() {
 	shootCoolTimeA = 3;
 	shootCoolTimeB = 300;
 	shootCoolTimeC = 30;
-	shootCoolTimeD = 300;
+	shootCoolTimeD = 360;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
 	isShootAbleB = false;
@@ -118,7 +118,7 @@ void Player::Init(Map* map) {
 	shootCoolTimeA = 3;
 	shootCoolTimeB = 300;
 	shootCoolTimeC = 30;
-	shootCoolTimeD = 300;
+	shootCoolTimeD = 360;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
 	isShootAbleB = false;
@@ -515,14 +515,30 @@ void Player::Draw(int color) const {
 		0.0f, color, kFillModeWireFrame);
 
 	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
-		static_cast<int>(screen_pos.y - height), static_cast<int>(10.0f),
-		static_cast<int>((30 - shootCoolTimeB / 10) * height / 15),
-		0.0f, 0xB961F2FF, kFillModeSolid);
+		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
+		static_cast<int>(30 * height / 15),
+		0.0f, 0x191B19FF, kFillModeSolid);
+	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
+		static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+		static_cast<int>(-((30 - shootCoolTimeB / 10) * height / 15)),
+		0.0f, 0xBC47F7FF, kFillModeSolid);
+	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
+		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
+		static_cast<int>(30 * height / 15),
+		0.0f, 0x191B19FF, kFillModeWireFrame);
 
 	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
-		static_cast<int>(screen_pos.y - height), static_cast<int>(10.0f),
-		static_cast<int>((30 - shootCoolTimeD / 10) * height / 15),
-		0.0f, 0xB961F2FF, kFillModeSolid);
+		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
+		static_cast<int>(36 * height / 18),
+		0.0f, 0x191B19FF, kFillModeSolid);
+	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
+		static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+		static_cast<int>(-((36 - shootCoolTimeD / 10) * height / 18)),
+		0.0f, 0x8E13E0FF, kFillModeSolid);
+	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
+		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
+		static_cast<int>(36 * height / 18),
+		0.0f, 0x191B19FF, kFillModeWireFrame);
 
 	Novice::DrawEllipse(
 		static_cast<int>(screen_pos.x),

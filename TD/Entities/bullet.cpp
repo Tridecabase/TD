@@ -278,6 +278,7 @@ void BulletB::Shot(Player* player, Bullet* bullet) {
 							bulletB[i].randPos.y = (rand() % 80 + 1.0f);
 							bulletB[i].randPos.z = (rand() % 101 + 1.0f);
 							bulletB[i].time = 0.0f;
+							bulletB[i].stoppageTimer = 0.0f;
 							bulletB[i].stoppageTime = (70.0f + rand() % 31);
 							Novice::GetMousePosition(&bulletB[i].mousePosX, &bulletB[i].mousePosY);
 							bulletB[i].distanceToMouse = sqrtf(static_cast<float>(
@@ -622,7 +623,7 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 			if (Novice::IsPressMouse(1)) {
 				if (player->isShootAbleD) {
 					player->isShootAbleD = false;
-					player->shootCoolTimeD = 300;
+					player->shootCoolTimeD = 360;
 					if (!isShoot) {
 						isShoot = true;
 						pos.z = player->pos.z;

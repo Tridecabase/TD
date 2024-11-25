@@ -45,8 +45,6 @@ Enemy::Enemy() {
 	//ブレイク状態の残り時間
 	break_timer = 0;
 
-	tmp = 0.0f;
-
 	// ============================
 	// 弾丸関数変数
 	// ============================
@@ -83,7 +81,7 @@ Enemy::Enemy() {
 		funnel[i].x = funnel[i].y = 0.0f;
 		funnel[i].width = 64.0f;
 		funnel[i].height = 64.0f;
-		funnel[i].hp = 400;
+		funnel[i].hp = 300;
 		funnel[i].color = 0x005243FF;
 		funnel[i].line_color = 0xB443ABFF;
 		funnel[i].angle = 0x00FF0088;
@@ -222,7 +220,6 @@ void Enemy::Init() {
 	//SetRandomAction();
 	is_spawned = false;
 
-	tmp = 0.0f;
 
 	// ============================
 	// 弾丸関数変数
@@ -248,7 +245,7 @@ void Enemy::Init() {
 		funnel[i].x = funnel[i].y = 0.0f;
 		funnel[i].width = 64.0f;
 		funnel[i].height = 64.0f;
-		funnel[i].hp = 400;
+		funnel[i].hp = 300;
 		funnel[i].color = 0x005243FF;
 		funnel[i].line_color = 0x4BBC54FF;
 		funnel[i].angle = 0.0f;
@@ -478,12 +475,14 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 
 	for (int i = 0; i < MAX_BULLET_D; i++) {
 		if (bulletD->isShoot) {
-			if (pos.x + width / 2 >= bulletD->screen_pos.x - bulletD->radiusX &&
-				pos.x - width / 2 <= bulletD->screen_pos.x + bulletD->radiusX) {
-				if (pos.y + height / 2 >= bulletD->screen_pos.y - bulletD->radiusY &&
-					pos.y - height / 2 <= bulletD->screen_pos.y + bulletD->radiusY) {
-					color = RED;
-					TakeDamage(PLAYER_ATK_D);
+			if (bulletD->pos.z < 1200.0f) {
+				if (pos.x + width / 2 >= bulletD->screen_pos.x - bulletD->radiusX &&
+					pos.x - width / 2 <= bulletD->screen_pos.x + bulletD->radiusX) {
+					if (pos.y + height / 2 >= bulletD->screen_pos.y - bulletD->radiusY &&
+						pos.y - height / 2 <= bulletD->screen_pos.y + bulletD->radiusY) {
+						color = RED;
+						TakeDamage(PLAYER_ATK_D);
+					}
 				}
 			}
 		}
@@ -662,7 +661,7 @@ void Enemy::DeployFunnel(float x, float y) {
 			funnel[i].isActive = true;
 			funnel[i].x = x;
 			funnel[i].y = y;
-			funnel[i].hp = 100;
+			funnel[i].hp = 300;
 			break;
 		}
 	}
@@ -775,12 +774,14 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 
 	for (int j = 0; j < MAX_FUNNEL; ++j) {
 		if (bulletD->isShoot) {
-			if (funnel[j].x + funnel[j].width / 2 >= bulletD->screen_pos.x - bulletD->radiusX &&
-				funnel[j].x - funnel[j].width / 2 <= bulletD->screen_pos.x + bulletD->radiusX) {
-				if (funnel[j].y + funnel[j].height / 2 >= bulletD->screen_pos.y - bulletD->radiusY &&
-					funnel[j].y - funnel[j].height / 2 <= bulletD->screen_pos.y + bulletD->radiusY) {
-					funnel[j].isHit = true;
-					funnel[j].hp -= PLAYER_ATK_D;
+			if (bulletD->pos.z < 1200.0f) {
+				if (funnel[j].x + funnel[j].width / 2 >= bulletD->screen_pos.x - bulletD->radiusX &&
+					funnel[j].x - funnel[j].width / 2 <= bulletD->screen_pos.x + bulletD->radiusX) {
+					if (funnel[j].y + funnel[j].height / 2 >= bulletD->screen_pos.y - bulletD->radiusY &&
+						funnel[j].y - funnel[j].height / 2 <= bulletD->screen_pos.y + bulletD->radiusY) {
+						funnel[j].isHit = true;
+						funnel[j].hp -= PLAYER_ATK_D * 15;
+					}
 				}
 			}
 		}
@@ -976,8 +977,6 @@ void Enemy::Draw() {
 		DrawCircle(drone_aura[2], 0x4BBC54FF);
 		DrawRound(drone_eye[2], 0x4BBC54FF);
 	}
-
-	Novice::ScreenPrintf(100, 140, "%f", tmp);
 }
 
 void Enemy::DrawFunnel() const {
