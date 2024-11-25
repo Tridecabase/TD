@@ -39,6 +39,8 @@ public:
 	float height;
 	//プレイヤーの動きクールタイム
 	int moveCooltime;
+	//プレイヤーの無敵時間
+	int graceTime;
 	//プレイヤーのHP
 	int hp;
 	//プレイヤーの色

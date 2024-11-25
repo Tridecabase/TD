@@ -76,9 +76,9 @@ const int MAX_BULLET_D = 32;
 //プレイヤーの最大HP
 const int PlAYER_MAX_HP = 30;
 
-const int PLAYER_ATK_A = 40;
-const int PLAYER_ATK_B = 40;
-const int PLAYER_ATK_C = 40;
+const int PLAYER_ATK_A = 20;
+const int PLAYER_ATK_B = 60;
+const int PLAYER_ATK_C = 15;
 const int PLAYER_ATK_D = 1;
 
 
