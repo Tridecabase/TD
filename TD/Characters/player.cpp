@@ -31,6 +31,8 @@ Player::Player() {
 	height = 20.0f;
 	//プレイヤーの動きクールタイム
 	moveCooltime = 0;
+	//プレイヤーの無敵時間
+	graceTime = 60;
 	//プレイヤーのHP
 	hp = PlAYER_MAX_HP;
 	//プレイヤーの色
@@ -98,6 +100,8 @@ void Player::Init(Map* map) {
 	height = 20.0f;
 	//プレイヤーの動きクールタイム
 	moveCooltime = 0;
+	//プレイヤーの無敵時間
+	graceTime = 60;
 	//プレイヤーのHP
 	hp = PlAYER_MAX_HP;
 	//プレイヤーの色
@@ -152,6 +156,8 @@ void Player::InitDisplay() {
 	height = 20.0f;
 	//プレイヤーの動きクールタイム
 	moveCooltime = 0;
+	//プレイヤーの無敵時間
+	graceTime = 60;
 	//プレイヤーのHP
 	hp = PlAYER_MAX_HP;
 	//プレイヤーの色
@@ -308,9 +314,19 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 	}
 	if (isAlive) {
 		if (isHit) {
-			hp -= FUNNEL_ATK;
-			color1 = 0x191B19FF;
-			isHit = false;
+			if (graceTime > 0) {
+				graceTime--;
+			}
+			else {
+				graceTime = 60;
+				isHit = false;
+			}
+			if (graceTime % 4 == 2 || graceTime % 4 == 1) {
+				color1 = 0x191B19FF;
+			}
+			else {
+				color1 = 0xe4f65dFF;
+			}
 		}
 		else {
 			color1 = 0xe4f65dFF;

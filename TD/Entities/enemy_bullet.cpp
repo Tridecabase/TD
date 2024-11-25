@@ -128,7 +128,10 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 				player->screen_pos.x - player->width / 2 <= funnelBullet[i].pos.x + funnelBullet[i].radius * funnelBullet[i].scale) {
 				if (player->screen_pos.y + player->height / 2 >= funnelBullet[i].pos.y - funnelBullet[i].radius * funnelBullet[i].scale &&
 					player->screen_pos.y - player->height / 2 <= funnelBullet[i].pos.y + funnelBullet[i].radius * funnelBullet[i].scale) {
-					player->isHit = true;
+					if (!player->isHit) {
+						player->isHit = true;
+						player->hp -= FUNNEL_ATK;
+					}
 					funnelBullet[i].isShoot = false;
 				}
 			}
