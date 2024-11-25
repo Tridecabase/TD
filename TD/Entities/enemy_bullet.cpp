@@ -1,26 +1,7 @@
 #include "enemy_bullet.h"
 
 FunnelBullet::FunnelBullet() {
-
-	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
-		funnelBullet[i] = {
-		{},	//pos
-		{0.0f,0.0f},		//pos
-		{0.0f,0.0f},		//target pos
-		0.0f,	//gravityY 
-		0.0f,	//gravitySpeedY
-		30.0f,	//radius 
-		1.0f,	//scale 
-		3.0f,	//speed
-		0.0f,	//angle
-		150.0f,	//time
-		100,	//cooldown
-		0.0f,	//distanceToMouse
-		0.0f,	//altitude
-		0.0f,	//frontAltitude
-		false	//isShoot 
-		};
-	}
+	init();
 }
 FunnelBullet::~FunnelBullet() {
 }

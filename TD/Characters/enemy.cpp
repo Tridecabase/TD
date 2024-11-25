@@ -263,16 +263,15 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	drone_aura[2].pos = drone3.pos;
 
 
-	for (int i = 0; i < 3; i++) {
-
-		drone_aura[i].tmp_pos.x = player->screen_pos.x - drone_aura[i].pos.x;
-		drone_aura[i].tmp_pos.y = player->screen_pos.y - drone_aura[i].pos.y;
-
-		drone_aura[i].angle = atan2(drone_aura[i].tmp_pos.y, drone_aura[i].tmp_pos.x);
-
-		float eyeMaxOffset = drone_aura[i].r.x - drone_eye[i].r.x;
-		drone_eye[i].pos.x = drone_aura[i].pos.x + eyeMaxOffset * cos(drone_aura[i].angle);
-		drone_eye[i].pos.y = drone_aura[i].pos.y + eyeMaxOffset * sin(drone_aura[i].angle) - 10.0f;
+	if (player != nullptr) {
+		for (int i = 0; i < 3; i++) {
+			drone_aura[i].tmp_pos.x = player->screen_pos.x - drone_aura[i].pos.x;
+			drone_aura[i].tmp_pos.y = player->screen_pos.y - drone_aura[i].pos.y;
+			drone_aura[i].angle = atan2(drone_aura[i].tmp_pos.y, drone_aura[i].tmp_pos.x);
+			float eyeMaxOffset = drone_aura[i].r.x - drone_eye[i].r.x;
+			drone_eye[i].pos.x = drone_aura[i].pos.x + eyeMaxOffset * cos(drone_aura[i].angle);
+			drone_eye[i].pos.y = drone_aura[i].pos.y + eyeMaxOffset * sin(drone_aura[i].angle) - 10.0f;
+		}
 	}
 
 	// ============================
@@ -312,42 +311,48 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 
 	color = 0x191B19FF;
 
-	for (int i = 0; i < MAX_BULLET_A; i++) {
-		if (bulletA->bulletA[i].isShoot) {
-			// 自己的位置和敌人子弹的圆形判定
-			float playerRadius = height / 2;
-			float bulletRadius = bulletA->bulletA[i].radiusX; // 或 radiusY
-			if (IsCollision(pos.x, pos.y, playerRadius,bulletA->bulletA[i].screen_pos.x, bulletA->bulletA[i].screen_pos.y, bulletRadius)) {
-				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX &&
-					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX) {
-					color = RED;
-					TakeDamage(PLAYER_ATK_A);
-					bulletA->bulletA[i].isShoot = false;
+	if (bulletA != nullptr) {
+		for (int i = 0; i < MAX_BULLET_A; i++) {
+			if (bulletA->bulletA[i].isShoot) {
+				float playerRadius = height / 2;
+				float bulletRadius = bulletA->bulletA[i].radiusX;
+				if (IsCollision(pos.x, pos.y, playerRadius, bulletA->bulletA[i].screen_pos.x, bulletA->bulletA[i].screen_pos.y, bulletRadius)) {
+					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX &&
+						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX) {
+						color = RED;
+						TakeDamage(PLAYER_ATK_A);
+						bulletA->bulletA[i].isShoot = false;
+					}
 				}
 			}
 		}
 	}
 
-	for (int i = 0; i < MAX_BULLET_B; i++) {
-		if (bulletB->bulletB[i].isShoot) {
-			float playerRadius = height / 2;
-			float bulletRadius = bulletB->bulletB[i].radiusX; // 或 radiusY
-			if (IsCollision(pos.x, pos.y, playerRadius,bulletB->bulletB[i].screen_pos.x, bulletB->bulletB[i].screen_pos.y, bulletRadius)) {
-				color = RED;
-				TakeDamage(PLAYER_ATK_B);
-				bulletB->bulletB[i].isShoot = false;
+
+	if (bulletB != nullptr) {
+		for (int i = 0; i < MAX_BULLET_B; i++) {
+			if (bulletB->bulletB[i].isShoot) {
+				float playerRadius = height / 2;
+				float bulletRadius = bulletB->bulletB[i].radiusX;
+				if (IsCollision(pos.x, pos.y, playerRadius, bulletB->bulletB[i].screen_pos.x, bulletB->bulletB[i].screen_pos.y, bulletRadius)) {
+					color = RED;
+					TakeDamage(PLAYER_ATK_B);
+					bulletB->bulletB[i].isShoot = false;
+				}
 			}
 		}
 	}
 
-	for (int i = 0; i < MAX_BULLET_D; i++) {
-		if (bulletD->isShoot) {
-			if (bulletD->pos.z < 1100.0f) {
-				float playerRadius = height / 2;
-				float bulletRadius = bulletD->radiusX; // 或 radiusY
-				if (IsCollision(pos.x, pos.y, playerRadius,bulletD->screen_pos.x, bulletD->screen_pos.y, bulletRadius)) {
-					color = RED;
-					TakeDamage(PLAYER_ATK_D);
+	if (bulletD != nullptr) {
+		for (int i = 0; i < MAX_BULLET_D; i++) {
+			if (bulletD->isShoot) {
+				if (bulletD->pos.z < 1100.0f) {
+					float playerRadius = height / 2;
+					float bulletRadius = bulletD->radiusX;
+					if (IsCollision(pos.x, pos.y, playerRadius, bulletD->screen_pos.x, bulletD->screen_pos.y, bulletRadius)) {
+						color = RED;
+						TakeDamage(PLAYER_ATK_D);
+					}
 				}
 			}
 		}
@@ -389,16 +394,18 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	//	HP BARの更新処理
 	// ============================
 
-	wave1->total_length = hp /10;
-	wave2->total_length = hp / 10;
-	wave3->total_length = hp / 10;
-	wave1->numbers = static_cast<int>(hp / 20);
-	wave2->numbers = static_cast<int>(hp / 20);
-	wave3->numbers = static_cast<int>(hp / 20);
+	if (wave1 != nullptr && wave2 != nullptr && wave3 != nullptr) {
+		wave1->total_length = hp / 10;
+		wave2->total_length = hp / 10;
+		wave3->total_length = hp / 10;
+		wave1->numbers = static_cast<int>(hp / 20);
+		wave2->numbers = static_cast<int>(hp / 20);
+		wave3->numbers = static_cast<int>(hp / 20);
 
-	wave1->WaveRandomUpdate();
-	wave2->WaveRandomUpdate();
-	wave3->WaveRandomUpdate();
+		wave1->WaveRandomUpdate();
+		wave2->WaveRandomUpdate();
+		wave3->WaveRandomUpdate();
+	}
 
 	if (hp < ENEMY_MAX_HP * 0.3) {
 		wave2->color = 0xdc143cff;
@@ -527,6 +534,10 @@ void Enemy::DeployFunnel(float x, float y) {
 
 //浮遊砲の更新処理
 void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, BulletC* bulletC, BulletD* bulletD) {
+
+	if (player == nullptr || bulletA == nullptr || bulletB == nullptr || bulletC == nullptr || bulletD == nullptr) {
+		return;
+	}
 
 	// ============================
 	// 動く
@@ -737,6 +748,9 @@ void Enemy::Idle() {
 
 //プレイヤーの移動によってスクロール関数
 void Enemy::Scroll(Player* player, char keys[256]) {
+
+	if (player == nullptr || keys == nullptr) {
+	}
 
 	if (player->isPlayerLeft) {
 		if (keys[DIK_A]) {
