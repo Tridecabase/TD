@@ -33,7 +33,7 @@ public:
 	//敵の移動処理
 	void Move(Player* player, BulletA*bulletA, BulletB*bulletB, BulletD* bulletD);
 	//敵の描画
-	void Draw();
+	void Draw(const int posX, const int posY);
 	//敵の情報を表示する関数
 	void DrawInfo();
 	//void RenderWaveWithLength(WaveGenerator* wave, int length, unsigned int color);
