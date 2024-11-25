@@ -99,6 +99,8 @@ const int ENEMY_MAX_HP = 10000;
 const int MAX_FUNNEL = 12;
 //浮遊砲最大弾数
 const int MAX_BULLET_FUNNEL = MAX_FUNNEL;
+//DRONE最大弾数
+const int MAX_BULLET_DRONE = 10;
 //奥移動の速度
 const float BULLET_VEL_Z = 0.02f;
 

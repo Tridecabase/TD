@@ -2,7 +2,7 @@
 
 //コンストラクタ
 Stage::Stage()
-	: background(new Background), map(new Map), ui(new UI), player(new Player()),bullet(new Bullet),bulletA(new BulletA),bulletB(new BulletB), bulletC(new BulletC), bulletD(new BulletD), funnelBullet(new FunnelBullet), enemy(new Enemy()) {}
+	: background(new Background), map(new Map), ui(new UI), player(new Player()),bullet(new Bullet),bulletA(new BulletA),bulletB(new BulletB), bulletC(new BulletC), bulletD(new BulletD), funnelBullet(new FunnelBullet), droneBullet(new DroneBullet), enemy(new Enemy()) {}
 //デストラクタ
 Stage::~Stage() {
 	delete background;
@@ -13,6 +13,7 @@ Stage::~Stage() {
 	delete bulletC;
 	delete bulletD;
 	delete funnelBullet;
+	delete droneBullet;
 	delete map;
 	delete enemy;
 	delete ui;
@@ -34,6 +35,7 @@ void Stage::Init() {
 	bulletC->Init();
 	bulletD->Init();
 	funnelBullet->init();
+	droneBullet->init();
 	ui = new UI;
 	map = new Map;
 	//敵の初期化
@@ -79,6 +81,8 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	enemy->UpdateFunnel(player, bulletA, bulletB, bulletC, bulletD);
 	funnelBullet->Shot(player, enemy);
 	funnelBullet->Scroll(player, keys);
+	droneBullet->Shot(player, enemy);
+	droneBullet->Scroll(player, keys);
 	//UI処理
 	ui->Updata();
 
@@ -111,6 +115,7 @@ void Stage::Render() {
 	//敵の描画
 	enemy->Draw();
 	funnelBullet->Draw();
+	droneBullet->Draw();
 	//プレイヤーマップの描画
 	
 	//プレイヤー弾丸の描画
@@ -137,7 +142,7 @@ void Stage::Render() {
 	//Novice::ScreenPrintf(10, 680, "%d", scFlat);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
 	Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
-	Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
+	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
 }
 bool Stage::StageChanger(char key[256],char preKey[256])
 {

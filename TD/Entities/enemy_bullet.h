@@ -50,5 +50,35 @@ private:
 
 };
 
+class DroneBullet {
+public:
+	DroneBullet();
+	~DroneBullet();
+
+	typedef struct Bullet {
+		Vector3 pos;
+		Vector2 velocity;
+		Vector2 target_pos;
+		float radius;
+		float scale;
+		float speed;
+		float angle;
+		float time;
+		int cooldown;
+		bool isShoot;
+	} Bullet;
+
+	void init();
+	void Shot(Player* player, Enemy* enemy);
+	void Scroll(Player* player, char keys[256]);
+	void Draw();
+
+	Bullet droneBullets[MAX_BULLET_DRONE];
+
+private:
+
+};
+
+
 #endif
 

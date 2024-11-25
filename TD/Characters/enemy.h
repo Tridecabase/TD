@@ -172,6 +172,15 @@ public:
 		float acc;			//加速度
 	};
 
+	// ============================
+	// 敵描画変数
+	// ============================
+
+	Obj center;
+	Obj drone1;
+	Obj drone2;
+	Obj drone3;
+
 private:
 
 	// ============================
@@ -232,11 +241,6 @@ private:
 	// ============================
 	// 敵描画変数
 	// ============================
-
-	Obj center;
-	Obj drone1;
-	Obj drone2;
-	Obj drone3;
 
 	Vector2 drone1_shift;
 	Vector2 drone2_shift;

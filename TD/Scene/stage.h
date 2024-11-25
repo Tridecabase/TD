@@ -71,6 +71,7 @@ private:
     BulletD* bulletD;
     //敵弾丸の宣言
     FunnelBullet* funnelBullet;
+    DroneBullet* droneBullet;
     //UIの宣言
     UI* ui;
 };
