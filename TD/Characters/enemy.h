@@ -38,6 +38,8 @@ public:
 	void DrawInfo();
 	//void RenderWaveWithLength(WaveGenerator* wave, int length, unsigned int color);
 
+	bool IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2);
+
 
 	//浮遊砲の更新処理
 	void UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, BulletC* bulletC, BulletD* bulletD);
