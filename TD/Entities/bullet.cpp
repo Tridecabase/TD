@@ -14,7 +14,7 @@ void Bullet::Init() {
 	mouseType = false;
 }
 
-void Bullet::Update(){
+void Bullet::Update() {
 	mouseValue += Novice::GetWheel();
 	if (mouseValue > 550 || mouseValue < -550) {
 		mouseValue = 0;
@@ -25,7 +25,7 @@ void Bullet::Update(){
 			mouseType = true;
 		}
 	}
-	Novice::ScreenPrintf(100,500,"getWheel=%d", mouseValue);
+	Novice::ScreenPrintf(100, 500, "getWheel=%d", mouseValue);
 }
 
 BulletA::BulletA() {
@@ -115,6 +115,9 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 							bulletA[i].pos.y = player->pos.y;
 							bulletA[i].pos.z = player->pos.z;
 							bulletA[i].savePos.z = player->pos.z;
+							bulletA[i].time = 0.0f;
+							bulletA[i].gravityY = 0.0f;
+							bulletA[i].gravitySpeedY = 0.0f;
 							Novice::GetMousePosition(&bulletA[i].mousePosX, &bulletA[i].mousePosY);
 							bulletA[i].distanceToMouse = sqrtf(static_cast<float>(
 								pow(player->screen_pos.x - bulletA[i].mousePosX, 2) +
@@ -148,16 +151,10 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 
 					if (bulletA[i].screen_pos.y > 500.0f) {
 						bulletA[i].isShoot = false;
-						bulletA[i].time = 0.0f;
-						bulletA[i].gravityY = 0.0f;
-						bulletA[i].gravitySpeedY = 0.0f;
 					}
 				}
 				if (bulletA[i].pos.z > 1100.0f) {
 					bulletA[i].isShoot = false;
-					bulletA[i].time = 0.0f;
-					bulletA[i].gravityY = 0.0f;
-					bulletA[i].gravitySpeedY = 0.0f;
 				}
 
 				bulletA[i].lastPos = getLastPos(bulletA[i].savePos.z, bulletA[i].speed, bulletA[i].distanceToMouse, bulletA[i].frontPos.x, bulletA[i].frontPos.y, bulletA[i].mousePosX, bulletA[i].mousePosY);
@@ -174,13 +171,15 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 void BulletA::Draw() const {
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		if (bulletA[i].isShoot) {
-			Novice::DrawEllipse(static_cast<int>(bulletA[i].lastPos.x), static_cast<int>(bulletA[i].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x4bbc54FF, kFillModeWireFrame);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].lastPos.x), static_cast<int>(bulletA[i].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, WHITE, kFillModeWireFrame);
 		}
 	}
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		if (bulletA[i].isShoot) {
-			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x + 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x6168F2FF, kFillModeSolid);
-			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x - 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x6168F2FF, kFillModeSolid);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x + 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x191B19FF, kFillModeSolid);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x - 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x191B19FF, kFillModeSolid);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x + 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0xf8fd67FF, kFillModeWireFrame);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x - 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0xf8fd67FF, kFillModeWireFrame);
 		}
 	}
 }
@@ -278,6 +277,7 @@ void BulletB::Shot(Player* player, Bullet* bullet) {
 							bulletB[i].randPos.x = (rand() % 101 - 50.0f);
 							bulletB[i].randPos.y = (rand() % 80 + 1.0f);
 							bulletB[i].randPos.z = (rand() % 101 + 1.0f);
+							bulletB[i].time = 0.0f;
 							bulletB[i].stoppageTime = (70.0f + rand() % 31);
 							Novice::GetMousePosition(&bulletB[i].mousePosX, &bulletB[i].mousePosY);
 							bulletB[i].distanceToMouse = sqrtf(static_cast<float>(
@@ -306,8 +306,6 @@ void BulletB::Shot(Player* player, Bullet* bullet) {
 					bulletB[i].time += bulletB[i].speed / (bulletB[i].distanceToMouse * 3);
 					if (bulletB[i].time > 1.05f) {
 						bulletB[i].isShoot = false;
-						bulletB[i].time = 0.0f;
-						bulletB[i].stoppageTimer = 0.0f;
 					}
 				}
 				bulletB[i].lastPos = { static_cast<float>(bulletB[i].mousePosX) , static_cast<float>(bulletB[i].mousePosY) };
@@ -324,12 +322,13 @@ void BulletB::Shot(Player* player, Bullet* bullet) {
 void BulletB::Draw() const {
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		if (bulletB[i].isShoot) {
-			Novice::DrawEllipse(static_cast<int>(bulletB[i].lastPos.x), static_cast<int>(bulletB[i].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x4bbc54FF, kFillModeWireFrame);
+			Novice::DrawEllipse(static_cast<int>(bulletB[i].lastPos.x), static_cast<int>(bulletB[i].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, WHITE, kFillModeWireFrame);
 		}
 	}
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		if (bulletB[i].isShoot) {
-			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radiusX * bulletB[i].scale), static_cast<int>(bulletB[i].radiusY * bulletB[i].scale), 0.0f, 0xB961F2FF, kFillModeSolid);
+			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radiusX * bulletB[i].scale), static_cast<int>(bulletB[i].radiusY * bulletB[i].scale), 0.0f, 0x191B19FF, kFillModeSolid);
+			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radiusX * bulletB[i].scale), static_cast<int>(bulletB[i].radiusY * bulletB[i].scale), 0.0f, 0xBC47F7FF, kFillModeWireFrame);
 		}
 	}
 	Novice::ScreenPrintf(100, 240, "bulletB.pos.Z = %f", bulletB[0].pos.z);
@@ -421,7 +420,7 @@ void BulletC::Shot(Player* player, Bullet* bullet) {
 		else {
 			player->isShootAbleC = true;
 		}
-		if (bullet->mouseType){
+		if (bullet->mouseType) {
 			if (Novice::IsPressMouse(0)) {
 				if (player->isShootAbleC) {
 					player->isShootAbleC = false;
@@ -430,10 +429,14 @@ void BulletC::Shot(Player* player, Bullet* bullet) {
 						if (!bulletC[i][0].isShoot) {
 							bulletC[i][0].isShoot = true;
 							for (int j = 0; j < MAX_BULLET_C; j++) {
+								bulletC[i][j].isShoot = true;
 								bulletC[i][j].pos.z = player->pos.z;
 								bulletC[i][j].randPos.x = (rand() % 51 - 25.0f);
 								bulletC[i][j].randPos.y = (rand() % 51 - 25.0f);
 								bulletC[i][j].savePos.z = player->pos.z;
+								bulletC[i][j].time = 0.0f;
+								bulletC[i][j].gravityY = 0.0f;
+								bulletC[i][j].gravitySpeedY = 0.0f;
 								Novice::GetMousePosition(&bulletC[i][j].mousePosX, &bulletC[i][j].mousePosY);
 								bulletC[i][j].mousePosX += static_cast<int>(bulletC[i][j].randPos.x);
 								bulletC[i][j].mousePosY += static_cast<int>(bulletC[i][j].randPos.y);
@@ -471,9 +474,6 @@ void BulletC::Shot(Player* player, Bullet* bullet) {
 					}
 					if (bulletC[i][j].pos.z > 700.0f) {
 						bulletC[i][j].isShoot = false;
-						bulletC[i][j].time = 0.0f;
-						bulletC[i][j].gravityY = 0.0f;
-						bulletC[i][j].gravitySpeedY = 0.0f;
 					}
 
 					bulletC[i][j].lastPos = getLastPos(bulletC[i][j].savePos.z, bulletC[i][j].speed, bulletC[i][j].distanceToMouse, bulletC[i][j].frontPos.x, bulletC[i][j].frontPos.y, bulletC[i][j].mousePosX, bulletC[i][j].mousePosY);
@@ -494,18 +494,20 @@ void BulletC::Draw() const {
 	for (int i = 0; i < MAX_SHELL_C; i++) {
 		if (bulletC[i][0].isShoot) {
 			for (int j = 0; j < MAX_BULLET_C; j++) {
-				Novice::DrawEllipse(static_cast<int>(bulletC[i][j].lastPos.x), static_cast<int>(bulletC[i][j].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x4bbc54FF, kFillModeWireFrame);
+				Novice::DrawEllipse(static_cast<int>(bulletC[i][j].lastPos.x), static_cast<int>(bulletC[i][j].lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, WHITE, kFillModeWireFrame);
 			}
 		}
 	}
 	for (int i = 0; i < MAX_SHELL_C; i++) {
-		if (bulletC[i][0].isShoot) {
 			for (int j = 0; j < MAX_BULLET_C; j++) {
-				if (bulletC[i][j].screen_pos.y <= 500.0f) {
-					Novice::DrawEllipse(static_cast<int>(bulletC[i][j].screen_pos.x), static_cast<int>(bulletC[i][j].screen_pos.y), static_cast<int>(bulletC[i][j].radiusX * bulletC[i][j].scale), static_cast<int>(bulletC[i][j].radiusY * bulletC[i][j].scale), M_PI1 / 2 + bulletC[i][j].theta, 0x6168F2FF, kFillModeSolid);
+				if (bulletC[i][j].isShoot) {
+					if (bulletC[i][j].screen_pos.y <= 500.0f) {
+						Novice::DrawEllipse(static_cast<int>(bulletC[i][j].screen_pos.x), static_cast<int>(bulletC[i][j].screen_pos.y), static_cast<int>(bulletC[i][j].radiusX * bulletC[i][j].scale), static_cast<int>(bulletC[i][j].radiusY * bulletC[i][j].scale), M_PI1 / 2 + bulletC[i][j].theta, 0x191B19FF, kFillModeSolid);
+						Novice::DrawEllipse(static_cast<int>(bulletC[i][j].screen_pos.x), static_cast<int>(bulletC[i][j].screen_pos.y), static_cast<int>(bulletC[i][j].radiusX * bulletC[i][j].scale), static_cast<int>(bulletC[i][j].radiusY * bulletC[i][j].scale), M_PI1 / 2 + bulletC[i][j].theta, 0xfed03aFF, kFillModeWireFrame);
+					}
 				}
 			}
-		}
+		
 	}
 }
 
@@ -625,6 +627,8 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 						isShoot = true;
 						pos.z = player->pos.z;
 						stoppageTime = 180.0f;
+						time = 0.0f;
+						stoppageTimer = 0.0f;
 						Novice::GetMousePosition(&mousePosX, &mousePosY);
 						distanceToMouse = sqrtf(static_cast<float>(
 							pow(player->screen_pos.x - mousePosX, 2) +
@@ -636,6 +640,7 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 						bulletD[i].randPos.y = (rand() % 351 - 170.0f);
 						bulletD[i].randPos.z = (rand() % 351 - 170.0f);
 						bulletD[i].speed = ((rand() % 3 + 1) / 100.0f);
+						bulletD[i].time = 0.0f;
 						bulletD[i].frontPos.x = player->screen_pos.x + bulletD[i].randPos.x;
 						bulletD[i].frontPos.y = player->screen_pos.y + bulletD[i].randPos.y;
 						bulletD[i].pos.z = player->pos.z + bulletD[i].randPos.z;
@@ -655,7 +660,7 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 					if (bulletD[i].randTime < 0) {
 						bulletD[i].isShoot = true;
 					}
-					if (bulletD[i].isShoot){
+					if (bulletD[i].isShoot) {
 						bulletD[i].time += bulletD[i].speed;
 						bulletD[i].newPos.x = (1 - bulletD[i].time) * bulletD[i].frontPos.x + bulletD[i].time * player->screen_pos.x;
 						bulletD[i].newPos.y = (1 - bulletD[i].time) * bulletD[i].frontPos.y + bulletD[i].time * player->screen_pos.y;
@@ -672,13 +677,10 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 				time += 0.01f;
 				if (time > 1.5f) {
 					isShoot = false;
-					time = 0.0f;
-					stoppageTimer = 0.0f;
 					newPos.x = -100.0f;
 					newPos.y = -100.0f;
 					for (int i = 0; i < MAX_BULLET_D; i++) {
 						bulletD[i].isShoot = false;
-						bulletD[i].time = 0.0f;
 					}
 				}
 			}
@@ -697,14 +699,16 @@ void BulletD::Draw() const {
 	if (isShoot) {
 		for (int i = 0; i < MAX_BULLET_D; i++) {
 			if (bulletD[i].isShoot) {
-				Novice::DrawEllipse(static_cast<int>(bulletD[i].newPos.x), static_cast<int>(bulletD[i].newPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0xB961F2FF, kFillModeSolid);
+				Novice::DrawEllipse(static_cast<int>(bulletD[i].newPos.x), static_cast<int>(bulletD[i].newPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x191B19FF, kFillModeSolid);
+				Novice::DrawEllipse(static_cast<int>(bulletD[i].newPos.x), static_cast<int>(bulletD[i].newPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x8E13E0FF, kFillModeWireFrame);
 			}
 		}
-		Novice::DrawEllipse(static_cast<int>(lastPos.x), static_cast<int>(lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x4bbc54FF, kFillModeWireFrame);
-		Novice::DrawEllipse(static_cast<int>(screen_pos.x), static_cast<int>(screen_pos.y), static_cast<int>(radiusX * scale), static_cast<int>(radiusY * scale), 0.0f, 0xB961F2FF, kFillModeSolid);
+		Novice::DrawEllipse(static_cast<int>(lastPos.x), static_cast<int>(lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, WHITE, kFillModeWireFrame);
+		Novice::DrawEllipse(static_cast<int>(screen_pos.x), static_cast<int>(screen_pos.y), static_cast<int>(radiusX * scale), static_cast<int>(radiusY * scale), 0.0f, 0x191B19FF, kFillModeSolid);
+		Novice::DrawEllipse(static_cast<int>(screen_pos.x), static_cast<int>(screen_pos.y), static_cast<int>(radiusX * scale), static_cast<int>(radiusY * scale), 0.0f, 0x8E13E0FF, kFillModeWireFrame);
 	}
 	Novice::ScreenPrintf(100, 260, "stoppageTimer = %f", stoppageTimer);
-	Novice::ScreenPrintf(100, 280, "screenPosX = %f,screenPosY = %f,screenPosZ = %f", screen_pos.x,screen_pos.y,pos.z);
+	Novice::ScreenPrintf(100, 280, "screenPosX = %f,screenPosY = %f,screenPosZ = %f", screen_pos.x, screen_pos.y, pos.z);
 	Novice::ScreenPrintf(100, 300, "radiusX = %f,radiusY = %f", radiusX, radiusY);
 	Novice::ScreenPrintf(100, 320, "time = %f,scale = %f", time, scale);
 }

@@ -5,6 +5,7 @@
 #include "./Tools/wave_generator.h" 
 #include "./Characters/player.h" 
 #include "./Entities/bullet.h"
+#include "drawPolygon.h"
 #include <string>
 #include <random>
 #include <Novice.h>
@@ -30,7 +31,7 @@ public:
 	//敵の初期化
 	void Init();
 	//敵の移動処理
-	void Move(Player* player, BulletA*bulletA, BulletB*bulletB, BulletC* bulletC, BulletD* bulletD);
+	void Move(Player* player, BulletA*bulletA, BulletB*bulletB, BulletD* bulletD);
 	//敵の描画
 	void Draw();
 	//敵の情報を表示する関数

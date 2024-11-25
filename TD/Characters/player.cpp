@@ -34,7 +34,7 @@ Player::Player() {
 	//プレイヤーのHP
 	hp = PlAYER_MAX_HP;
 	//プレイヤーの色
-	color1 = 0xAB101BFF;
+	color1 = 0xf0de3dFF;
 	//プレイヤーの生存フラグ
 	isAlive = true;
 	//プレイヤーのあたりフラグ
@@ -101,7 +101,7 @@ void Player::Init(Map* map) {
 	//プレイヤーのHP
 	hp = PlAYER_MAX_HP;
 	//プレイヤーの色
-	color1 = 0xAB101BFF;
+	color1 = 0xf0de3dFF;
 	//プレイヤーの生存フラグ
 	isAlive = true;
 	//プレイヤーのあたりフラグ
@@ -155,7 +155,7 @@ void Player::InitDisplay() {
 	//プレイヤーのHP
 	hp = PlAYER_MAX_HP;
 	//プレイヤーの色
-	color1 = 0xAB101BFF;
+	color1 = 0xf0de3dFF;
 	//プレイヤーの生存フラグ
 	isAlive = true;
 	//プレイヤーのあたりフラグ
@@ -313,7 +313,7 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 			isHit = false;
 		}
 		else {
-			color1 = 0xAB101BFF;
+			color1 = 0xe4f65dFF;
 		}
 	}
 }
@@ -592,10 +592,10 @@ void Player::Draw(int color) const {
 	Novice::DrawLine(int(point41.x), int(point41.y),
 		int(point43.x), int(point43.y), color);
 
-	//Novice::DrawBox(900, 300, 100, 100, 0.0f, 0xAB101BFF, kFillModeSolid);
-	//Novice::DrawBox(900, 500, 100, 100, 0.0f, 0x0497E6FF, kFillModeSolid);
-	//Novice::DrawBox(1100, 300, 100, 100, 0.0f, 0xBC47F7FF, kFillModeSolid);
-	//Novice::DrawBox(1100, 500, 100, 100, 0.0f, 0x8E13E0FF, kFillModeSolid);
+	Novice::DrawBox(900, 300, 100, 100, 0.0f, 0xAB101BFF, kFillModeSolid);
+	Novice::DrawBox(900, 500, 100, 100, 0.0f, 0x0497E6FF, kFillModeSolid);
+	Novice::DrawBox(1100, 300, 100, 100, 0.0f, 0xBC47F7FF, kFillModeSolid);
+	Novice::DrawBox(1100, 500, 100, 100, 0.0f, 0x8E13E0FF, kFillModeSolid);
 	Novice::ScreenPrintf(500, 500, "hp=%d", hp);
 }
 
