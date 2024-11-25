@@ -39,6 +39,15 @@ void Stage::Init() {
 	//敵の初期化
 	enemy->Init();
 
+	openTime = 60;
+	openClock = openTime;
+
+	aniClock = 0;
+	aniTime = 60;
+
+	scClock = 0;
+	scTime = 60;
+	scFlat = 0;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -72,6 +81,18 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	funnelBullet->Scroll(player, keys);
 	//UI処理
 	ui->Updata();
+
+	///opening時計
+	if (openClock != 0) {
+		openClock--;
+	}
+
+	///aniClock
+	if (aniClock != aniTime) {
+		aniClock++;
+	} else {
+		aniClock = 0;
+	}
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑更新処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -104,7 +125,36 @@ void Stage::Render() {
 
 	//UIの描画
 	ui->Draw();
-};
+
+	if (openClock != 0) {
+		stageChangeShow(openClock, openTime, 0x4BBC54FF, 1);
+	}
+	
+	if (scFlat) {
+		stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
+	}
+
+	//Novice::ScreenPrintf(10, 680, "%d", scFlat);
+	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
+	Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
+	Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
+}
+bool Stage::StageChanger(char key[256],char preKey[256])
+{
+	if (key[DIK_M] && !preKey[DIK_M]) {
+		scFlat = 1;
+		scClock = scTime;
+	}
+	if (scClock != 0) {
+		scClock--;
+	} else {
+		if (scFlat > 0) {
+			return true;
+		}
+	}
+	return false;
+}
+;
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑描画処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
 ////////////////////////////////////////////////////////////////////////////////////////////

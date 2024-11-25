@@ -17,6 +17,7 @@ public:
 
 	//プレイヤーの初期化
 	void Init(Map* map);
+	void InitDisplay();
 	//プレイヤーの移動処理
 	void Move(Map* map, FunnelBullet* funnelBullet, char keys[256], char preKeys[256]);
 	//プレイヤーの描画

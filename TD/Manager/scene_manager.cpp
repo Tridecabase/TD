@@ -39,7 +39,10 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
         title->Update();
 
         //テスト用シーン切り替え
-        if (keys[DIK_M] && !preKeys[DIK_M]) {
+        //if (keys[DIK_M] && !preKeys[DIK_M]) {
+        //    current_scene = SceneState::GAMESTART;
+        //}
+        if (title->StageChanger()) {
             current_scene = SceneState::GAMESTART;
         }
         //テスト用シーン切り替え
@@ -55,11 +58,16 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 
 
         //テスト用シーン切り替え
-        if (keys[DIK_M] && !preKeys[DIK_M]) {
+        //if (keys[DIK_M] && !preKeys[DIK_M]) {
+        //    current_scene = SceneState::GAMEEND;
+        //    stage->Init();
+        //}
+        //テスト用シーン切り替え
+        if (stage->StageChanger(keys, preKeys)) {
             current_scene = SceneState::GAMEEND;
             stage->Init();
         }
-        //テスト用シーン切り替え
+
 
         //敵を倒したらシーン切り替え
         if (stage->enemy->hp <= 0) {
@@ -78,6 +86,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
         //テスト用シーン切り替え
         if (keys[DIK_M] && !preKeys[DIK_M]) {
             current_scene = SceneState::GAMETITLE;
+            title->Init();
         }
         //テスト用シーン切り替え
 
@@ -100,9 +109,9 @@ void SceneManager::Render() {
     case SceneState::GAMETITLE:
 
         //テスト用背景
-        Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x708090ff, kFillModeSolid);
+        //Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x708090ff, kFillModeSolid);
         //テスト用シーン切り替え
-        Novice::ScreenPrintf(10, 30, "current_scene : GAMETITLE");
+        //Novice::ScreenPrintf(10, 30, "current_scene : GAMETITLE");
 
         title->Render();
 
@@ -129,7 +138,9 @@ void SceneManager::Render() {
     }
 
     //テスト用シーン切り替えボータン
-    Novice::ScreenPrintf(10,10,"press M to change scene");
+    if(current_scene != SceneState::GAMETITLE){
+        Novice::ScreenPrintf(10, 10, "press M to change scene");
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

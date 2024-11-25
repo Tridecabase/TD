@@ -178,6 +178,8 @@ private:
 	// 敵の攻撃行動管理
 	// ============================
 
+	bool is_spawned;
+
 	//行動を切り替える関数
 	void SetRandomAction();
 
