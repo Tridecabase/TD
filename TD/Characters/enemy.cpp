@@ -594,10 +594,7 @@ void Enemy::PerformAction() {
 
 //行動を切り替え
 void Enemy::SetRandomAction() {
-	static std::random_device rd;
-	static std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dist(1, 3);
-
+	// もしまだスポーンしていない場合
 	if (!is_spawned) {
 		current_action = ActionID::IDLE;
 		action_timer = 100;
@@ -605,24 +602,24 @@ void Enemy::SetRandomAction() {
 		return;
 	}
 	else {
-		int actionChoice = dist(gen);
+		//1から3の間のランダムな整数を生成
+		int actionChoice = rand() % 3 + 1;
+
 		if (actionChoice == 1) {
-			current_action = ActionID::MOVE_AND_DEPLOY;
-			//行動の持続時間を設定
-			action_timer = 600;
+			current_action = ActionID::MOVE_AND_DEPLOY;  //行動はMOVE_AND_DEPLOY
+			action_timer = 600;                          //行動の持続時間を600に設定
 		}
 		else if (actionChoice == 2) {
-			current_action = ActionID::FIRE_AT_PLAYER;
-			//行動の持続時間を設定
-			action_timer = 600; // 行动持续时间
+			current_action = ActionID::FIRE_AT_PLAYER;  //行動はFIRE_AT_PLAYER
+			action_timer = 360;                          //行動の持続時間を600に設定
 		}
 		else if (actionChoice == 3) {
-			current_action = ActionID::Figure_Eight;
-			//行動の持続時間を設定
-			action_timer = 300;
+			current_action = ActionID::Figure_Eight;    //行動はFigure_Eight
+			action_timer = 300;                          //行動の持続時間を300に設定
 		}
 	}
 }
+
 
 void Enemy::MoveAndDeploy() {
 	const float maxSpeed = MAX_SPEED_;

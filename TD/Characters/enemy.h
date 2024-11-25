@@ -5,6 +5,7 @@
 #include "./Tools/wave_generator.h" 
 #include "./Characters/player.h" 
 #include "./Entities/bullet.h"
+#include "drawPolygon.h"
 #include <string>
 #include <random>
 #include <Novice.h>

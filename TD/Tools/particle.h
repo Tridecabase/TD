@@ -19,20 +19,33 @@ public:
     ParticleGenerator() {}
 
     void GenerateParticles(float x, float y) {
+        if (maxlife <= 0) {
+            return;
+        }
+
         for (int i = 0; i < particlesPerFrame; ++i) {
             Particle p;
             p.x = x;
             p.y = y;
+
             float speed = static_cast<float>(rand()) / RAND_MAX * maxSpeed;
             float direction = static_cast<float>(rand()) / RAND_MAX * 360.0f;
             p.vx = speed * cos(direction * static_cast<float>(M_PI) / 180.0f);
             p.vy = speed * sin(direction * static_cast<float>(M_PI) / 180.0f);
+
             p.angle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
             p.color = 0x4BBC5444;
             p.life = rand() % maxlife + 1;
+
+
+            if (p.life <= 0) {
+                continue;
+            }
+
             particles.push_back(p);
         }
     }
+
 
     void Destroy(float x, float y) {
         for (int i = 0; i < particlesPerFrame; ++i) {

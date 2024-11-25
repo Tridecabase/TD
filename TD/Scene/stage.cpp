@@ -2,7 +2,17 @@
 
 //コンストラクタ
 Stage::Stage()
-	: background(new Background), map(new Map), ui(new UI), player(new Player()),bullet(new Bullet),bulletA(new BulletA),bulletB(new BulletB), bulletC(new BulletC), bulletD(new BulletD), funnelBullet(new FunnelBullet), droneBullet(new DroneBullet), enemy(new Enemy()) {}
+	: background(new Background), map(new Map), ui(new UI), player(new Player()),bullet(new Bullet),bulletA(new BulletA),bulletB(new BulletB), bulletC(new BulletC), bulletD(new BulletD), funnelBullet(new FunnelBullet), droneBullet(new DroneBullet), enemy(new Enemy()) {
+	openTime = 60;
+	openClock = openTime;
+
+	aniClock = 0;
+	aniTime = 60;
+
+	scClock = 0;
+	scTime = 60;
+	scFlat = 0;
+}
 //デストラクタ
 Stage::~Stage() {
 	delete background;
@@ -17,6 +27,7 @@ Stage::~Stage() {
 	delete map;
 	delete enemy;
 	delete ui;
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
