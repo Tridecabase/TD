@@ -48,7 +48,7 @@ public:
 
 
     void Destroy(float x, float y) {
-        for (int i = 0; i < particlesPerFrame; ++i) {
+        for (int i = 0; i < 20; ++i) {
             Particle p;
             p.x = x;
             p.y = y;
@@ -57,7 +57,7 @@ public:
             p.vx = 2 * speed * cos(direction * static_cast<float>(M_PI) / 180.0f);
             p.vy = 2 * speed * sin(direction * static_cast<float>(M_PI) / 180.0f);
             p.angle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
-            p.color = 0x4BBC5444;
+            p.color = 0xFF000044;
             p.life = rand() % maxlife + 30;
             particles.push_back(p);
         }

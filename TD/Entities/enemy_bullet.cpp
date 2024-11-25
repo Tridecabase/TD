@@ -148,7 +148,7 @@ void FunnelBullet::Scroll(Player* player, char keys[256]) {
 void FunnelBullet::Draw() {
 
 
-	//particle_generator.Render();
+	particle_generator.Render();
 
 
 	for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
