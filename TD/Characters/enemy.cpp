@@ -371,11 +371,9 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 		FloatingOver(drone1, center.pos.x, center.pos.y, 0.5f);
 		FloatingOver(drone2, center.pos.x, center.pos.y, -1.2f);
 		FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 1.0f);
-	}
-	else if (current_action == ActionID::BREAK_STATE) {
+	} else if (current_action == ActionID::BREAK_STATE) {
 
-	}
-	else {
+	} else {
 		drone1.tmp_pos = { center.pos.x - drone1_shift.x , center.pos.y - drone1_shift.y };
 		drone2.tmp_pos = { center.pos.x - drone2_shift.x , center.pos.y - drone2_shift.y };
 
@@ -506,8 +504,7 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 			break_meter = ENEMY_MAX_HP / 40;
 			break_timer = 0;
 		}
-	}
-	else {
+	} else {
 
 		// ============================
 		//	敵の攻撃行動
@@ -600,20 +597,17 @@ void Enemy::SetRandomAction() {
 		action_timer = 100;
 		is_spawned = true;
 		return;
-	}
-	else {
+	} else {
 		//1から3の間のランダムな整数を生成
 		int actionChoice = rand() % 3 + 1;
 
 		if (actionChoice == 1) {
 			current_action = ActionID::MOVE_AND_DEPLOY;  //行動はMOVE_AND_DEPLOY
 			action_timer = 600;                          //行動の持続時間を600に設定
-		}
-		else if (actionChoice == 2) {
+		} else if (actionChoice == 2) {
 			current_action = ActionID::FIRE_AT_PLAYER;  //行動はFIRE_AT_PLAYER
 			action_timer = 360;                          //行動の持続時間を600に設定
-		}
-		else if (actionChoice == 3) {
+		} else if (actionChoice == 3) {
 			current_action = ActionID::Figure_Eight;    //行動はFigure_Eight
 			action_timer = 300;                          //行動の持続時間を300に設定
 		}
@@ -795,8 +789,7 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 				funnel[i].color = 0xb7282eFF;
 				funnel[i].line_color = 0x4BBC54FF;
 				funnel[i].isHit = false;
-			}
-			else {
+			} else {
 				funnel[i].color = 0x191B19FF;
 				funnel[i].line_color = 0x4BBC54FF;
 			}
@@ -870,8 +863,7 @@ void Enemy::Idle() {
 	// 高さをゆっくり元の位置へ戻す
 	if (fabs(pos.y - ENEMY_SPAWN_POSY) > 1.0f) {
 		pos.y += (ENEMY_SPAWN_POSY - pos.y) * 0.1f; // 緩やかな移動
-	}
-	else {
+	} else {
 		SetRandomAction(); // ランダムな次の行動を選択
 	}
 }
@@ -939,18 +931,76 @@ void Enemy::Draw() {
 	}
 
 	//テスト：敵の描画
-	Novice::DrawBox(
-		static_cast<int>(screen_pos.x - width / 2),
-		static_cast<int>(screen_pos.y - height / 2),
-		static_cast<int>(width),
-		static_cast<int>(height),
-		0.0f, color, kFillModeSolid);
-	Novice::DrawBox(
-		static_cast<int>(screen_pos.x - width / 2),
-		static_cast<int>(screen_pos.y - height / 2),
-		static_cast<int>(width),
-		static_cast<int>(height),
-		0.0f, 0x4BBC54FF, kFillModeWireFrame);
+	{
+		int a = 23;
+		int b = 40;
+		Vector2 point6_1[6];
+		point6_1[0] = { float(-a),height / 2 };
+		point6_1[1] = { float(a),height / 2 };
+		point6_1[2] = { float(-b),0 };
+		point6_1[3] = { float(b),0 };
+		point6_1[4] = { float(-a),-height / 2 };
+		point6_1[5] = { float(a),-height / 2 };
+
+
+		///外六角形
+		Vector2 pPoint6_1[6];
+		for (int i = 0; i < 6; i++) {
+			pPoint6_1[i].x = point6_1[i].x + screen_pos.x;
+			pPoint6_1[i].y = point6_1[i].y + screen_pos.y;
+		}
+
+		DrawPolygon(pPoint6_1[0],pPoint6_1[1],pPoint6_1[2],pPoint6_1[3],pPoint6_1[4],pPoint6_1[5], color);
+
+		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 0), int(screen_pos.y + point6_1[0].y + 0), int(screen_pos.x + point6_1[1].x + 0), int(screen_pos.y + point6_1[1].y + 0), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 1), int(screen_pos.y + point6_1[0].y + 1), int(screen_pos.x + point6_1[1].x + 1), int(screen_pos.y + point6_1[1].y + 1), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 2), int(screen_pos.y + point6_1[0].y + 2), int(screen_pos.x + point6_1[1].x + 2), int(screen_pos.y + point6_1[1].y + 2), 0xA30019FF);
+		
+		Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 0), int(screen_pos.y + point6_1[1].y + 0), int(screen_pos.x + point6_1[3].x + 0), int(screen_pos.y + point6_1[3].y), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 1), int(screen_pos.y + point6_1[1].y + 1), int(screen_pos.x + point6_1[3].x + 1), int(screen_pos.y + point6_1[3].y), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 2), int(screen_pos.y + point6_1[1].y + 2), int(screen_pos.x + point6_1[3].x + 2), int(screen_pos.y + point6_1[3].y), 0xA30019FF);
+
+		Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 0), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 0), int(screen_pos.y + point6_1[5].y - 0), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 1), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 1), int(screen_pos.y + point6_1[5].y - 1), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 2), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 2), int(screen_pos.y + point6_1[5].y - 2), 0xA30019FF);
+
+		Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 0), int(screen_pos.y + point6_1[5].y - 0), int(screen_pos.x + point6_1[4].x - 0), int(screen_pos.y + point6_1[4].y - 0), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 1), int(screen_pos.y + point6_1[5].y - 1), int(screen_pos.x + point6_1[4].x - 1), int(screen_pos.y + point6_1[4].y - 1), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 2), int(screen_pos.y + point6_1[5].y - 2), int(screen_pos.x + point6_1[4].x - 2), int(screen_pos.y + point6_1[4].y - 2), 0xA30019FF);
+
+		Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 0), int(screen_pos.y + point6_1[4].y - 0), int(screen_pos.x + point6_1[2].x - 0), int(screen_pos.y + point6_1[2].y), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 1), int(screen_pos.y + point6_1[4].y - 1), int(screen_pos.x + point6_1[2].x - 1), int(screen_pos.y + point6_1[2].y), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 2), int(screen_pos.y + point6_1[4].y - 2), int(screen_pos.x + point6_1[2].x - 2), int(screen_pos.y + point6_1[2].y), 0xA30019FF);
+
+		Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 0), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 0), int(screen_pos.y + point6_1[0].y + 0), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 1), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 1), int(screen_pos.y + point6_1[0].y + 1), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 2), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 2), int(screen_pos.y + point6_1[0].y + 2), 0xA30019FF);
+
+
+		///内六角形
+		Novice::DrawLine(int(screen_pos.x + point6_1[0].x + 12), int(screen_pos.y + point6_1[0].y - 20), int(screen_pos.x + point6_1[1].x - 12), int(screen_pos.y + point6_1[1].y - 20), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[1].x - 12), int(screen_pos.y + point6_1[1].y - 20), int(screen_pos.x + point6_1[3].x - 20), int(screen_pos.y + point6_1[3].y	  ), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[3].x - 20), int(screen_pos.y + point6_1[3].y	  ), int(screen_pos.x + point6_1[5].x - 12), int(screen_pos.y + point6_1[5].y + 20), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[5].x - 12), int(screen_pos.y + point6_1[5].y + 20), int(screen_pos.x + point6_1[4].x + 12), int(screen_pos.y + point6_1[4].y + 20), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[4].x + 12), int(screen_pos.y + point6_1[4].y + 20), int(screen_pos.x + point6_1[2].x + 20), int(screen_pos.y + point6_1[2].y	  ), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[2].x + 20), int(screen_pos.y + point6_1[2].y	  ), int(screen_pos.x + point6_1[0].x + 12), int(screen_pos.y + point6_1[0].y - 20), 0xA30019FF);
+
+
+		//Novice::DrawEllipse(int(screen_pos.x), int(screen_pos.y), int(height / 2), int(height / 2), 0.0f, 0xA30019FF, kFillModeWireFrame);
+		
+		//Novice::DrawBox(
+		//	static_cast<int>(screen_pos.x - width / 2),
+		//	static_cast<int>(screen_pos.y - height / 2),
+		//	static_cast<int>(width),
+		//	static_cast<int>(height),
+		//	0.0f, color, kFillModeSolid);
+		//Novice::DrawBox(
+		//	static_cast<int>(screen_pos.x - width / 2),
+		//	static_cast<int>(screen_pos.y - height / 2),
+		//	static_cast<int>(width),
+		//	static_cast<int>(height),
+		//	0.0f, 0x4BBC54FF, kFillModeWireFrame);
+	}
 
 	if (drone1.w < static_cast<float>(M_PI)) {
 		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
@@ -1071,9 +1121,9 @@ void Enemy::DrawInfo() {
 	//HPbar　エフェクト
 	for (int i = 0; i < 3; i++) {
 		Novice::DrawBox(
-			static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP/10) / 2),
+			static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2),
 			18 + i,
-			ENEMY_MAX_HP/10,
+			ENEMY_MAX_HP / 10,
 			24 - i * 2,
 			0.0f,
 			(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + i), kFillModeSolid
@@ -1082,9 +1132,9 @@ void Enemy::DrawInfo() {
 
 	for (int i = 0; i < 10; i++) {
 		Novice::DrawBox(
-			static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP/10) / 2),
+			static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2),
 			18 + i,
-			hp/10,
+			hp / 10,
 			24 - i * 2,
 			0.0f,
 			(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | (hpbar_alpha + i), kFillModeSolid
@@ -1098,27 +1148,27 @@ void Enemy::DrawInfo() {
 
 	//左の線
 	Novice::DrawLine(
-		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP/ 10) / 2),
+		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2),
 		15,
-		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP/ 10) / 2),
+		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2),
 		45,
 		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
 	);
 
 	//右の線
 	Novice::DrawLine(
-		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP/ 10) / 2 + hp - 1),
+		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2 + hp - 1),
 		15,
-		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP/ 10) / 2 + hp - 1),
+		static_cast<int>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2 + hp - 1),
 		45,
 		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
 	);
 
 	//現在のHP
 	Novice::DrawLine(
-		static_cast<int>((WINDOW_WIDTH + ENEMY_MAX_HP/ 10) / 2 - 1),
+		static_cast<int>((WINDOW_WIDTH + ENEMY_MAX_HP / 10) / 2 - 1),
 		15,
-		static_cast<int>((WINDOW_WIDTH + ENEMY_MAX_HP/ 10) / 2 - 1),
+		static_cast<int>((WINDOW_WIDTH + ENEMY_MAX_HP / 10) / 2 - 1),
 		45,
 		(hpbar_r << 24) | (hpbar_g << 16) | (hpbar_b << 8) | 0xFF
 	);

@@ -135,7 +135,6 @@ void Stage::Render() {
 	bulletC->Draw();
 	bulletD->Draw();
 
-
 	//プレイヤーの描画
 	player->Draw(player->color1);
 
