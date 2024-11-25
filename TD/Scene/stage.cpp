@@ -52,7 +52,7 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	//背景の更新処理
 	background->Update(player,map,keys);
 	//プレイヤーの移動処理
-	player->Move(map, keys, preKeys);
+	player->Move(map, funnelBullet, keys, preKeys);
 	//プレイヤー弾丸の更新処理
 	bullet->Update();
 	bulletA->Shot(player,bullet);
@@ -100,7 +100,7 @@ void Stage::Render() {
 
 
 	//プレイヤーの描画
-	player->Draw(0x4BBC54FF);
+	player->Draw(player->color1);
 
 	//UIの描画
 	ui->Draw();

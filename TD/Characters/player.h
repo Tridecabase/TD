@@ -2,9 +2,11 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include <math.h>
+#include "./Entities/enemy_bullet.h"
 #include "./Entities/map.h" 
 #include "./Tools/config.h" 
 #include "drawPolygon.h"
+
 
 class Player {
 public:
@@ -16,7 +18,7 @@ public:
 	//プレイヤーの初期化
 	void Init(Map* map);
 	//プレイヤーの移動処理
-	void Move(Map* map, char keys[256], char preKeys[256]);
+	void Move(Map* map, FunnelBullet* funnelBullet, char keys[256], char preKeys[256]);
 	//プレイヤーの描画
 	void Draw(int color) const;
 
@@ -39,8 +41,12 @@ public:
 	int moveCooltime;
 	//プレイヤーのHP
 	int hp;
+	//プレイヤーの色
+	int color1;
 	//プレイヤーの生存フラグ
 	bool isAlive;
+	//プレイヤーのあたりフラグ
+	bool isHit;
 	//アニメタイマー
 	int clock;
 	int timer;
