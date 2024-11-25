@@ -76,7 +76,10 @@ const int MAX_BULLET_D = 32;
 //プレイヤーの最大HP
 const int PlAYER_MAX_HP = 30;
 
-const int PLAYER_ATK = 4;
+const int PLAYER_ATK_A = 40;
+const int PLAYER_ATK_B = 40;
+const int PLAYER_ATK_C = 40;
+const int PLAYER_ATK_D = 1;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,7 +91,7 @@ const float ENEMY_SPAWN_POSX = 0.0f;
 const float ENEMY_SPAWN_POSY = 100.0f;
 
 //敵の最大HP
-const int ENEMY_MAX_HP = 1000;
+const int ENEMY_MAX_HP = 10000;
 
 //敵のHPBAR
 

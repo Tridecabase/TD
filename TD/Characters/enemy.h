@@ -31,7 +31,7 @@ public:
 	//敵の初期化
 	void Init();
 	//敵の移動処理
-	void Move(Player* player, BulletA*bulletA, BulletB*bulletB, BulletC* bulletC, BulletD* bulletD);
+	void Move(Player* player, BulletA*bulletA, BulletB*bulletB, BulletD* bulletD);
 	//敵の描画
 	void Draw();
 	//敵の情報を表示する関数
