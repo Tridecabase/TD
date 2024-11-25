@@ -45,8 +45,7 @@ public:
 	Bullet funnelBullet[MAX_BULLET_FUNNEL];
 
 private:
-
-	ParticleGenerator particle_generator;
+	//ParticleGenerator particle_generator;
 
 };
 
