@@ -104,6 +104,9 @@
     <ClCompile Include="effect.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\TestStage.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -233,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="effect.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TestStage.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

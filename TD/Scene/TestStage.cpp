@@ -1,6 +1,6 @@
-﻿#include "title.h"
+﻿#include "TestStage.h"
 
-Title::Title() {
+TestStage::TestStage() {
 	randNumber = {};
 
 	ui = new(UI);
@@ -27,9 +27,11 @@ Title::Title() {
 	}
 
 	player = new(Player);
+
+	enemy = new(Enemy);
 }
 
-Title::~Title() {
+TestStage::~TestStage() {
 
 	delete ui;
 	for (int i = 0; i < 4; i++) {
@@ -37,9 +39,10 @@ Title::~Title() {
 	}
 	delete runingBinary;
 	delete player;
+	delete enemy;
 }
 
-void Title::Init() {
+void TestStage::Init() {
 	srand((unsigned int)time(NULL));
 
 	ui = new(UI);
@@ -85,50 +88,20 @@ void Title::Init() {
 	player->height = 24.0f;
 	player->clock = 0;
 	player->timer = 1;
+
+	enemy->Init();
 }
 
-void Title::DrawTitle(const int posX, const int posY, const int width, int color) {
-	char b[] = "NeoHorizon";
-	//char b[] = "e";
-	float w = float(float(width) / 41.0f);
-	float number = 0;
-	for (int i = 0; i < 10; i++) {
-		if (isupper(b[i])) {
-			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
-			number += 6.0f;
-		}
-		if (islower(b[i])) {
-			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
-			number += 4.0f;
-		}
 
-	}
 
-}
-
-void Title::DrawGameStart(const int posX, const int posY, const int width, int color) {
-	char b[] = "Click to start";
-	float w = float(float(width) / 47.0f);
-	float number = 0;
-	for (int i = 0; i < 14; i++) {
-		if (isupper(b[i])) {
-			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
-			number += 6.0f;
-		}
-		if (islower(b[i])) {
-			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
-			number += 4.0f;
-		}
-		if (b[i] == ' ') {
-			number += 2.0f;
-		}
-	}
-}
-
-void Title::Update() {
+void TestStage::Update() {
 	/////////////////////////////UI処理
 	ui->Updata();
-	
+
+	/////////////////////////////Boss処理
+	enemy->screen_pos.x = WINDOW_WIDTH / 2;
+	enemy->screen_pos.y = WINDOW_HEIGHT / 2;
+
 	/////////////////////////////opening処理
 	///opening時計
 	if (openClock != 0) {
@@ -166,31 +139,7 @@ void Title::Update() {
 	runingBinary->Updata();
 }
 
-bool Title::StageChanger() {
-	int MPX = {};
-	int MPY = {};
-	Novice::GetMousePosition(&MPX, &MPY);
-	if (Novice::IsTriggerMouse(0)) {
-		if(MPX>0 && MPX<WINDOW_WIDTH){
-			if (MPY > 0 && MPY < WINDOW_HEIGHT) {
-				if (!scFlat) {
-					scFlat = true;
-					scClock = scTime;
-				}
-			}
-		}
-	}
-	if (scClock != 0) {
-		scClock--;
-	} else {
-		if (scFlat == true) {
-			return true;
-		}
-	}
-	return false;
-}
-
-void Title::Render() {
+void TestStage::Render() {
 	Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x191b19FF, kFillModeSolid);
 	///背景の数字
 	{
@@ -224,16 +173,8 @@ void Title::Render() {
 	if (openClock == 0) {
 		player->Draw(0x4BBC54FF);
 	}
-
-	///WindowTitle
 	window[0]->drawWindow(0x4BBC54FF);
-	if (openClock == 0) {
-		int y = 40;
-		DrawTitle(360, 250 + y, 520, 0x4BBC54FF);
-		if (aniClock <= (aniTime / 2)) {
-			DrawGameStart(WINDOW_WIDTH / 2 - 150 - 25, 400 + y, 300, 0x4BBC54FF);
-		}
-	}
+	enemy->Draw();
 
 	ui->Draw();
 
@@ -241,6 +182,7 @@ void Title::Render() {
 	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
 	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
+	Novice::ScreenPrintf(10, 700, "%f/%f", enemy->screen_pos.x, enemy->screen_pos.y);
 	if (scFlat) {
 		stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
 	}

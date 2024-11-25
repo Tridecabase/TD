@@ -13,6 +13,7 @@
 #include "./Tools/wave_generator.h"
 #include "./Scene/title.h"
 #include "./Scene/stage.h"
+#include "./Scene/TestStage.h"
 #include "./Manager/resource_manager.h"
 
 
@@ -39,7 +40,9 @@ private:
     enum class SceneState {
         GAMETITLE,
         GAMESTART,
-        GAMEEND
+        GAMEEND,
+        GAMECLEAR,
+        GAMETEST
     };
 
     void ChangeScene(SceneState newScene);
@@ -51,6 +54,7 @@ private:
     //現在のステージ
     Title* title;
     Stage* stage;
+    TestStage* testStage;
     bool is_stage_off;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
