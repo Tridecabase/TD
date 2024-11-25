@@ -174,7 +174,12 @@ void TestStage::Render() {
 		player->Draw(0x4BBC54FF);
 	}
 	window[0]->drawWindow(0x4BBC54FF);
-	enemy->Draw();
+	{
+		int MouseX = {};
+		int MouseY = {};
+		Novice::GetMousePosition(&MouseX, &MouseY);
+		enemy->Draw(MouseX, MouseY);
+	}
 
 	ui->Draw();
 

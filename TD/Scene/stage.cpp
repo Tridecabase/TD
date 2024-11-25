@@ -184,7 +184,7 @@ void Stage::Render() {
         enemy->DrawInfo();
         enemy->DrawFunnel();
         //敵の描画
-        enemy->Draw();
+        enemy->Draw(int(player->screen_pos.x), int(player->screen_pos.y));
     }
 
     if (funnelBullet) {
