@@ -26,12 +26,11 @@ public:
         }
     }
 
-    void GenerateParticles(float x, float y) {
+    void GenerateParticles(float x, float y, unsigned int color) {
         if (maxlife <= 0) {
             return;
         }
 
-        //循環バッファ方式で最大Particle数を超えないようにする
         Particle& p = particles[nextParticleIndex];
         if (!p.active) {
             p.x = x;
@@ -43,19 +42,19 @@ public:
             p.vy = speed * sin(direction * static_cast<float>(M_PI) / 180.0f);
 
             p.angle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
-            p.color = 0x4BBC5444;
+            p.color = color;
             p.life = rand() % maxlife + 1;
-            p.active = true;  //Particleを活性化
+            p.active = true;
         }
 
-        //Particleインデックスを更新して循環させる
+        // 次の粒子のインデックスを更新
         nextParticleIndex = (nextParticleIndex + 1) % MAX_PARTICLES;
     }
 
-    void Destroy(float x, float y) {
-        //破壊時に新しいParticleを生成
+    // 破壊時に赤い粒子を生成する
+    void Destroy(float x, float y, unsigned int color) {
         for (int i = 0; i < 20; ++i) {
-            GenerateParticles(x, y);
+            GenerateParticles(x, y, color);
         }
     }
 

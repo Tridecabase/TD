@@ -94,7 +94,8 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 			if (particle) {
 				particle->GenerateParticles(
 					funnelBullet[i].pos.x,
-					funnelBullet[i].pos.y
+					funnelBullet[i].pos.y,
+					0x4BBC5444
 				);
 			}
 			float dx = funnelBullet[i].pos.x - funnelBullet[i].target_pos.x;
@@ -103,7 +104,8 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 				if (particle) {
 					particle->Destroy(
 						funnelBullet[i].pos.x,
-						funnelBullet[i].pos.y
+						funnelBullet[i].pos.y,
+						0x4BBC5444
 					);
 				}
 				funnelBullet[i].isShoot = false;
@@ -119,6 +121,11 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 				if (player->screen_pos.y + player->height / 2 >= funnelBullet[i].pos.y - funnelBullet[i].radius * funnelBullet[i].scale &&
 					player->screen_pos.y - player->height / 2 <= funnelBullet[i].pos.y + funnelBullet[i].radius * funnelBullet[i].scale) {
 					if (!player->isHit) {
+						particle->Destroy(
+							funnelBullet[i].pos.x,
+							funnelBullet[i].pos.y,
+							0xFF000044
+						);
 						player->isHit = true;
 						player->hp -= FUNNEL_ATK;
 					}
@@ -213,20 +220,7 @@ void FunnelBullet::Draw() {
 
 
 DroneBullet::DroneBullet() {
-	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
-		droneBullets[i] = {
-			{0.0f, 0.0f, 1.0f}, // pos
-			{0.0f, 0.0f},       // velocity
-			{0.0f, 0.0f},       // target_pos
-			25.0f,              // radius
-			1.0f,               // scale
-			4.0f,               // speed
-			0.0f,               // angle
-			30.0f,
-			100,                // cooldown
-			false               // isShoot
-		};
-	}
+	init();
 }
 
 DroneBullet::~DroneBullet() {
@@ -237,6 +231,9 @@ DroneBullet::~DroneBullet() {
 }
 
 void DroneBullet::init() {
+
+	particle = new ParticleGenerator();
+
 	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
 		droneBullets[i] = {
 			{0.0f, 0.0f, 1.0f}, // pos
@@ -324,18 +321,24 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
 			droneBullets[i].pos.z = 1.0f - (droneBullets[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
 			droneBullets[i].pos.z = max(0.0f, droneBullets[i].pos.z);
 			droneBullets[i].scale = 0.2f + 0.8f * (1.0f - droneBullets[i].pos.z);
-			//particle_generator.GenerateParticles(
-			//	droneBullets[i].pos.x,
-			//	droneBullets[i].pos.y
-			//);
+			if (particle) {
+				particle->GenerateParticles(
+					droneBullets[i].pos.x,
+					droneBullets[i].pos.y,
+					0x4BBC5444
+				);
+			}
 
 			float dx = droneBullets[i].pos.x - droneBullets[i].target_pos.x;
 			float dy = droneBullets[i].pos.y - droneBullets[i].target_pos.y;
 			if (sqrtf(dx * dx + dy * dy) < 32.0f) {
-				//particle_generator.Destroy(
-				//	droneBullets[i].pos.x,
-				//	droneBullets[i].pos.y
-				//);
+				if (particle) {
+					particle->Destroy(
+						droneBullets[i].pos.x,
+						droneBullets[i].pos.y,
+						0x4BBC5444
+					);
+				}
 				droneBullets[i].isShoot = false;
 			}
 		}
@@ -349,6 +352,11 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
 				if (player->screen_pos.y + player->height / 2 >= droneBullets[i].pos.y - droneBullets[i].radius * droneBullets[i].scale &&
 					player->screen_pos.y - player->height / 2 <= droneBullets[i].pos.y + droneBullets[i].radius * droneBullets[i].scale) {
 					if (!player->isHit) {
+						particle->Destroy(
+							droneBullets[i].pos.x,
+							droneBullets[i].pos.y,
+							0xFF000044
+						);
 						player->isHit = true;
 					}
 					droneBullets[i].isShoot = false;
@@ -383,7 +391,9 @@ void DroneBullet::Scroll(Player* player, char keys[256]) {
 
 void DroneBullet::Draw() {
 
-	//particle_generator.Render();
+	if (particle) {
+		particle->Render();
+	}
 
 	for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
 		float posX = droneBullets[i].pos.x; //現在のX座標
