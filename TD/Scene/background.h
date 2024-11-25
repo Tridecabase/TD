@@ -15,7 +15,7 @@ class PlayerRoad {
 public:
     PlayerRoad();
 
-    void render(Player* player, int color);
+    void render(Player* player, int color) const;
     
 
     ///横線

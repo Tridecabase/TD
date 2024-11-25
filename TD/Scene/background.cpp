@@ -61,7 +61,12 @@ PlayerRoad::PlayerRoad() {
 
 };
 
-void PlayerRoad::render(Player* player, int color) {
+void PlayerRoad::render(Player* player, int color) const {
+
+	if (player == nullptr) {
+		return;
+	}
+
 	///test
 	Novice::DrawLine(640, 0, 640, 720, color);
 	///横線
@@ -206,6 +211,10 @@ void Background::Init() {
 //背景の更新処理
 void Background::Update(Player* player, Map* map, char keys[256]) {
 
+	if (player == nullptr || map == nullptr) {
+		return;
+	}
+
 	//スクロール位置をループさせる
 	if (scrollX < 0) {
 		scrollX += totalWidth;
@@ -237,6 +246,11 @@ void Background::Update(Player* player, Map* map, char keys[256]) {
 
 //背景の描画処理
 void Background::Render(Player* player) {
+
+	if (player == nullptr) {
+		return;
+	}
+
 
 	for (int i = 0; i < MAX_SCROLL; ++i) {
 		int drawX = offsetX + i * static_cast<int>(WINDOW_WIDTH);
