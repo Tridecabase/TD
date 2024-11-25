@@ -10,8 +10,8 @@
 #include "./Entities/bullet.h"
 #include "./Entities/enemy_bullet.h"
 #include "./Tools/config.h"
+#include "effect.h"
 #include "Vector2.h"
-#include "UI.h"
 #include <Novice.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,6 +32,9 @@ public:
     //ステージの描画処理
     void Render();
 
+    //ステージチェンジャー
+    bool StageChanger(char key[256], char preKey[256]);
+
     //プレイヤーの宣言
     Player* player;
     //敵の宣言
@@ -40,6 +43,21 @@ public:
 private:
 
     ResourceManager resourceManager;
+
+
+    ///開幕clock
+    int openClock;
+    int openTime;
+
+    ///ループアニメーションclock
+    int aniClock;
+    int aniTime;
+
+    ///終了clock
+    int scClock;
+    int scTime;
+    int scFlat;
+
 
     //背景の宣言
     Background* background;

@@ -58,11 +58,16 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 
 
         //テスト用シーン切り替え
-        if (keys[DIK_M] && !preKeys[DIK_M]) {
+        //if (keys[DIK_M] && !preKeys[DIK_M]) {
+        //    current_scene = SceneState::GAMEEND;
+        //    stage->Init();
+        //}
+        //テスト用シーン切り替え
+        if (stage->StageChanger(keys, preKeys)) {
             current_scene = SceneState::GAMEEND;
             stage->Init();
         }
-        //テスト用シーン切り替え
+
 
         //敵を倒したらシーン切り替え
         if (stage->enemy->hp <= 0) {
