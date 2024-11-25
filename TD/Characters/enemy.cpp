@@ -64,9 +64,9 @@ Enemy::Enemy() {
 	//	HP BAR
 	// ============================
 
-	wave1 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP, WAVE_LENGTH, WAVE_SPEED, 100, 0xffffffff);
-	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP + 1, WAVE_LENGTH - 20, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
-	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP) / 2), 30.0f, hp, ENEMY_MAX_HP, BASE_AMP + 2, WAVE_LENGTH - 40, float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
+	wave1 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP, WAVE_LENGTH, WAVE_SPEED, 100, 0xffffffff);
+	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP + 1, WAVE_LENGTH - 20, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
+	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP + 2, WAVE_LENGTH - 40, float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
 
 	hpbar_r = 0x00;
 	hpbar_g = 0xFF;
@@ -525,12 +525,12 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	//	HP BARの更新処理
 	// ============================
 
-	wave1->total_length = hp;
-	wave2->total_length = hp;
-	wave3->total_length = hp;
-	wave1->numbers = static_cast<int>(hp / 2);
-	wave2->numbers = static_cast<int>(hp / 2);
-	wave3->numbers = static_cast<int>(hp / 2);
+	wave1->total_length = hp /10;
+	wave2->total_length = hp / 10;
+	wave3->total_length = hp / 10;
+	wave1->numbers = static_cast<int>(hp / 20);
+	wave2->numbers = static_cast<int>(hp / 20);
+	wave3->numbers = static_cast<int>(hp / 20);
 
 	wave1->WaveRandomUpdate();
 	wave2->WaveRandomUpdate();
