@@ -61,7 +61,7 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 	//背景の更新処理
 	background->Update(player,map,keys);
 	//プレイヤーの移動処理
-	player->Move(map, funnelBullet, keys, preKeys);
+	player->Move(map, keys, preKeys);
 	//プレイヤー弾丸の更新処理
 	bullet->Update();
 	bulletA->Shot(player,bullet);

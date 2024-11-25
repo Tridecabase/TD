@@ -181,7 +181,7 @@ void Player::InitDisplay() {
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
-void Player::Move(Map* map, FunnelBullet* funnelBullet, char keys[256], char preKeys[256]) {
+void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
 	posNum.x = blockPos.x / speed.x;
 	posNum.y = blockPos.y / speed.y;
@@ -296,24 +296,13 @@ void Player::Move(Map* map, FunnelBullet* funnelBullet, char keys[256], char pre
 	screen_pos.x = map->blockPos.x + pos.x;
 	screen_pos.y = map->blockPos.y + pos.y;
 
-	//当たり判定
-	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
-		if (screen_pos.x + width / 2 >= funnelBullet->funnelBullet[i].pos.x - funnelBullet->funnelBullet[i].radius * funnelBullet->funnelBullet[i].scale &&
-			screen_pos.x - width / 2 <= funnelBullet->funnelBullet[i].pos.x + funnelBullet->funnelBullet[i].radius * funnelBullet->funnelBullet[i].scale) {
-			if (screen_pos.y + height / 2 >= funnelBullet->funnelBullet[i].pos.y - funnelBullet->funnelBullet[i].radius * funnelBullet->funnelBullet[i].scale &&
-				screen_pos.y - height / 2 <= funnelBullet->funnelBullet[i].pos.y + funnelBullet->funnelBullet[i].radius * funnelBullet->funnelBullet[i].scale) {
-				isHit = true;
-				hp -= FUNNEL_ATK;
-			}
-		}
-	}
-
 
 	if (hp <= 0) {
 		isAlive = false;
 	}
 	if (isAlive) {
 		if (isHit) {
+			hp -= FUNNEL_ATK;
 			color1 = 0x4BBC54FF;
 			isHit = false;
 		}

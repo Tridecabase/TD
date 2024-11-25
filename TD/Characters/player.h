@@ -2,7 +2,6 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include <math.h>
-#include "./Entities/enemy_bullet.h"
 #include "./Entities/map.h" 
 #include "./Tools/config.h" 
 #include "drawPolygon.h"
@@ -19,7 +18,7 @@ public:
 	void Init(Map* map);
 	void InitDisplay();
 	//プレイヤーの移動処理
-	void Move(Map* map, FunnelBullet* funnelBullet, char keys[256], char preKeys[256]);
+	void Move(Map* map, char keys[256], char preKeys[256]);
 	//プレイヤーの描画
 	void Draw(int color) const;
 
