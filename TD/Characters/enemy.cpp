@@ -3,6 +3,28 @@
 
 //コンストラクタ
 Enemy::Enemy() {
+	Init();
+}
+// デストラクタ
+Enemy::~Enemy() {
+	delete wave1;   //wave1 のメモリ解放
+	delete wave2;   //wave2 のメモリ解放
+	delete wave3;   //wave3 のメモリ解放
+}
+
+bool Enemy::IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2)
+{
+	float dx = x1 - x2;
+	float dy = y1 - y2;
+	float distance = dx * dx + dy * dy;
+	float radius = radius1 + radius2;
+	return distance <= (radius * radius);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
+////////////////////////////////////////////////////////////////////////////////////////////
+void Enemy::Init() {
 
 	// ============================
 	// 敵基本情報
@@ -29,7 +51,6 @@ Enemy::Enemy() {
 	color = 0x191B19FF;
 	//敵の生存フラグ
 	isAlive = true;
-
 	is_spawned = false;
 
 	//現在の行動
@@ -45,6 +66,7 @@ Enemy::Enemy() {
 	//ブレイク状態の残り時間
 	break_timer = 0;
 
+
 	// ============================
 	// 弾丸関数変数
 	// ============================
@@ -53,6 +75,7 @@ Enemy::Enemy() {
 	shootCoolTime = 10;
 	//弾丸撃つのフラグ
 	isShootAble = false;
+
 
 	// ============================
 	// 背景用のメンバー変数を
@@ -64,188 +87,29 @@ Enemy::Enemy() {
 	//	HP BAR
 	// ============================
 
-	wave1 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP, WAVE_LENGTH, WAVE_SPEED, 100, 0xffffffff);
-	wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP + 1, WAVE_LENGTH - 20, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
-	wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP + 2, WAVE_LENGTH - 40, float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
-
 	hpbar_r = 0x00;
 	hpbar_g = 0xFF;
 	hpbar_b = 0x00;
 	hpbar_alpha = 0x00;
 
-
-	// 浮遊砲の初期化
-	for (int i = 0; i < MAX_FUNNEL; ++i) {
-		funnel[i].isActive = false;
-		funnel[i].isHit = false;
-		funnel[i].x = funnel[i].y = 0.0f;
-		funnel[i].width = 64.0f;
-		funnel[i].height = 64.0f;
-		funnel[i].hp = 300;
-		funnel[i].color = 0x005243FF;
-		funnel[i].line_color = 0xB443ABFF;
-		funnel[i].angle = 0x00FF0088;
-		funnel[i].inner_center = { 0.0f ,0.0f };
-		funnel[i].distance = { 0.0f ,0.0f };
-		funnel[i].eyeball = { 0.0f ,0.0f };
-		funnel[i].eyeball_r = funnel[i].width / 6;
-		funnel[i].angleToPlayer = 0.0f;
+	if (!wave1) {
+		wave1 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP, WAVE_LENGTH, WAVE_SPEED, 100, 0xffffffff);
 	}
 
-	center = {
-		{640.0f,360.0f},		//位置
-		{640.0f,360.0f},		//位置
-		{5.0f,5.0f},			//半径
-		0.0f,					//角度
-		0XFF0000FF,				//色
-		0.0f,					//運動傾斜角度
-		0.0f,					//傾斜角度のラジアン
-		0.0f,					//中心点の回転角度
-		0.0f,					//回転カウンター
-		{0.0f,20.0f},			//楕円の半径
-		{0.0f,0.0f},			//速度
-		0.5f,					//加速度
-	};
-
-	drone1 = {
-		{0.0f,0.0f},			//位置
-		{0.0f,0.0f},			//位置
-		{32.0f,32.0f},			//半径
-		0.0f,					//角度
-		0x191B19FF,				//色
-		30.0f,					//運動傾斜角度
-		0.0f,					//傾斜角度のラジアン
-		0.0f,					//中心点の回転角度
-		0.0f,					//回転カウンター
-		{150.0f,60.0f},			//楕円の半径
-		{0.0f,0.0f},			//速度
-		0.5f,					//加速度
-	};
-
-	drone2 = {
-		{0.0f,0.0f},			//位置
-		{0.0f,0.0f},			//位置
-		{32.0f,32.0f},			//半径
-		0.0f,					//角度
-		0x191B19FF,				//色
-		345.0f,					//運動傾斜角度
-		0.0f,					//傾斜角度のラジアン
-		10.0f,					//中心点の回転角度
-		0.0f,					//回転カウンター
-		{180.0f,110.0f},		//楕円の半径
-		{0.0f,0.0f},			//速度
-		0.5f,					//加速度
-	};
-
-	drone3 = {
-		{0.0f,0.0f},			//位置
-		{0.0f,0.0f},			//位置
-		{32.0f,32.0f},			//半径
-		0.0f,					//角度
-		0x191B19FF,				//色
-		0.0f,					//運動傾斜角度
-		0.0f,					//傾斜角度のラジアン
-		10.0f,					//中心点の回転角度
-		0.0f,					//回転カウンター
-		{0.0f,15.0f},			//楕円の半径
-		{0.0f,0.0f},			//速度
-		0.5f,					//加速度
-	};
-
-	drone1_shift = { 0.0f,0.0f };
-	drone2_shift = { 0.0f,0.0f };
-
-	for (int i = 0; i < 3; i++) {
-		drone_aura[i] = {
-			{ 0.0f, 0.0f },		//位置
-			{ 0.0f, 0.0f },		//位置
-			{ 24.0f, 24.0f},	//半径
-			0.0f,				//角度
-			0x4BBC54FF,			//色
-			{0.0f,0.0f},		//速度
-			0.4f,				//加速度
-		};
-
-		drone_eye[i] = {
-			{ 0.0f, 0.0f },		//位置
-			{ 0.0f, 0.0f },		//位置
-			{ 10.0f, 10.0f},	//半径
-			0.0f,				//角度
-			0x4BBC54FF,			//色
-			{0.0f,0.0f},		//速度
-			0.3f,				//加速度
-		};
+	if (!wave2) {
+		wave2 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP + 1, WAVE_LENGTH - 20, float(WAVE_SPEED * 0.8), 120, BASE_COLOR);
 	}
-}
-//デストラクタ
-Enemy::~Enemy() {
-	delete wave1;
-	delete wave2;
-	delete wave3;
-}
+	else {
+		wave2->color = BASE_COLOR;
+	}
 
-bool Enemy::IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2)
-{
-	float dx = x1 - x2;
-	float dy = y1 - y2;
-	float distance = dx * dx + dy * dy;
-	float radius = radius1 + radius2;
-	return distance <= (radius * radius);
-}
+	if (!wave3) {
+		wave3 = new WaveGenerator(static_cast<float>((WINDOW_WIDTH - ENEMY_MAX_HP / 10) / 2), 30.0f, hp / 10, ENEMY_MAX_HP / 10, BASE_AMP + 2, WAVE_LENGTH - 40, float(WAVE_SPEED * 0.6), 150, BASE_COLOR);
+	}
+	else {
+		wave3->color = BASE_COLOR;
+	}
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
-////////////////////////////////////////////////////////////////////////////////////////////
-void Enemy::Init() {
-
-	// ============================
-	// 敵基本情報
-	// ============================
-
-	//敵のHP
-	hp = ENEMY_MAX_HP;
-	//敵の位置ベクトル
-	pos.x = 640.0f;
-	pos.y = ENEMY_SPAWN_POSY;
-	pos.z = 1090.0f;
-	//敵の長さ
-	width = 60.0f;
-	//敵の深さ
-	depth = 20.0f;
-	//敵の高さ
-	height = 80.0f;
-	//敵の速度
-	vel = 0.0f;
-	//敵の色
-	color = 0x191B19FF;
-	//敵の生存フラグ
-	isAlive = true;
-	//敵のブレイクゲージ
-	break_meter = break_meter_max;
-	//敵のブレイク状態
-	is_break = false;
-	//敵のブレイク状態
-	break_timer = 0;
-	//SetRandomAction();
-	is_spawned = false;
-
-
-	// ============================
-	// 弾丸関数変数
-	// ============================
-
-	//弾丸のクールダウン
-	shootCoolTime = 10;
-	//弾丸撃つのフラグ
-	isShootAble = false;
-
-	hpbar_r = 0x00;
-	hpbar_g = 0xFF;
-	hpbar_b = 0x00;
-	hpbar_alpha = 0x00;
-
-	wave2->color = BASE_COLOR;
-	wave3->color = BASE_COLOR;
 
 	// 浮遊砲の初期化
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
