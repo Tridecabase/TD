@@ -45,7 +45,7 @@ public:
 	Bullet funnelBullet[MAX_BULLET_FUNNEL];
 
 private:
-	ParticleGenerator particle_generator;
+	ParticleGenerator* particle;
 
 };
 
@@ -75,7 +75,7 @@ public:
 	Bullet droneBullets[MAX_BULLET_DRONE];
 
 private:
-
+	ParticleGenerator* particle;
 };
 
 
