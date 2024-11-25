@@ -74,7 +74,7 @@ const int MAX_BULLET_C = 15;
 const int MAX_BULLET_D = 32;
 
 //プレイヤーの最大HP
-const int PlAYER_MAX_HP = 3;
+const int PlAYER_MAX_HP = 30;
 
 const int PLAYER_ATK = 4;
 
@@ -96,6 +96,8 @@ const int ENEMY_MAX_HP = 1000;
 const int MAX_FUNNEL = 12;
 //浮遊砲最大弾数
 const int MAX_BULLET_FUNNEL = MAX_FUNNEL;
+//DRONE最大弾数
+const int MAX_BULLET_DRONE = 10;
 //奥移動の速度
 const float BULLET_VEL_Z = 0.02f;
 

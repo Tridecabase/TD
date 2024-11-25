@@ -123,11 +123,14 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 
 	//当たり判定
 	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
-		if (player->screen_pos.x + player->width / 2 >= funnelBullet[i].pos.x - funnelBullet[i].radius * funnelBullet[i].scale &&
-			player->screen_pos.x - player->width / 2 <= funnelBullet[i].pos.x + funnelBullet[i].radius * funnelBullet[i].scale) {
-			if (player->screen_pos.y + player->height / 2 >= funnelBullet[i].pos.y - funnelBullet[i].radius * funnelBullet[i].scale &&
-				player->screen_pos.y - player->height / 2 <= funnelBullet[i].pos.y + funnelBullet[i].radius * funnelBullet[i].scale) {
-				player->isHit = true;
+		if (funnelBullet[i].isShoot) {
+			if (player->screen_pos.x + player->width / 2 >= funnelBullet[i].pos.x - funnelBullet[i].radius * funnelBullet[i].scale &&
+				player->screen_pos.x - player->width / 2 <= funnelBullet[i].pos.x + funnelBullet[i].radius * funnelBullet[i].scale) {
+				if (player->screen_pos.y + player->height / 2 >= funnelBullet[i].pos.y - funnelBullet[i].radius * funnelBullet[i].scale &&
+					player->screen_pos.y - player->height / 2 <= funnelBullet[i].pos.y + funnelBullet[i].radius * funnelBullet[i].scale) {
+					player->isHit = true;
+					funnelBullet[i].isShoot = false;
+				}
 			}
 		}
 	}
@@ -211,6 +214,178 @@ void FunnelBullet::Draw() {
 					kFillModeSolid
 				);
 			}
+		}
+	}
+}
+
+
+DroneBullet::DroneBullet() {
+	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
+		droneBullets[i] = {
+			{0.0f, 0.0f, 1.0f}, // pos
+			{0.0f, 0.0f},       // velocity
+			{0.0f, 0.0f},       // target_pos
+			25.0f,              // radius
+			1.0f,               // scale
+			4.0f,               // speed
+			0.0f,               // angle
+			30.0f,
+			100,                // cooldown
+			false               // isShoot
+		};
+	}
+}
+
+DroneBullet::~DroneBullet() {}
+
+void DroneBullet::init() {
+	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
+		droneBullets[i] = {
+			{0.0f, 0.0f, 1.0f}, // pos
+			{0.0f, 0.0f},       // velocity
+			{0.0f, 0.0f},       // target_pos
+			25.0f,              // radius
+			1.0f,               // scale
+			4.0f,               // speed
+			0.0f,               // angle
+			30.0f,
+			100,                // cooldown
+			false               // isShoot
+		};
+	}
+}
+
+void DroneBullet::Shot(Player* player, Enemy* enemy) {
+
+	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
+
+
+		Vector3 dronePos;
+		switch (i) {
+		case 0:
+			dronePos = { enemy->drone1.pos.x, enemy->drone1.pos.y, 1.0f };
+			break;
+		case 1:
+			dronePos = { enemy->drone2.pos.x, enemy->drone2.pos.y,  1.0f };
+			break;
+		case 2:
+			dronePos = { enemy->drone3.pos.x, enemy->drone3.pos.y,  1.0f };
+			break;
+		default:
+			continue;
+		}
+
+		droneBullets[i].cooldown--;
+
+
+		if (enemy->current_action == ActionID::Figure_Eight) {
+			if (droneBullets[i].cooldown <= 0 && !droneBullets[i].isShoot) {
+				droneBullets[i].cooldown = 150;
+
+
+				droneBullets[i].pos.x = dronePos.x;
+				droneBullets[i].pos.y = dronePos.y;
+				droneBullets[i].pos.z = dronePos.z;
+
+
+				droneBullets[i].target_pos.x = player->screen_pos.x;
+				droneBullets[i].target_pos.y = player->screen_pos.y;
+
+				float dirX = droneBullets[i].target_pos.x - droneBullets[i].pos.x;
+				float dirY = droneBullets[i].target_pos.y - droneBullets[i].pos.y;
+				float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+
+				droneBullets[i].velocity.x = (dirX / magnitude) * droneBullets[i].speed;
+				droneBullets[i].velocity.y = (dirY / magnitude) * droneBullets[i].speed;
+
+				droneBullets[i].isShoot = true;
+			}
+		}
+
+		droneBullets[i].angle += 0.1f;
+		if (droneBullets[i].angle >= 2 * static_cast<float>(M_PI)) {
+			droneBullets[i].angle -= 2 * static_cast<float>(M_PI);
+		}
+	}
+
+
+	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
+		if (droneBullets[i].isShoot) {
+
+			droneBullets[i].pos.x += droneBullets[i].velocity.x;
+			droneBullets[i].pos.y += droneBullets[i].velocity.y;
+
+			float dirX = droneBullets[i].target_pos.x - droneBullets[i].pos.x;
+			float dirY = droneBullets[i].target_pos.y - droneBullets[i].pos.y;
+			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+
+			droneBullets[i].time = magnitude / droneBullets[i].speed;
+			droneBullets[i].velocity.x = dirX / droneBullets[i].time;
+			droneBullets[i].velocity.y = dirY / droneBullets[i].time;
+
+			droneBullets[i].pos.z = 1.0f - (droneBullets[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
+			droneBullets[i].pos.z = max(0.0f, droneBullets[i].pos.z);
+			droneBullets[i].scale = 0.2f + 0.8f * (1.0f - droneBullets[i].pos.z);
+
+			float dx = droneBullets[i].pos.x - droneBullets[i].target_pos.x;
+			float dy = droneBullets[i].pos.y - droneBullets[i].target_pos.y;
+			if (sqrtf(dx * dx + dy * dy) < 32.0f) {
+				droneBullets[i].isShoot = false;
+			}
+		}
+	}
+
+	//当たり判定
+	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
+		if (droneBullets[i].isShoot) {
+			if (player->screen_pos.x + player->width / 2 >= droneBullets[i].pos.x - droneBullets[i].radius * droneBullets[i].scale &&
+				player->screen_pos.x - player->width / 2 <= droneBullets[i].pos.x + droneBullets[i].radius * droneBullets[i].scale) {
+				if (player->screen_pos.y + player->height / 2 >= droneBullets[i].pos.y - droneBullets[i].radius * droneBullets[i].scale &&
+					player->screen_pos.y - player->height / 2 <= droneBullets[i].pos.y + droneBullets[i].radius * droneBullets[i].scale) {
+					player->isHit = true;
+					droneBullets[i].isShoot = false;
+				}
+			}
+		}
+	}
+}
+
+void DroneBullet::Scroll(Player* player, char keys[256]) {
+	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
+		if (droneBullets[i].isShoot) {
+			float dx = droneBullets[i].pos.x - player->screen_pos.x;
+			float dy = droneBullets[i].pos.y - player->screen_pos.y;
+			float dz = droneBullets[i].pos.z;
+
+			float theta = atan2(dy, dx);
+
+			float scrollFactor = OUTER_BG_SPEED * dz * sin(theta);
+
+			if (droneBullets[i].pos.y < 530.0f) {
+				if (player->isPlayerLeft && keys[DIK_A]) {
+					droneBullets[i].pos.x -= scrollFactor;
+				}
+				if (player->isPlayerRight && keys[DIK_D]) {
+					droneBullets[i].pos.x += scrollFactor;
+				}
+			}
+		}
+	}
+}
+
+void DroneBullet::Draw() {
+
+	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
+		if (droneBullets[i].isShoot) {
+			Novice::DrawEllipse(
+				static_cast<int>(droneBullets[i].pos.x),
+				static_cast<int>(droneBullets[i].pos.y),
+				static_cast<int>(droneBullets[i].radius * droneBullets[i].scale),
+				static_cast<int>(droneBullets[i].radius * droneBullets[i].scale),
+				0.0f,
+				0xFF0000FF,
+				kFillModeSolid
+			);
 		}
 	}
 }
