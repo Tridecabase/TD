@@ -184,6 +184,15 @@ Enemy::~Enemy() {
 	delete wave3;
 }
 
+bool Enemy::IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2)
+{
+	float dx = x1 - x2;
+	float dy = y1 - y2;
+	float distance = dx * dx + dy * dy;
+	float radius = radius1 + radius2;
+	return distance <= (radius * radius);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -441,16 +450,15 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		if (bulletA->bulletA[i].isShoot) {
-			if (pos.x + width / 2 >= bulletA->bulletA[i].screen_pos.x - bulletA->bulletA[i].radiusX &&
-				pos.x - width / 2 <= bulletA->bulletA[i].screen_pos.x + bulletA->bulletA[i].radiusX) {
-				if (pos.y + height / 2 >= bulletA->bulletA[i].screen_pos.y - bulletA->bulletA[i].radiusY &&
-					pos.y - height / 2 <= bulletA->bulletA[i].screen_pos.y + bulletA->bulletA[i].radiusY) {
-					if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX &&
-						pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX) {
-						color = RED;
-						TakeDamage(PLAYER_ATK_A);
-						bulletA->bulletA[i].isShoot = false;
-					}
+			// 自己的位置和敌人子弹的圆形判定
+			float playerRadius = height / 2;
+			float bulletRadius = bulletA->bulletA[i].radiusX; // 或 radiusY
+			if (IsCollision(pos.x, pos.y, playerRadius,bulletA->bulletA[i].screen_pos.x, bulletA->bulletA[i].screen_pos.y, bulletRadius)) {
+				if (pos.z + depth / 2 >= bulletA->bulletA[i].pos.z - bulletA->bulletA[i].radiusX &&
+					pos.z - depth / 2 <= bulletA->bulletA[i].pos.z + bulletA->bulletA[i].radiusX) {
+					color = RED;
+					TakeDamage(PLAYER_ATK_A);
+					bulletA->bulletA[i].isShoot = false;
 				}
 			}
 		}
@@ -458,29 +466,24 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		if (bulletB->bulletB[i].isShoot) {
-			if (pos.x + width / 2 >= bulletB->bulletB[i].screen_pos.x - bulletB->bulletB[i].radiusX &&
-				pos.x - width / 2 <= bulletB->bulletB[i].screen_pos.x + bulletB->bulletB[i].radiusX) {
-				if (pos.y + height / 2 >= bulletB->bulletB[i].screen_pos.y - bulletB->bulletB[i].radiusY &&
-					pos.y - height / 2 <= bulletB->bulletB[i].screen_pos.y + bulletB->bulletB[i].radiusY) {
-					color = RED;
-					TakeDamage(PLAYER_ATK_B);
-					bulletB->bulletB[i].isShoot = false;
-				}
+			float playerRadius = height / 2;
+			float bulletRadius = bulletB->bulletB[i].radiusX; // 或 radiusY
+			if (IsCollision(pos.x, pos.y, playerRadius,bulletB->bulletB[i].screen_pos.x, bulletB->bulletB[i].screen_pos.y, bulletRadius)) {
+				color = RED;
+				TakeDamage(PLAYER_ATK_B);
+				bulletB->bulletB[i].isShoot = false;
 			}
 		}
 	}
 
-
 	for (int i = 0; i < MAX_BULLET_D; i++) {
 		if (bulletD->isShoot) {
 			if (bulletD->pos.z < 1100.0f) {
-				if (pos.x + width / 2 >= bulletD->screen_pos.x - bulletD->radiusX &&
-					pos.x - width / 2 <= bulletD->screen_pos.x + bulletD->radiusX) {
-					if (pos.y + height / 2 >= bulletD->screen_pos.y - bulletD->radiusY &&
-						pos.y - height / 2 <= bulletD->screen_pos.y + bulletD->radiusY) {
-						color = RED;
-						TakeDamage(PLAYER_ATK_D);
-					}
+				float playerRadius = height / 2;
+				float bulletRadius = bulletD->radiusX; // 或 radiusY
+				if (IsCollision(pos.x, pos.y, playerRadius,bulletD->screen_pos.x, bulletD->screen_pos.y, bulletRadius)) {
+					color = RED;
+					TakeDamage(PLAYER_ATK_D);
 				}
 			}
 		}
