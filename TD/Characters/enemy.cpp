@@ -475,7 +475,7 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 
 	for (int i = 0; i < MAX_BULLET_D; i++) {
 		if (bulletD->isShoot) {
-			if (bulletD->pos.z < 1200.0f) {
+			if (bulletD->pos.z < 1100.0f) {
 				if (pos.x + width / 2 >= bulletD->screen_pos.x - bulletD->radiusX &&
 					pos.x - width / 2 <= bulletD->screen_pos.x + bulletD->radiusX) {
 					if (pos.y + height / 2 >= bulletD->screen_pos.y - bulletD->radiusY &&
@@ -771,7 +771,7 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 
 	for (int j = 0; j < MAX_FUNNEL; ++j) {
 		if (bulletD->isShoot) {
-			if (bulletD->pos.z < 1200.0f) {
+			if (bulletD->pos.z < 1100.0f) {
 				if (funnel[j].x + funnel[j].width / 2 >= bulletD->screen_pos.x - bulletD->radiusX &&
 					funnel[j].x - funnel[j].width / 2 <= bulletD->screen_pos.x + bulletD->radiusX) {
 					if (funnel[j].y + funnel[j].height / 2 >= bulletD->screen_pos.y - bulletD->radiusY &&
