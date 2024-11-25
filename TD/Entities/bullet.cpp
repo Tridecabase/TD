@@ -16,7 +16,7 @@ void Bullet::Init() {
 
 void Bullet::Update(){
 	mouseValue += Novice::GetWheel();
-	if (mouseValue > 700 || mouseValue < -700) {
+	if (mouseValue > 550 || mouseValue < -550) {
 		mouseValue = 0;
 		if (mouseType) {
 			mouseType = false;
@@ -243,13 +243,13 @@ void BulletB::Scroll(Player* player, char keys[256]) {
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		if (player->isPlayerLeft) {
 			if (keys[DIK_A]) {
-				bulletB[i].mousePosX += static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletB[i].pos.z) / 1100.0f);
+				bulletB[i].mousePosX += static_cast<int>(OUTER_BG_SPEED);
 				bulletB[i].frontPos.x += static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletB[i].pos.z) / 1100.0f);
 			}
 		}
 		if (player->isPlayerRight) {
 			if (keys[DIK_D]) {
-				bulletB[i].mousePosX -= static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletB[i].pos.z) / 1100.0f);
+				bulletB[i].mousePosX -= static_cast<int>(OUTER_BG_SPEED);
 				bulletB[i].frontPos.x -= static_cast<int>(OUTER_BG_SPEED * (1100.0f - bulletB[i].pos.z) / 1100.0f);
 			}
 		}
@@ -268,7 +268,7 @@ void BulletB::Shot(Player* player, Bullet* bullet) {
 			if (Novice::IsPressMouse(1)) {
 				if (player->isShootAbleB) {
 					player->isShootAbleB = false;
-					player->shootCoolTimeB = 500;
+					player->shootCoolTimeB = 300;
 					for (int i = 0; i < MAX_BULLET_B; i++) {
 						if (!bulletB[i].isShoot) {
 							bulletB[i].isShoot = true;
@@ -598,12 +598,12 @@ void BulletD::Init() {
 void BulletD::Scroll(Player* player, char keys[256]) {
 	if (player->isPlayerLeft) {
 		if (keys[DIK_A]) {
-			mousePosX += static_cast<int>(OUTER_BG_SPEED * (1100.0f - pos.z) / 1100.0f);
+			mousePosX += static_cast<int>(OUTER_BG_SPEED);
 		}
 	}
 	if (player->isPlayerRight) {
 		if (keys[DIK_D]) {
-			mousePosX -= static_cast<int>(OUTER_BG_SPEED * (1100.0f - pos.z) / 1100.0f);
+			mousePosX -= static_cast<int>(OUTER_BG_SPEED);
 		}
 	}
 }
@@ -620,7 +620,7 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 			if (Novice::IsPressMouse(1)) {
 				if (player->isShootAbleD) {
 					player->isShootAbleD = false;
-					player->shootCoolTimeD = 360;
+					player->shootCoolTimeD = 300;
 					if (!isShoot) {
 						isShoot = true;
 						pos.z = player->pos.z;

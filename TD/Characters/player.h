@@ -6,6 +6,7 @@
 #include "./Tools/config.h" 
 #include "drawPolygon.h"
 
+
 class Player {
 public:
 
@@ -40,8 +41,12 @@ public:
 	int moveCooltime;
 	//プレイヤーのHP
 	int hp;
+	//プレイヤーの色
+	int color1;
 	//プレイヤーの生存フラグ
 	bool isAlive;
+	//プレイヤーのあたりフラグ
+	bool isHit;
 	//アニメタイマー
 	int clock;
 	int timer;

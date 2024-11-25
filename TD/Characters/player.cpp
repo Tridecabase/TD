@@ -32,9 +32,13 @@ Player::Player() {
 	//プレイヤーの動きクールタイム
 	moveCooltime = 0;
 	//プレイヤーのHP
-	hp = 10;
+	hp = PlAYER_MAX_HP;
+	//プレイヤーの色
+	color1 = 0x4BBC54FF;
 	//プレイヤーの生存フラグ
 	isAlive = true;
+	//プレイヤーのあたりフラグ
+	isHit = false;
 
 	isPlayerLeft = false;
 	isPlayerRight = false;
@@ -45,9 +49,9 @@ Player::Player() {
 
 	//弾丸のクールダウン
 	shootCoolTimeA = 3;
-	shootCoolTimeB = 500;
+	shootCoolTimeB = 300;
 	shootCoolTimeC = 30;
-	shootCoolTimeD = 360;
+	shootCoolTimeD = 300;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
 	isShootAbleB = false;
@@ -59,7 +63,7 @@ Player::Player() {
 	// ============================
 
 	screen_pos = {};
-	
+
 
 }
 //デストラクタ
@@ -94,8 +98,14 @@ void Player::Init(Map* map) {
 	height = 20.0f;
 	//プレイヤーの動きクールタイム
 	moveCooltime = 0;
+	//プレイヤーのHP
+	hp = PlAYER_MAX_HP;
+	//プレイヤーの色
+	color1 = 0x4BBC54FF;
 	//プレイヤーの生存フラグ
 	isAlive = true;
+	//プレイヤーのあたりフラグ
+	isHit = false;
 
 	isPlayerLeft = false;
 	isPlayerRight = false;
@@ -106,9 +116,9 @@ void Player::Init(Map* map) {
 
 	//弾丸のクールダウン
 	shootCoolTimeA = 3;
-	shootCoolTimeB = 500;
+	shootCoolTimeB = 300;
 	shootCoolTimeC = 30;
-	shootCoolTimeD = 360;
+	shootCoolTimeD = 300;
 	//弾丸撃つのフラグ
 	isShootAbleA = false;
 	isShootAbleB = false;
@@ -286,6 +296,20 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 	screen_pos.x = map->blockPos.x + pos.x;
 	screen_pos.y = map->blockPos.y + pos.y;
 
+
+	if (hp <= 0) {
+		isAlive = false;
+	}
+	if (isAlive) {
+		if (isHit) {
+			hp -= FUNNEL_ATK;
+			color1 = 0x4BBC54FF;
+			isHit = false;
+		}
+		else {
+			color1 = 0x191B19FF;
+		}
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑更新処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -484,14 +508,14 @@ void Player::Draw(int color) const {
 		static_cast<int>(height),
 		0.0f, color, kFillModeWireFrame);
 
-	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4/3),
+	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
 		static_cast<int>(screen_pos.y - height), static_cast<int>(10.0f),
-		static_cast<int>((50 -shootCoolTimeB / 10)* height/25),
+		static_cast<int>((30 - shootCoolTimeB / 10) * height / 15),
 		0.0f, 0xB961F2FF, kFillModeSolid);
 
 	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
 		static_cast<int>(screen_pos.y - height), static_cast<int>(10.0f),
-		static_cast<int>((36 - shootCoolTimeD / 10) * height / 18),
+		static_cast<int>((30 - shootCoolTimeD / 10) * height / 15),
 		0.0f, 0xB961F2FF, kFillModeSolid);
 
 	Novice::DrawEllipse(

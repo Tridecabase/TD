@@ -121,7 +121,7 @@ void Stage::Render() {
 
 
 	//プレイヤーの描画
-	player->Draw(0x4BBC54FF);
+	player->Draw(player->color1);
 
 	//UIの描画
 	ui->Draw();

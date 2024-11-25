@@ -46,7 +46,7 @@ const float DELTA_TIME = 1.0f / 60.0f;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 //最大スクロール数
-const int MAX_SCROLL = 4;
+const int MAX_SCROLL = 3;
 //プレイヤーマップブロックのサイズ
 const float BLOCK_SIZE = 96.0f;
 //外層背景の移動速度
@@ -73,6 +73,8 @@ const int MAX_SHELL_C = 5;
 const int MAX_BULLET_C = 15;
 const int MAX_BULLET_D = 32;
 
+//プレイヤーの最大HP
+const int PlAYER_MAX_HP = 3;
 
 const int PLAYER_ATK = 4;
 
@@ -97,5 +99,6 @@ const int MAX_BULLET_FUNNEL = MAX_FUNNEL;
 //奥移動の速度
 const float BULLET_VEL_Z = 0.02f;
 
+const int FUNNEL_ATK = 1;
 
 #endif
