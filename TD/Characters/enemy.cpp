@@ -936,7 +936,7 @@ void Enemy::Draw() {
 	//テスト：敵の描画
 	{
 		int a = 23;
-		int b = 40;
+		int b = 45;
 		Vector2 point6_1[6];
 		point6_1[0] = { float(-a),height / 2 };
 		point6_1[1] = { float(a),height / 2 };
@@ -980,13 +980,41 @@ void Enemy::Draw() {
 		Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 2), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 2), int(screen_pos.y + point6_1[0].y + 2), 0xA30019FF);
 
 
+		int c = 12;
+		int d = 23;
+		int e = 20;
 		///内六角形
-		Novice::DrawLine(int(screen_pos.x + point6_1[0].x + 12), int(screen_pos.y + point6_1[0].y - 20), int(screen_pos.x + point6_1[1].x - 12), int(screen_pos.y + point6_1[1].y - 20), 0xA30019FF);
-		Novice::DrawLine(int(screen_pos.x + point6_1[1].x - 12), int(screen_pos.y + point6_1[1].y - 20), int(screen_pos.x + point6_1[3].x - 20), int(screen_pos.y + point6_1[3].y	  ), 0xA30019FF);
-		Novice::DrawLine(int(screen_pos.x + point6_1[3].x - 20), int(screen_pos.y + point6_1[3].y	  ), int(screen_pos.x + point6_1[5].x - 12), int(screen_pos.y + point6_1[5].y + 20), 0xA30019FF);
-		Novice::DrawLine(int(screen_pos.x + point6_1[5].x - 12), int(screen_pos.y + point6_1[5].y + 20), int(screen_pos.x + point6_1[4].x + 12), int(screen_pos.y + point6_1[4].y + 20), 0xA30019FF);
-		Novice::DrawLine(int(screen_pos.x + point6_1[4].x + 12), int(screen_pos.y + point6_1[4].y + 20), int(screen_pos.x + point6_1[2].x + 20), int(screen_pos.y + point6_1[2].y	  ), 0xA30019FF);
-		Novice::DrawLine(int(screen_pos.x + point6_1[2].x + 20), int(screen_pos.y + point6_1[2].y	  ), int(screen_pos.x + point6_1[0].x + 12), int(screen_pos.y + point6_1[0].y - 20), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[0].x + c), int(screen_pos.y + point6_1[0].y - e), int(screen_pos.x + point6_1[1].x - c), int(screen_pos.y + point6_1[1].y - e), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[1].x - c), int(screen_pos.y + point6_1[1].y - e), int(screen_pos.x + point6_1[3].x - d), int(screen_pos.y + point6_1[3].y	  ), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[3].x - d), int(screen_pos.y + point6_1[3].y	  ), int(screen_pos.x + point6_1[5].x - c), int(screen_pos.y + point6_1[5].y + e), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[5].x - c), int(screen_pos.y + point6_1[5].y + e), int(screen_pos.x + point6_1[4].x + c), int(screen_pos.y + point6_1[4].y + e), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[4].x + c), int(screen_pos.y + point6_1[4].y + e), int(screen_pos.x + point6_1[2].x + d), int(screen_pos.y + point6_1[2].y	  ), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[2].x + d), int(screen_pos.y + point6_1[2].y	  ), int(screen_pos.x + point6_1[0].x + c), int(screen_pos.y + point6_1[0].y - e), 0xA30019FF);
+		
+		int f = 8;
+		int g = 12;
+		int h = 12;
+		int l = 20;
+		///内六角形
+		Novice::DrawLine(int(screen_pos.x + point6_1[0].x + f), int(screen_pos.y + point6_1[0].y - h), int(screen_pos.x + point6_1[1].x - f - l), int(screen_pos.y + point6_1[1].y - h), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[0].x + f + l), int(screen_pos.y + point6_1[0].y - h), int(screen_pos.x + point6_1[1].x - f), int(screen_pos.y + point6_1[1].y - h), 0xA30019FF);
+		
+		Novice::DrawLine(int(screen_pos.x + point6_1[1].x - f), int(screen_pos.y + point6_1[1].y - h), int(screen_pos.x + point6_1[3].x - g - h), int(screen_pos.y + point6_1[3].y + l), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[1].x - f + h), int(screen_pos.y + point6_1[1].y - h - l), int(screen_pos.x + point6_1[3].x - g), int(screen_pos.y + point6_1[3].y	  ), 0xA30019FF);
+		
+		Novice::DrawLine(int(screen_pos.x + point6_1[3].x - g - h), int(screen_pos.y + point6_1[3].y - l), int(screen_pos.x + point6_1[5].x - f), int(screen_pos.y + point6_1[5].y + h), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[3].x - g ), int(screen_pos.y + point6_1[3].y	  ), int(screen_pos.x + point6_1[5].x - f + h), int(screen_pos.y + point6_1[5].y + h + l), 0xA30019FF);
+
+		Novice::DrawLine(int(screen_pos.x + point6_1[5].x - f ), int(screen_pos.y + point6_1[5].y + h), int(screen_pos.x + point6_1[4].x + f + l), int(screen_pos.y + point6_1[4].y + h), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[5].x - f - l), int(screen_pos.y + point6_1[5].y + h), int(screen_pos.x + point6_1[4].x + f ), int(screen_pos.y + point6_1[4].y + h), 0xA30019FF);
+		
+		Novice::DrawLine(int(screen_pos.x + point6_1[4].x + f - h), int(screen_pos.y + point6_1[4].y + h + l), int(screen_pos.x + point6_1[2].x + g), int(screen_pos.y + point6_1[2].y	  ), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[4].x + f), int(screen_pos.y + point6_1[4].y + h), int(screen_pos.x + point6_1[2].x + g + h), int(screen_pos.y + point6_1[2].y - l), 0xA30019FF);
+
+		Novice::DrawLine(int(screen_pos.x + point6_1[2].x + g), int(screen_pos.y + point6_1[2].y	  ), int(screen_pos.x + point6_1[0].x + f - h), int(screen_pos.y + point6_1[0].y - h - l), 0xA30019FF);
+		Novice::DrawLine(int(screen_pos.x + point6_1[2].x + g + h), int(screen_pos.y + point6_1[2].y + l), int(screen_pos.x + point6_1[0].x + f), int(screen_pos.y + point6_1[0].y - h), 0xA30019FF);
+		
+		Novice::DrawEllipse(int(screen_pos.x), int(screen_pos.y), int(height / 2), int(height / 2), 0.0f, 0xA30019FF, kFillModeWireFrame);
 
 
 		//Novice::DrawEllipse(int(screen_pos.x), int(screen_pos.y), int(height / 2), int(height / 2), 0.0f, 0xA30019FF, kFillModeWireFrame);
