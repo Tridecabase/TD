@@ -142,8 +142,10 @@ void Stage::Render() {
 bool Stage::StageChanger(char key[256],char preKey[256])
 {
 	if (key[DIK_M] && !preKey[DIK_M]) {
-		scFlat = 1;
-		scClock = scTime;
+		if (!scFlat) {
+			scFlat = 1;
+			scClock = scTime;
+		}
 	}
 	if (scClock != 0) {
 		scClock--;
