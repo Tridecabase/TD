@@ -190,7 +190,7 @@ public:
 		Vector2 lastPos3 = {};
 		float timer1 = 0.0f;
 		float gravitySpeedY1 = 0.0f;
-		while (posZ1 <= 700.0f) {
+		while (posZ1 < 700.0f) {
 			posZ1 += speed1;
 			timer1 += speed1 / distanceToMouse1;
 			lastPos1.x = (1 - timer1) * frontPosX1 + timer1 * mousePosX1;
