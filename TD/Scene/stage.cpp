@@ -137,7 +137,7 @@ void Stage::Render() {
 	//Novice::ScreenPrintf(10, 680, "%d", scFlat);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
 	Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
-	Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
+	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
 }
 bool Stage::StageChanger(char key[256],char preKey[256])
 {

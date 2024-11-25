@@ -30,5 +30,11 @@ public:
 
 };
 
-
+/// <summary>
+/// スクリーンチェンジ関数、物書く系
+/// </summary>
+/// <param name="clock">時間</param>
+/// <param name="time">最大時間</param>
+/// <param name="color">色</param>
+/// <param name="type">0:なんもないからスクリーンまで, 1 = スクリーンからなんもないまで</param>
 void stageChangeShow(const int clock,const int time, const int color, int type);

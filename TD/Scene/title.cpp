@@ -230,8 +230,8 @@ void Title::Render() {
 
 	ui->Draw();
 
-	Novice::ScreenPrintf(10, 680, "%d", scFlat);
-	Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
+	//Novice::ScreenPrintf(10, 680, "%d", scFlat);
+	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
 	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
 	if (scFlat) {
