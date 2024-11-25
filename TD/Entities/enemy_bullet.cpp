@@ -231,217 +231,224 @@ DroneBullet::~DroneBullet() {
 }
 
 void DroneBullet::init() {
+    particle = new ParticleGenerator();
 
-	particle = new ParticleGenerator();
-
-	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
-		droneBullets[i] = {
-			{0.0f, 0.0f, 1.0f}, // pos
-			{0.0f, 0.0f},       // velocity
-			{0.0f, 0.0f},       // target_pos
-			25.0f,              // radius
-			1.0f,               // scale
-			4.0f,               // speed
-			0.0f,               // angle
-			30.0f,
-			100,                // cooldown
-			false               // isShoot
-		};
-	}
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
+            droneBullets[i][j] = {
+                {0.0f, 0.0f, 1.0f},  // pos
+                {0.0f, 0.0f},       // velocity
+                {0.0f, 0.0f},        // target_pos
+                25.0f,               // radius
+                1.0f,                // scale
+                4.0f,                // speed
+                0.0f,                // angle
+                30.0f,
+                100,                 // cooldown
+                false                // isShoot
+            };
+        }
+    }
 }
 
 void DroneBullet::Shot(Player* player, Enemy* enemy) {
-
-	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
-
-
-		Vector3 dronePos;
-		switch (i) {
-		case 0:
-			dronePos = { enemy->drone1.pos.x, enemy->drone1.pos.y, 1.0f };
-			break;
-		case 1:
-			dronePos = { enemy->drone2.pos.x, enemy->drone2.pos.y,  1.0f };
-			break;
-		case 2:
-			dronePos = { enemy->drone3.pos.x, enemy->drone3.pos.y,  1.0f };
-			break;
-		default:
-			continue;
-		}
-
-		droneBullets[i].cooldown--;
+    for (int i = 0; i < 3; ++i) {
+        Vector3 dronePos;
+        switch (i) {
+        case 0:
+            dronePos = { enemy->drone1.pos.x, enemy->drone1.pos.y, 1.0f };
+            break;
+        case 1:
+            dronePos = { enemy->drone2.pos.x, enemy->drone2.pos.y, 1.0f };
+            break;
+        case 2:
+            dronePos = { enemy->drone3.pos.x, enemy->drone3.pos.y, 1.0f };
+            break;
+        default:
+            continue;
+        }
 
 
-		if (enemy->current_action == ActionID::Figure_Eight) {
-			if (droneBullets[i].cooldown <= 0 && !droneBullets[i].isShoot) {
-				droneBullets[i].cooldown = 150;
+        for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
+            droneBullets[i][j].cooldown--; 
 
+            if (enemy->current_action == ActionID::Figure_Eight) {
+                if (droneBullets[i][j].cooldown <= 0 && !droneBullets[i][j].isShoot) {
+                    droneBullets[i][j].cooldown = 150;
 
-				droneBullets[i].pos.x = dronePos.x;
-				droneBullets[i].pos.y = dronePos.y;
-				droneBullets[i].pos.z = dronePos.z;
+                    droneBullets[i][j].pos = dronePos;
 
+                    droneBullets[i][j].target_pos.x = player->screen_pos.x;
+                    droneBullets[i][j].target_pos.y = player->screen_pos.y;
 
-				droneBullets[i].target_pos.x = player->screen_pos.x;
-				droneBullets[i].target_pos.y = player->screen_pos.y;
+                    float dirX = droneBullets[i][j].target_pos.x - droneBullets[i][j].pos.x;
+                    float dirY = droneBullets[i][j].target_pos.y - droneBullets[i][j].pos.y;
+                    float magnitude = sqrtf(dirX * dirX + dirY * dirY);
 
-				float dirX = droneBullets[i].target_pos.x - droneBullets[i].pos.x;
-				float dirY = droneBullets[i].target_pos.y - droneBullets[i].pos.y;
-				float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+                    droneBullets[i][j].velocity.x = (dirX / magnitude) * droneBullets[i][j].speed;
+                    droneBullets[i][j].velocity.y = (dirY / magnitude) * droneBullets[i][j].speed;
 
-				droneBullets[i].velocity.x = (dirX / magnitude) * droneBullets[i].speed;
-				droneBullets[i].velocity.y = (dirY / magnitude) * droneBullets[i].speed;
+                    droneBullets[i][j].isShoot = true;
+                }
+            }
 
-				droneBullets[i].isShoot = true;
-			}
-		}
+            if (enemy->current_action == ActionID::FIRE_AT_PLAYER && enemy->action_timer <= 300) {
 
-		droneBullets[i].angle += 0.1f;
-		if (droneBullets[i].angle >= 2 * static_cast<float>(M_PI)) {
-			droneBullets[i].angle -= 2 * static_cast<float>(M_PI);
-		}
-	}
+                if (droneBullets[i][j].cooldown <= 0 && !droneBullets[i][j].isShoot) {
+                    droneBullets[i][j].cooldown = 10;
+                    droneBullets[i][j].pos = dronePos;
 
+                    droneBullets[i][j].target_pos.x = player->screen_pos.x;
+                    droneBullets[i][j].target_pos.y = player->screen_pos.y;
 
-	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
-		if (droneBullets[i].isShoot) {
+                    float dirX = droneBullets[i][j].target_pos.x - droneBullets[i][j].pos.x;
+                    float dirY = droneBullets[i][j].target_pos.y - droneBullets[i][j].pos.y;
+                    float magnitude = sqrtf(dirX * dirX + dirY * dirY);
 
-			droneBullets[i].pos.x += droneBullets[i].velocity.x;
-			droneBullets[i].pos.y += droneBullets[i].velocity.y;
+                    droneBullets[i][j].velocity.x = (dirX / magnitude) * droneBullets[i][j].speed;
+                    droneBullets[i][j].velocity.y = (dirY / magnitude) * droneBullets[i][j].speed;
 
-			float dirX = droneBullets[i].target_pos.x - droneBullets[i].pos.x;
-			float dirY = droneBullets[i].target_pos.y - droneBullets[i].pos.y;
-			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+                    droneBullets[i][j].isShoot = true;
+                }
+            }
 
-			droneBullets[i].time = magnitude / droneBullets[i].speed;
-			droneBullets[i].velocity.x = dirX / droneBullets[i].time;
-			droneBullets[i].velocity.y = dirY / droneBullets[i].time;
+            droneBullets[i][j].angle += 0.2f;
+            if (droneBullets[i][j].angle >= 2 * static_cast<float>(M_PI)) {
+                droneBullets[i][j].angle -= 2 * static_cast<float>(M_PI);
+            }
+        }
+    }
 
-			droneBullets[i].pos.z = 1.0f - (droneBullets[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
-			droneBullets[i].pos.z = max(0.0f, droneBullets[i].pos.z);
-			droneBullets[i].scale = 0.2f + 0.8f * (1.0f - droneBullets[i].pos.z);
-			if (particle) {
-				particle->GenerateParticles(
-					droneBullets[i].pos.x,
-					droneBullets[i].pos.y,
-					0x4BBC5444
-				);
-			}
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
+            if (droneBullets[i][j].isShoot) {
+                droneBullets[i][j].pos.x += droneBullets[i][j].velocity.x;
+                droneBullets[i][j].pos.y += droneBullets[i][j].velocity.y;
 
-			float dx = droneBullets[i].pos.x - droneBullets[i].target_pos.x;
-			float dy = droneBullets[i].pos.y - droneBullets[i].target_pos.y;
-			if (sqrtf(dx * dx + dy * dy) < 32.0f) {
-				if (particle) {
-					particle->Destroy(
-						droneBullets[i].pos.x,
-						droneBullets[i].pos.y,
-						0x4BBC5444
-					);
-				}
-				droneBullets[i].isShoot = false;
-			}
-		}
-	}
+                float dirX = droneBullets[i][j].target_pos.x - droneBullets[i][j].pos.x;
+                float dirY = droneBullets[i][j].target_pos.y - droneBullets[i][j].pos.y;
+                float magnitude = sqrtf(dirX * dirX + dirY * dirY);
 
-	//当たり判定
-	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
-		if (droneBullets[i].isShoot) {
-			if (player->screen_pos.x + player->width / 2 >= droneBullets[i].pos.x - droneBullets[i].radius * droneBullets[i].scale &&
-				player->screen_pos.x - player->width / 2 <= droneBullets[i].pos.x + droneBullets[i].radius * droneBullets[i].scale) {
-				if (player->screen_pos.y + player->height / 2 >= droneBullets[i].pos.y - droneBullets[i].radius * droneBullets[i].scale &&
-					player->screen_pos.y - player->height / 2 <= droneBullets[i].pos.y + droneBullets[i].radius * droneBullets[i].scale) {
-					if (!player->isHit) {
-						particle->Destroy(
-							droneBullets[i].pos.x,
-							droneBullets[i].pos.y,
-							0xFF000044
-						);
-						player->isHit = true;
-					}
-					droneBullets[i].isShoot = false;
-				}
-			}
-		}
-	}
+                droneBullets[i][j].time = magnitude / droneBullets[i][j].speed;
+                droneBullets[i][j].velocity.x = dirX / droneBullets[i][j].time;
+                droneBullets[i][j].velocity.y = dirY / droneBullets[i][j].time;
+                //if (particle) {
+                //    particle->GenerateParticles(
+                //        droneBullets[i][j].pos.x,
+                //        droneBullets[i][j].pos.y,
+                //        0x4BBC5444
+                //    );
+                //}
+
+                float dx = droneBullets[i][j].pos.x - droneBullets[i][j].target_pos.x;
+                float dy = droneBullets[i][j].pos.y - droneBullets[i][j].target_pos.y;
+                if (sqrtf(dx * dx + dy * dy) < 32.0f) {
+                    if (particle) {
+                        particle->Destroy(
+                            droneBullets[i][j].pos.x,
+                            droneBullets[i][j].pos.y,
+                            0x4BBC5444
+                        );
+                    }
+                    droneBullets[i][j].isShoot = false;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
+            if (droneBullets[i][j].isShoot) {
+                if (player->screen_pos.x + player->width / 2 >= droneBullets[i][j].pos.x - droneBullets[i][j].radius * droneBullets[i][j].scale &&
+                    player->screen_pos.x - player->width / 2 <= droneBullets[i][j].pos.x + droneBullets[i][j].radius * droneBullets[i][j].scale) {
+                    if (player->screen_pos.y + player->height / 2 >= droneBullets[i][j].pos.y - droneBullets[i][j].radius * droneBullets[i][j].scale &&
+                        player->screen_pos.y - player->height / 2 <= droneBullets[i][j].pos.y + droneBullets[i][j].radius * droneBullets[i][j].scale) {
+                        if (!player->isHit) {
+                            particle->Destroy(
+                                droneBullets[i][j].pos.x,
+                                droneBullets[i][j].pos.y,
+                                0xFF000044
+                            );
+                            player->isHit = true;
+                        }
+                        droneBullets[i][j].isShoot = false;
+                    }
+                }
+            }
+        }
+    }
 }
 
 void DroneBullet::Scroll(Player* player, char keys[256]) {
-	for (int i = 0; i < MAX_BULLET_DRONE; ++i) {
-		if (droneBullets[i].isShoot) {
-			float dx = droneBullets[i].pos.x - player->screen_pos.x;
-			float dy = droneBullets[i].pos.y - player->screen_pos.y;
-			float dz = droneBullets[i].pos.z;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
+            if (droneBullets[i][j].isShoot) {
+                float dx = droneBullets[i][j].pos.x - player->screen_pos.x;
+                float dy = droneBullets[i][j].pos.y - player->screen_pos.y;
+                float dz = droneBullets[i][j].pos.z;
 
-			float theta = atan2(dy, dx);
+                float theta = atan2(dy, dx);
+                float scrollFactor = OUTER_BG_SPEED * dz * sin(theta);
 
-			float scrollFactor = OUTER_BG_SPEED * dz * sin(theta);
-
-			if (droneBullets[i].pos.y < 530.0f) {
-				if (player->isPlayerLeft && keys[DIK_A]) {
-					droneBullets[i].pos.x -= scrollFactor;
-				}
-				if (player->isPlayerRight && keys[DIK_D]) {
-					droneBullets[i].pos.x += scrollFactor;
-				}
-			}
-		}
-	}
+                if (droneBullets[i][j].pos.y < 530.0f) {
+                    if (player->isPlayerLeft && keys[DIK_A]) {
+                        droneBullets[i][j].pos.x -= scrollFactor;
+                    }
+                    if (player->isPlayerRight && keys[DIK_D]) {
+                        droneBullets[i][j].pos.x += scrollFactor;
+                    }
+                }
+            }
+        }
+    }
 }
 
 void DroneBullet::Draw() {
+    if (particle) {
+        particle->Render();
+    }
 
-	if (particle) {
-		particle->Render();
-	}
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
+            if (droneBullets[i][j].isShoot) {
+                float posX = droneBullets[i][j].pos.x;
+                float posY = droneBullets[i][j].pos.y;
+                float radius = droneBullets[i][j].radius * droneBullets[i][j].scale;
+                float angleOffset = droneBullets[i][j].angle;
 
-	for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
-		float posX = droneBullets[i].pos.x; //現在のX座標
-		float posY = droneBullets[i].pos.y; //現在のY座標
-		float radius = droneBullets[i].radius * droneBullets[i].scale; //半径
+                float outerPoints[5][2] = {};
 
-		float angleOffset = droneBullets[i].angle; //角度オフセット
+                for (int k = 0; k < 5; ++k) {
+                    float outerAngle = angleOffset + k * (2 * static_cast<float>(M_PI) / 5);
+                    outerPoints[k][0] = posX + cos(outerAngle) * radius;
+                    outerPoints[k][1] = posY + sin(outerAngle) * radius;
+                }
 
-		float outerPoints[5][2]{}; //starの点
+                for (int k = 0; k < 5; ++k) {
+                    int next = (k + 2) % 5;
+                    Novice::DrawLine(
+                        static_cast<int>(outerPoints[k][0]),
+                        static_cast<int>(outerPoints[k][1]),
+                        static_cast<int>(outerPoints[next][0]),
+                        static_cast<int>(outerPoints[next][1]),
+                        0x191B19FF
+                    );
+                }
 
-		//点を計算
-		for (int j = 0; j < 5; ++j) {
-			//点の計算
-			float outerAngle = angleOffset + j * (2 * static_cast<float>(M_PI) / 5);
-			outerPoints[j][0] = posX + cos(outerAngle) * radius;
-			outerPoints[j][1] = posY + sin(outerAngle) * radius;
-		}
-
-		if (droneBullets[i].isShoot) {
-			//外部線を描画
-			for (int j = 0; j < 5; ++j) {
-				int next = (j + 2) % 5; //次の点を選択
-
-				//線を描画
-				Novice::DrawLine(
-					static_cast<int>(outerPoints[j][0]),
-					static_cast<int>(outerPoints[j][1]),
-					static_cast<int>(outerPoints[next][0]),
-					static_cast<int>(outerPoints[next][1]),
-					0x191B19FF
-				);
-			}
-
-			//三角形を描画
-			for (int j = 0; j < 5; ++j) {
-				int next = (j + 2) % 5;
-
-				Novice::DrawTriangle(
-					static_cast<int>(outerPoints[j][0]),
-					static_cast<int>(outerPoints[j][1]),
-					static_cast<int>(outerPoints[next][0]),
-					static_cast<int>(outerPoints[next][1]),
-					static_cast<int>(posX),
-					static_cast<int>(posY),
-					0x4BBC54FF,
-					kFillModeSolid
-				);
-			}
-		}
-	}
+                for (int k = 0; k < 5; ++k) {
+                    int next = (k + 2) % 5;
+                    Novice::DrawTriangle(
+                        static_cast<int>(outerPoints[k][0]),
+                        static_cast<int>(outerPoints[k][1]),
+                        static_cast<int>(outerPoints[next][0]),
+                        static_cast<int>(outerPoints[next][1]),
+                        static_cast<int>(posX),
+                        static_cast<int>(posY),
+                        0x4BBC54FF,
+                        kFillModeSolid
+                    );
+                }
+            }
+        }
+    }
 }

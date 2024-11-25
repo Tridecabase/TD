@@ -27,9 +27,6 @@ public:
     }
 
     void GenerateParticles(float x, float y, unsigned int color) {
-        if (maxlife <= 0) {
-            return;
-        }
 
         Particle& p = particles[nextParticleIndex];
         if (!p.active) {
