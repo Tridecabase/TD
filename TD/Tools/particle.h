@@ -75,7 +75,7 @@ public:
 
 private:
     std::vector<Particle> particles; //粒子リスト
-    const int particlesPerFrame = 3; //生成数/フレーム
+    const int particlesPerFrame = 1; //生成数/フレーム
     const int maxlife = 60;      //最大フレーム
     const float maxSpeed = 3.0f;     //最大速度
 };
