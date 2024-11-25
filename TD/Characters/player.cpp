@@ -1,45 +1,51 @@
 #include <Novice.h>
 #include "player.h" 
 
-//コンストラクタ
+// コンストラクタ
 Player::Player() {
+	// デフォルトの初期化
+	Init(nullptr);
+}
+
+// デストラクタ
+Player::~Player() {}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
+////////////////////////////////////////////////////////////////////////////////////////////
+void Player::Init(Map* map) {
+	// blockSize のデフォルト値
+	float blockSize = (map != nullptr) ? map->blockSize : 96.0f;
 
 	// ============================
 	// プレイヤ基本情報
 	// ============================
 
-	//プレイヤーの位置ベクトル
-	pos.x = BLOCK_SIZE * 2.0f;
-	pos.y = BLOCK_SIZE;
+	// プレイヤーの位置ベクトル
+	pos.x = blockSize * 2.0f;
+	pos.y = blockSize;
 	pos.z = 50.0f;
-	posNum.x = 0.0f;
-	posNum.y = 0.0f;
-	tmpPos.x = 0.0f;
-	tmpPos.y = 0.0f;
-	blockPos.x = BLOCK_SIZE * 2.0f;
-	blockPos.y = BLOCK_SIZE;
-	//アニメタイマー
-	clock = 50;
-	timer = 50;
-	velocity = 0;
-	//プレイヤーの速度ベクトル
-	speed.x = BLOCK_SIZE;
-	speed.y = BLOCK_SIZE;
-	//プレイヤーの長さ
+
+	posNum = { 0.0f, 0.0f };
+	tmpPos = { 0.0f, 0.0f };
+	blockPos = { blockSize * 2.0f, blockSize };
+
+	// プレイヤーの速度ベクトル
+	speed = { blockSize, blockSize };
+
+	// プレイヤーの長さと高さ
 	width = 40.0f;
-	//プレイヤーの高さ
 	height = 20.0f;
-	//プレイヤーの動きクールタイム
+
+	// クールタイムと無敵時間
 	moveCooltime = 0;
-	//プレイヤーの無敵時間
 	graceTime = 60;
-	//プレイヤーのHP
+
+	// HP とステータス
 	hp = PlAYER_MAX_HP;
-	//プレイヤーの色
 	color1 = 0xf0de3dFF;
-	//プレイヤーの生存フラグ
 	isAlive = true;
-	//プレイヤーのあたりフラグ
 	isHit = false;
 
 	isPlayerLeft = false;
@@ -48,13 +54,11 @@ Player::Player() {
 	// ============================
 	// 弾丸関数変数
 	// ============================
-
-	//弾丸のクールダウン
 	shootCoolTimeA = 3;
 	shootCoolTimeB = 300;
 	shootCoolTimeC = 30;
 	shootCoolTimeD = 360;
-	//弾丸撃つのフラグ
+
 	isShootAbleA = false;
 	isShootAbleB = false;
 	isShootAbleC = false;
@@ -63,129 +67,12 @@ Player::Player() {
 	// ============================
 	// 背景用のメンバー変数を
 	// ============================
-
 	screen_pos = {};
-
-
 }
-//デストラクタ
-Player::~Player() {}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓初期化はここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
-////////////////////////////////////////////////////////////////////////////////////////////
-void Player::Init(Map* map) {
-
-	// ============================
-	// プレイヤ基本情報
-	// ============================
-
-	//プレイヤーの位置ベクトル
-	pos.x = map->blockSize * 2.0f;
-	pos.y = map->blockSize;
-	pos.z = 50.0f;
-	posNum.x = 0.0f;
-	posNum.y = 0.0f;
-	tmpPos.x = 0.0f;
-	tmpPos.y = 0.0f;
-	blockPos.x = map->blockSize * 2.0f;
-	blockPos.y = map->blockSize;
-	//プレイヤーの速度ベクトル
-	speed.x = map->blockSize;
-	speed.y = map->blockSize;
-	//プレイヤーの長さ
-	width = 40.0f;
-	//プレイヤーの高さ
-	height = 20.0f;
-	//プレイヤーの動きクールタイム
-	moveCooltime = 0;
-	//プレイヤーの無敵時間
-	graceTime = 60;
-	//プレイヤーのHP
-	hp = PlAYER_MAX_HP;
-	//プレイヤーの色
-	color1 = 0xf0de3dFF;
-	//プレイヤーの生存フラグ
-	isAlive = true;
-	//プレイヤーのあたりフラグ
-	isHit = false;
-
-	isPlayerLeft = false;
-	isPlayerRight = false;
-
-	// ============================
-	// 弾丸関数変数
-	// ============================
-
-	//弾丸のクールダウン
-	shootCoolTimeA = 3;
-	shootCoolTimeB = 300;
-	shootCoolTimeC = 30;
-	shootCoolTimeD = 360;
-	//弾丸撃つのフラグ
-	isShootAbleA = false;
-	isShootAbleB = false;
-	isShootAbleC = false;
-	isShootAbleD = false;
-
-};
 
 void Player::InitDisplay() {
-
-	// ============================
-	// プレイヤ基本情報
-	// ============================
-	float blockSize = 96.0f;
-	//プレイヤーの位置ベクトル
-	pos.x = blockSize * 2.0f;
-	pos.y = blockSize;
-	pos.z = 50.0f;
-	posNum.x = 0.0f;
-	posNum.y = 0.0f;
-	tmpPos.x = 0.0f;
-	tmpPos.y = 0.0f;
-	blockPos.x = blockSize * 2.0f;
-	blockPos.y = blockSize;
-	//プレイヤーの速度ベクトル
-	speed.x = blockSize;
-	speed.y = blockSize;
-	//プレイヤーの長さ
-	width = 40.0f;
-	//プレイヤーの高さ
-	height = 20.0f;
-	//プレイヤーの動きクールタイム
-	moveCooltime = 0;
-	//プレイヤーの無敵時間
-	graceTime = 60;
-	//プレイヤーのHP
-	hp = PlAYER_MAX_HP;
-	//プレイヤーの色
-	color1 = 0xf0de3dFF;
-	//プレイヤーの生存フラグ
-	isAlive = true;
-	//プレイヤーのあたりフラグ
-	isHit = false;
-
-	isPlayerLeft = false;
-	isPlayerRight = false;
-
-	// ============================
-	// 弾丸関数変数
-	// ============================
-
-	//弾丸のクールダウン
-	shootCoolTimeA = 3;
-	shootCoolTimeB = 500;
-	shootCoolTimeC = 30;
-	shootCoolTimeD = 360;
-	//弾丸撃つのフラグ
-	isShootAbleA = false;
-	isShootAbleB = false;
-	isShootAbleC = false;
-	isShootAbleD = false;
-
-};
+	Init(nullptr);
+}
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,63 +81,75 @@ void Player::InitDisplay() {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Player::Move(Map* map, char keys[256], char preKeys[256]) {
+	//=== 安全性チェック ===
+	if (map == nullptr || keys == nullptr || preKeys == nullptr) {
+		// 必要な引数が無効な場合、安全に終了
+		return;
+	}
 
+	//=== 位置情報の計算 ===
 	posNum.x = blockPos.x / speed.x;
 	posNum.y = blockPos.y / speed.y;
 
 	tmpPos.x = blockPos.x;
 	tmpPos.y = blockPos.y;
 
+	//アニメーション用タイマーを進める
 	if (clock != timer) {
 		clock++;
 	}
 
+	//=== プレイヤーの位置調整 ===
 	if (posNum.y == 3) {
 		pos.y = 52.0f;
 		pos.z = 0.0f;
 		width = 48.0f;
 		height = 24.0f;
+
 		if (posNum.x == 3) {
 			pos.x = 120.0f;
 		}
-		if (posNum.x == 2) {
+		else if (posNum.x == 2) {
 			pos.x = 0.0f;
 		}
-		if (posNum.x == 1) {
+		else if (posNum.x == 1) {
 			pos.x = -120.0f;
 		}
 	}
-	if (posNum.y == 2) {
+	else if (posNum.y == 2) {
 		pos.y = 0.0f;
 		pos.z = 50.0f;
 		width = 40.0f;
 		height = 20.0f;
+
 		if (posNum.x == 3) {
 			pos.x = 106.0f;
 		}
-		if (posNum.x == 2) {
+		else if (posNum.x == 2) {
 			pos.x = 0.0f;
 		}
-		if (posNum.x == 1) {
+		else if (posNum.x == 1) {
 			pos.x = -107.0f;
 		}
 	}
-	if (posNum.y == 1) {
+	else if (posNum.y == 1) {
 		pos.y = -46.0f;
 		pos.z = 100.0f;
 		width = 32.0f;
 		height = 16.0f;
+
 		if (posNum.x == 3) {
 			pos.x = 91.0f;
 		}
-		if (posNum.x == 2) {
+		else if (posNum.x == 2) {
 			pos.x = 0.0f;
 		}
-		if (posNum.x == 1) {
+		else if (posNum.x == 1) {
 			pos.x = -93.0f;
 		}
 	}
 
+	//=== プレイヤーの移動処理 ===
 	if (!preKeys[DIK_W] && keys[DIK_W]) {
 		tmpPos.y -= speed.y;
 		posNum.y = tmpPos.y / speed.y;
@@ -275,8 +174,9 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 	if (moveCooltime >= 0) {
 		moveCooltime--;
 	}
-	if (moveCooltime < 0) {
+	else {
 		moveCooltime = -1;
+
 		if (keys[DIK_A]) {
 			tmpPos.x -= speed.x;
 			posNum.x = tmpPos.x / speed.x;
@@ -301,18 +201,22 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 		}
 	}
 
+	//アニメーション終了時の速度リセット
 	if (clock == timer) {
 		velocity = 0;
 	}
 
+	//=== プレイヤーの画面上の位置を更新 ===
 	screen_pos.x = map->blockPos.x + pos.x;
 	screen_pos.y = map->blockPos.y + pos.y;
 
-
+	//=== プレイヤーの状態確認 ===
 	if (hp <= 0) {
 		isAlive = false;
 	}
+
 	if (isAlive) {
+		//プレイヤーがヒットした際の処理
 		if (isHit) {
 			if (graceTime > 0) {
 				graceTime--;
@@ -321,15 +225,17 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 				graceTime = 60;
 				isHit = false;
 			}
+
+			//無敵時間中の色変化
 			if (graceTime % 4 == 2 || graceTime % 4 == 1) {
-				color1 = 0x191B19FF;
+				color1 = 0x191B19FF; //ヒット時の色
 			}
 			else {
-				color1 = 0xe4f65dFF;
+				color1 = 0xe4f65dFF; //通常時の色
 			}
 		}
 		else {
-			color1 = 0xe4f65dFF;
+			color1 = 0xe4f65dFF; //通常時の色
 		}
 	}
 }
