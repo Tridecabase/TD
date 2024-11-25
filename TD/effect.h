@@ -3,6 +3,7 @@
 #include <Vector2.h>
 #include <math.h>
 #include "./Entities/obj.h"
+#include "./Tools/config.h"
 
 
 class RuningBinary {
@@ -28,3 +29,6 @@ public:
 
 
 };
+
+
+void stageChangeShow(const int clock,const int time, const int color, int type);

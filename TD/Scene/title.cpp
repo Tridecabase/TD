@@ -3,6 +3,8 @@
 Title::Title() {
 	randNumber = {};
 
+	ui = new(UI);
+
 	for (int i = 0; i < 4; i++) {
 		window[i] = new Obj;
 	}
@@ -11,7 +13,11 @@ Title::Title() {
 	openTime = {};
 
 	aniClock = {};
-	aniTime  = {};
+	aniTime = {};
+
+	scClock = {};
+	scTime = {};
+	scFlat = {};
 
 	for (int i = 0; i < 6; i++) {
 		changeNum[i] = {};
@@ -24,6 +30,8 @@ Title::Title() {
 }
 
 Title::~Title() {
+
+	delete ui;
 	for (int i = 0; i < 4; i++) {
 		delete window[i];
 	}
@@ -33,6 +41,8 @@ Title::~Title() {
 
 void Title::Init() {
 	srand((unsigned int)time(NULL));
+
+	ui = new(UI);
 
 	window[0]->Init(600, 0);
 	window[0]->pos_ = { WINDOW_WIDTH / 2,600 };
@@ -52,6 +62,10 @@ void Title::Init() {
 	aniClock = 0;
 	aniTime = 60;
 
+	scClock = 0;
+	scTime = 60;
+	scFlat = false;
+
 	for (int i = 0; i < 6; i++) {
 		changeNum[i] = {};
 		changeClockTime[i] = { 60 };
@@ -66,7 +80,7 @@ void Title::Init() {
 
 	player->InitDisplay();
 	player->velocity = 2;
-	player->screen_pos = { 1050 ,600};
+	player->screen_pos = { 1050 ,600 };
 	player->width = 48.0f;
 	player->height = 24.0f;
 	player->clock = 0;
@@ -112,6 +126,9 @@ void Title::DrawGameStart(const int posX, const int posY, const int width, int c
 }
 
 void Title::Update() {
+	/////////////////////////////UI処理
+	ui->Updata();
+	
 	/////////////////////////////opening処理
 	///opening時計
 	if (openClock != 0) {
@@ -121,7 +138,7 @@ void Title::Update() {
 	///aniClock
 	if (aniClock != aniTime) {
 		aniClock++;
-	}else {
+	} else {
 		aniClock = 0;
 	}
 
@@ -149,7 +166,19 @@ void Title::Update() {
 	runingBinary->Updata();
 }
 
-void Title::StageChanger() {
+bool Title::StageChanger() {
+	if (Novice::IsTriggerMouse(0)) {
+		scFlat = true;
+		scClock = scTime;
+	}
+	if (scClock != 0) {
+		scClock--;
+	} else {
+		if (scFlat == true) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Title::Render() {
@@ -192,9 +221,19 @@ void Title::Render() {
 	if (openClock == 0) {
 		int y = 40;
 		DrawTitle(360, 250 + y, 520, 0x4BBC54FF);
-		DrawGameStart(WINDOW_WIDTH / 2 - 150 - 25, 400 + y, 300, 0x4BBC54FF);
+		if (aniClock <= (aniTime / 2)) {
+			DrawGameStart(WINDOW_WIDTH / 2 - 150 - 25, 400 + y, 300, 0x4BBC54FF);
+		}
 	}
+
+	ui->Draw();
+
+	//Novice::ScreenPrintf(10, 680, "%d", scFlat);
+	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
 	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
+	if (scFlat) {
+		stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
+	}
 
 }

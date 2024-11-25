@@ -7,6 +7,7 @@
 #include "./Characters/player.h"
 #include "drawPolygon.h"
 #include "effect.h"
+#include "UI.h"
 
 class Title {
 public:
@@ -24,12 +25,14 @@ public:
 	//タイトルの更新処理
 	void Update();
 	//ステージチェンジャー
-	void StageChanger();
+	bool StageChanger();
 	//タイトルの描画処理
 	void Render();
 
 	///メンバー変数
 	int randNumber;
+
+	UI * ui;
 
 	Obj* window[4];
 	int openClock;
@@ -37,6 +40,10 @@ public:
 
 	int aniClock;
 	int aniTime;
+
+	int scClock;
+	int scTime;
+	bool scFlat;
 
 	int yMoveNum[6];
 	int changeNum[6];

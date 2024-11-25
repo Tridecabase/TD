@@ -39,7 +39,10 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
         title->Update();
 
         //テスト用シーン切り替え
-        if (keys[DIK_M] && !preKeys[DIK_M]) {
+        //if (keys[DIK_M] && !preKeys[DIK_M]) {
+        //    current_scene = SceneState::GAMESTART;
+        //}
+        if (title->StageChanger()) {
             current_scene = SceneState::GAMESTART;
         }
         //テスト用シーン切り替え
