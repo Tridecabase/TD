@@ -1,4 +1,4 @@
-﻿#include "gameOver.h"
+#include "gameOver.h"
 
 GameOver::GameOver() {
 	randNumber = {};
@@ -94,7 +94,10 @@ void GameOver::Init() {
 
 
 
+
+
 void GameOver::Update() {
+
 	/////////////////////////////UI処理
 	ui->Updata();
 
