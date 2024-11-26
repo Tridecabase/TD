@@ -104,6 +104,7 @@ void Stage::Update(char keys[256], char preKeys[256]) {
     if (background) {
         //背景の更新処理
         background->Update(player, map, keys);
+        background->Scroll(player, keys);
     }
 
     if (player) {

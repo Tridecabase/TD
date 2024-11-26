@@ -186,17 +186,11 @@ void PlayerRoad::render(Player* player, int color) const {
 
 Background::Background()
 {
-	playerScreenX = 0.0f;
-	scrollX = 0.0f;
-	offsetX = 0;
-	startIdx = 0;
-
-	resourceManager.RegisterTexturesFromCSV("./Csv/background.csv");
-	resourceManager.LoadTextures("bg");
-
-	playerRoad = new(PlayerRoad);
+	Init();
 }
-Background::~Background() {}
+Background::~Background() {
+	delete playerRoad;
+}
 
 //背景の初期化
 void Background::Init() {
@@ -205,6 +199,30 @@ void Background::Init() {
 	scrollX = 0.0f;
 	offsetX = 0;
 	startIdx = 0;
+
+	playerRoad = new(PlayerRoad);
+
+	for (int i = 0; i < 6; i++) {
+		changeNum[i] = {};
+		changeClockClock[i] = {};
+		changeClockTime[i] = { 60 };
+		yMoveNum[i] = int(rand() % 6);
+	}
+
+	changeClockClock[0] = 60;
+	changeClockClock[1] = 50;
+	changeClockClock[2] = 40;
+	changeClockClock[3] = 30;
+	changeClockClock[4] = 20;
+	changeClockClock[5] = 10;
+
+	for (int i = 0; i < MAX_NUM; i++) {
+		scroll_factor[i] = 0.0f;
+		seed[i] = rand() % 100 + 50;
+		if (i >= 1) {
+			sum[i] = sum[i - 1] + seed[i];
+		}
+	}
 
 };
 
@@ -216,11 +234,11 @@ void Background::Update(Player* player, Map* map, char keys[256]) {
 	}
 
 	//スクロール位置をループさせる
-	if (scrollX < 0) {
-		scrollX += totalWidth;
+	if (scrollX < 0.0f) {
+		scrollX += WINDOW_WIDTH * MAX_SCROLL;
 	}
-	if (scrollX >= totalWidth) {
-		scrollX -= totalWidth;
+	if (scrollX >=  WINDOW_WIDTH * MAX_SCROLL) {
+		scrollX -= WINDOW_WIDTH * MAX_SCROLL;
 	}
 
 	offsetX = -(static_cast<int>(scrollX) % static_cast<int>(WINDOW_WIDTH));
@@ -242,23 +260,44 @@ void Background::Update(Player* player, Map* map, char keys[256]) {
 		}
 	}
 
+	/////////////////////////////背景処理
+///数字の更新
+	for (int i = 0; i < 6; i++) {
+		if (changeClockClock[i] != 0) {
+			changeClockClock[i]--;
+		}
+		else {
+			changeClockClock[i] = changeClockTime[i];
+		}
+		if (changeClockClock[i] % 15 == 0) {
+			changeNum[i] = int((changeNum[i] + rand()) % 2);
+		}
+	}
+
 };
+
+//プレイヤーの移動によってスクロール関数
+void Background::Scroll(Player* player, char keys[256]) {
+
+	for (int j = 0; j < MAX_NUM; j++) {
+		if (player->isPlayerLeft) {
+			if (keys[DIK_A]) {
+				scroll_factor[j] += OUTER_BG_SPEED;
+			}
+		}
+		if (player->isPlayerRight) {
+			if (keys[DIK_D]) {
+				scroll_factor[j] -= OUTER_BG_SPEED;
+			}
+		}
+	}
+}
 
 //背景の描画処理
 void Background::Render(Player* player) {
 
 	if (player == nullptr) {
 		return;
-	}
-
-
-	for (int i = 0; i < MAX_SCROLL; ++i) {
-		int drawX = offsetX + i * static_cast<int>(WINDOW_WIDTH);
-
-		int textureIdx = (startIdx + i) % 6 + 1;
-
-		std::string textureName = std::to_string(textureIdx);
-		resourceManager.Draw(drawX, 0, textureName, 1.0f, 1.0f, 0.0f, 0xffffffff);
 	}
 
 	{
@@ -277,6 +316,32 @@ void Background::Render(Player* player) {
 	}
 
 	playerRoad->render(player, 0xFFFFFFFF);
+
+	///背景の数字
+	{
+		int numSizeW = 20;
+		int numSizeH = int(20 * 1.4f);
+		int colorStart = 0x4BBC5444;
+		int colorEnd = 0x4BBC5400;
+		for (int j = 0; j < MAX_NUM; j++) {
+			for (int k = 0; k < 6; k++) {
+
+				//スクロール位置をループさせる
+				if (scroll_factor[j] < -(numSizeW + 5) - sum[j]) {
+					scroll_factor[j] += WINDOW_WIDTH * MAX_SCROLL;
+				}
+				if (scroll_factor[j] >= WINDOW_WIDTH * MAX_SCROLL - (numSizeW + 5) - sum[j]) {
+					scroll_factor[j] -= WINDOW_WIDTH * MAX_SCROLL;
+				}
+
+				int l = int(((k * j + (yMoveNum[k])) % 6));
+				int m = k - yMoveNum[int(j % 6)];
+				if (l < 0) { l *= -1; }	
+				if (m < 0) { m += 6; }
+				DrawNum(int((numSizeW + 5) + sum[j] + scroll_factor[j]), int(numSizeH / 2 + (numSizeH + 5) * k), numSizeW, colorChanger(colorStart, colorEnd, changeClockClock[5 - m], changeClockTime[5 - m]), changeNum[5 - l]);
+			}
+		}
+	}
 
 	Novice::ScreenPrintf(10, 60, "scollX %f", scrollX);
 

@@ -115,7 +115,6 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 					player->shootCoolTimeA = 3;
 					for (int i = 0; i < MAX_BULLET_A; i++) {
 						if (!bulletA[i].isShoot) {
-
 							if (!Novice::IsPlayingAudio(playhandle) || playhandle == -1) {
 								playhandle = Novice::PlayAudio(shot_hanlde, 1, 1.0f);
 							}

@@ -4,6 +4,7 @@
 #include "./Manager/resource_manager.h"
 #include "./Characters/player.h"
 #include "./Tools/config.h"
+#include "effect.h"
 #include "Vector2.h"
 #include <Novice.h>
 #include <stdio.h>
@@ -64,6 +65,8 @@ public:
     void Init();
     //背景の更新処理
     void Update(Player* player,Map* map,char keys[256]);
+
+    void Scroll(Player* player, char keys[256]);
     //背景の描画処理
     void Render(Player* player);
     
@@ -74,8 +77,6 @@ public:
 
 private:
 
-    ResourceManager resourceManager;
-
     const float totalWidth = WINDOW_WIDTH * MAX_SCROLL;
     const float screenWidth = WINDOW_WIDTH / 2;
 
@@ -85,6 +86,14 @@ private:
     int startIdx;
 
     PlayerRoad * playerRoad;
+
+    int yMoveNum[6];
+    int changeNum[6];
+    int changeClockClock[6];
+    int changeClockTime[6];
+    int seed[MAX_NUM];
+    int sum[MAX_NUM];
+    float scroll_factor[MAX_NUM];
 };
 
 
