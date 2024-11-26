@@ -15,6 +15,10 @@ GameOver::GameOver() {
 	aniClock = {};
 	aniTime = {};
 
+	unAniClock = {};
+	unAniTime = {};
+	unAniTimeFlat = {};
+
 	scClock = {};
 	scTime = {};
 	scFlat = {};
@@ -50,19 +54,23 @@ void GameOver::Init() {
 	window[0]->pos_ = { WINDOW_WIDTH / 2,600 };
 	window[1]->Init(300, 0);
 	window[1]->pos_ = { WINDOW_WIDTH / 2 - 320,530 };
-	window[2]->Init(200, 0);
-	window[2]->pos_ = { WINDOW_WIDTH / 2 + 300,150 };
-	window[3]->Init(400, 0);
+	window[2]->Init(400, 0);
+	window[2]->pos_ = { WINDOW_WIDTH / 2 + 350,320 };
+	window[3]->Init(200, 0);
 	window[3]->pos_ = { WINDOW_WIDTH / 2 + 400,670 };
 
-	runingBinary->Init(180, 270, 270, 200, 20,30);
+	runingBinary->Init(180, 270, 270, 200, 20, 30);
 
 
-	openTime = 15;
+	openTime = 60;
 	openClock = openTime;
 
 	aniClock = 0;
 	aniTime = 60;
+
+	unAniClock = 0;
+	unAniTime = 60;
+	unAniTimeFlat = false;
 
 	scClock = 0;
 	scTime = 60;
@@ -76,7 +84,7 @@ void GameOver::Init() {
 	changeClockClock[0] = 60;
 	changeClockClock[1] = 50;
 	changeClockClock[2] = 40;
-	changeClockClock[3] = 30;
+	changeClockClock[3] = 0;
 	changeClockClock[4] = 20;
 	changeClockClock[5] = 0;
 
@@ -104,7 +112,7 @@ void GameOver::DrawGameOver(const int posX, const int posY, const int width, int
 		if (islower(b[i])) {
 			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
 			number += 4.0f;
-			if(b[i] == 'm'){
+			if (b[i] == 'm') {
 				number += 2.0f;
 			}
 		}
@@ -125,12 +133,36 @@ void GameOver::DrawBack(const int posX, const int posY, const int width, int col
 		if (islower(b[i])) {
 			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
 			number += 4.0f;
-			if(b[i] == 'm'){
+			if (b[i] == 'm') {
 				number += 2.0f;
 			}
 		}
 		if (b[i] == ' ') {
 			number += 2.0f;
+		}
+
+	}
+
+}
+void GameOver::DrawWarning(const int posX, const int posY, const int width, int color) {
+	char b[] = "QQQWarningQQQ";
+	//char b[] = "e";
+	float w = float(float(width) / 55.0f);
+	float number = 0;
+	for (int i = 0; i < 14; i++) {
+		if (b[i] == 'Q') {
+			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
+			number += 6.0f;
+		} else if (isupper(b[i])) {
+			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
+			number += 6.0f;
+		}
+		if (islower(b[i])) {
+			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
+			number += 4.0f;
+			if (b[i] == 'm') {
+				number += 2.0f;
+			}
 		}
 
 	}
@@ -159,15 +191,25 @@ void GameOver::Update() {
 		aniClock++;
 	} else {
 		aniClock = 0;
+		if (!unAniTimeFlat) {
+			unAniTimeFlat = true;
+			unAniClock = unAniTime + 1;
+		}
+	}
+
+
+	if (unAniClock != 0) {
+		unAniClock--;
+	} else {
+		unAniTimeFlat = false;
 	}
 
 	///window変形
 	{
-		float t = float(openClock) / float(openTime);
-		window[0]->height_ = (t * 0 + (1 - t) * 500);
-		window[1]->height_ = (t * 0 + (1 - t) * 300);
-		window[2]->height_ = (t * 0 + (1 - t) * 140);
-		window[3]->height_ = (t * 0 + (1 - t) * 280);
+		window[0]->height_ = 500;
+		window[1]->height_ = 300;
+		window[2]->height_ = 300;
+		window[3]->height_ = 280;
 	}
 	/////////////////////////////背景処理
 	///数字の更新
@@ -211,30 +253,57 @@ void GameOver::Render() {
 
 	///Window
 	window[1]->drawWindow(color);
-	if (openClock == 0) {
+	{
+
 		runingBinary->Render(color);
 	}
+
 	///Window
-	window[2]->drawWindow(color);
-	///Window
-	window[3]->drawWindow(color);
-	window[0]->drawWindow(color);
-	if (openClock == 0) {
-		DrawGameOver(360, 290, 600, color);
-		if (aniClock <= (aniTime / 2)) {
-			DrawBack(WINDOW_WIDTH / 2 - 280, 440, 290, 0xFFD30688);
+	{
+		int i = 80;
+		window[2]->drawWindow(color);
+		if (!unAniTimeFlat) {
+			DrawWarning(810, 80, 290, colorChanger(0xFFD30688, 0xFFD30600, aniClock, aniTime));
+			DrawWarning(810, 80 + i, 290, colorChanger(0xFFD30688, 0xFFD30600, aniClock, aniTime));
+			DrawWarning(810, 80 + 2 * i, 290, colorChanger(0xFFD30688, 0xFFD30600, aniClock, aniTime));
 		}
+
+		DrawWarning(810, 80, 290, colorChanger(0xFFD30688, 0xFFD30600, unAniClock, unAniTime));
+		DrawWarning(810, 80 + i, 290, colorChanger(0xFFD30688, 0xFFD30600, unAniClock, unAniTime));
+		DrawWarning(810, 80 + 2 * i, 290, colorChanger(0xFFD30688, 0xFFD30600, unAniClock, unAniTime));
 	}
+	///Window
+	if(aniClock % 12 <= 3){
+		window[3]->drawWindow(color);
+	}
+	if(aniClock % 18 <= 3){
+		window[3]->drawWindow(color);
+	}
+	if(aniClock % 52 <= 26){
+		window[3]->drawWindow(color);
+	}
+	window[0]->drawWindow(color);
+	DrawGameOver(360, 290, 600, color);
+	if (aniClock <= (aniTime / 2)) {
+		DrawBack(WINDOW_WIDTH / 2 - 280, 440, 290, 0xFFD30688);
+	}
+
 
 	ui->Draw();
 
 	//Novice::ScreenPrintf(10, 680, "%d", scFlat);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
+	//Novice::ScreenPrintf(10, 680, "%d /%d", unAniClock, unAniTime);
+	//Novice::ScreenPrintf(10, 660, "%d ", unAniTimeFlat);
 	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
 	//Novice::ScreenPrintf(10, 700, "%f/%f", enemy->screen_pos.x, enemy->screen_pos.y);
 	if (scFlat) {
 		stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
 	}
+
+	Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, colorChanger(0x000000FF, 0x00000000, openClock, openTime), kFillModeSolid);
+
+
 
 }

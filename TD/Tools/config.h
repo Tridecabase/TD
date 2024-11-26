@@ -53,6 +53,8 @@ const float BLOCK_SIZE = 96.0f;
 const float OUTER_BG_SPEED = 10.0f;
 
 const int MAX_PARTICLES = 20;
+//01描画関する最大数
+const int MAX_NUM = 40;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////

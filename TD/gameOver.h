@@ -25,6 +25,7 @@ public:
 	void Init();
 	void DrawGameOver(const int posX, const int posY, const int width, int color);
 	void DrawBack(const int posX, const int posY, const int width, int color);
+	void DrawWarning(const int posX, const int posY, const int width, int color);
 	//タイトルの更新処理
 	void Update();
 	//タイトルの描画処理
@@ -41,10 +42,14 @@ public:
 
 	int aniClock;
 	int aniTime;
+	int unAniClock;
+	int unAniTime;
+	bool unAniTimeFlat;
 
 	int scClock;
 	int scTime;
 	bool scFlat;
+
 
 	int yMoveNum[6];
 	int changeNum[6];
