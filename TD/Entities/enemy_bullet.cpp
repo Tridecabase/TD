@@ -248,7 +248,7 @@ void FunnelBullet::Draw() {
 					static_cast<int>(outerPoints[next][1]),
 					static_cast<int>(posX),
 					static_cast<int>(posY),
-					0x4BBC54FF,
+                    0xf6e16bFF,
 					kFillModeSolid
 				);
 			}
@@ -516,7 +516,7 @@ void DroneBullet::Draw() {
                         static_cast<int>(outerPoints[next][1]),
                         static_cast<int>(posX),
                         static_cast<int>(posY),
-                        0x4BBC54FF,
+                        0xf6e16bFF,
                         kFillModeSolid
                     );
                 }

@@ -113,10 +113,12 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 					player->shootCoolTimeA = 3;
 					for (int i = 0; i < MAX_BULLET_A; i++) {
 						if (!bulletA[i].isShoot) {
-
+						/*	if (!Novice::IsPlayingAudio(playhandle)) {
+								playhandle = Novice::PlayAudio(shot_hanlde, false, 1.0f);
+							}
 							if (!Novice::IsPlayingAudio(playhandle) || playhandle == -1) {
 								playhandle = Novice::PlayAudio(shot_hanlde, 1, 1.0f);
-							}
+							}*/
 
 							bulletA[i].isShoot = true;
 							bulletA[i].pos.x = player->pos.x;
@@ -141,9 +143,6 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 		}
 		for (int i = 0; i < MAX_BULLET_A; i++) {
 			if (bulletA[i].isShoot) {
-				if (!Novice::IsPlayingAudio(playhandle)) {
-					playhandle = Novice::PlayAudio(shot_hanlde, false, 1.0f);
-				}
 				bulletA[i].pos.z += bulletA[i].speed;
 				bulletA[i].time += bulletA[i].speed / bulletA[i].distanceToMouse;
 				bulletA[i].scale = 1.0f - bulletA[i].pos.z / 1500.0f;
@@ -192,8 +191,8 @@ void BulletA::Draw() const {
 		if (bulletA[i].isShoot) {
 			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x + 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x191B19FF, kFillModeSolid);
 			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x - 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x191B19FF, kFillModeSolid);
-			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x + 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0xf8fd67FF, kFillModeWireFrame);
-			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x - 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0xf8fd67FF, kFillModeWireFrame);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x + 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x48e5c9FF, kFillModeWireFrame);
+			Novice::DrawEllipse(static_cast<int>(bulletA[i].screen_pos.x - 10.0f), static_cast<int>(bulletA[i].screen_pos.y), static_cast<int>(bulletA[i].radiusX * bulletA[i].scale), static_cast<int>(bulletA[i].radiusY * bulletA[i].scale), M_PI1 / 2 + bulletA[i].theta, 0x48e5c9FF, kFillModeWireFrame);
 		}
 	}
 }
@@ -343,7 +342,7 @@ void BulletB::Draw() const {
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		if (bulletB[i].isShoot) {
 			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radiusX * bulletB[i].scale), static_cast<int>(bulletB[i].radiusY * bulletB[i].scale), 0.0f, 0x191B19FF, kFillModeSolid);
-			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radiusX * bulletB[i].scale), static_cast<int>(bulletB[i].radiusY * bulletB[i].scale), 0.0f, 0xBC47F7FF, kFillModeWireFrame);
+			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radiusX * bulletB[i].scale), static_cast<int>(bulletB[i].radiusY * bulletB[i].scale), 0.0f, 0x2ae690FF, kFillModeWireFrame);
 		}
 	}
 }
@@ -517,7 +516,7 @@ void BulletC::Draw() const {
 				if (bulletC[i][j].isShoot) {
 					if (bulletC[i][j].screen_pos.y <= 500.0f) {
 						Novice::DrawEllipse(static_cast<int>(bulletC[i][j].screen_pos.x), static_cast<int>(bulletC[i][j].screen_pos.y), static_cast<int>(bulletC[i][j].radiusX * bulletC[i][j].scale), static_cast<int>(bulletC[i][j].radiusY * bulletC[i][j].scale), M_PI1 / 2 + bulletC[i][j].theta, 0x191B19FF, kFillModeSolid);
-						Novice::DrawEllipse(static_cast<int>(bulletC[i][j].screen_pos.x), static_cast<int>(bulletC[i][j].screen_pos.y), static_cast<int>(bulletC[i][j].radiusX * bulletC[i][j].scale), static_cast<int>(bulletC[i][j].radiusY * bulletC[i][j].scale), M_PI1 / 2 + bulletC[i][j].theta, 0xfed03aFF, kFillModeWireFrame);
+						Novice::DrawEllipse(static_cast<int>(bulletC[i][j].screen_pos.x), static_cast<int>(bulletC[i][j].screen_pos.y), static_cast<int>(bulletC[i][j].radiusX * bulletC[i][j].scale), static_cast<int>(bulletC[i][j].radiusY * bulletC[i][j].scale), M_PI1 / 2 + bulletC[i][j].theta, 0x65c5ddFF, kFillModeWireFrame);
 					}
 				}
 			}
@@ -714,11 +713,11 @@ void BulletD::Draw() const {
 		for (int i = 0; i < MAX_BULLET_D; i++) {
 			if (bulletD[i].isShoot) {
 				Novice::DrawEllipse(static_cast<int>(bulletD[i].newPos.x), static_cast<int>(bulletD[i].newPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x191B19FF, kFillModeSolid);
-				Novice::DrawEllipse(static_cast<int>(bulletD[i].newPos.x), static_cast<int>(bulletD[i].newPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x8E13E0FF, kFillModeWireFrame);
+				Novice::DrawEllipse(static_cast<int>(bulletD[i].newPos.x), static_cast<int>(bulletD[i].newPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, 0x6370f7FF, kFillModeWireFrame);
 			}
 		}
 		Novice::DrawEllipse(static_cast<int>(lastPos.x), static_cast<int>(lastPos.y), static_cast<int>(5), static_cast<int>(5), 0.0f, WHITE, kFillModeWireFrame);
 		Novice::DrawEllipse(static_cast<int>(screen_pos.x), static_cast<int>(screen_pos.y), static_cast<int>(radiusX * scale), static_cast<int>(radiusY * scale), 0.0f, 0x191B19FF, kFillModeSolid);
-		Novice::DrawEllipse(static_cast<int>(screen_pos.x), static_cast<int>(screen_pos.y), static_cast<int>(radiusX * scale), static_cast<int>(radiusY * scale), 0.0f, 0x8E13E0FF, kFillModeWireFrame);
+		Novice::DrawEllipse(static_cast<int>(screen_pos.x), static_cast<int>(screen_pos.y), static_cast<int>(radiusX * scale), static_cast<int>(radiusY * scale), 0.0f, 0x6370f7FF, kFillModeWireFrame);
 	}
 }

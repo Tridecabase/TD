@@ -679,11 +679,11 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 		if (funnel[i].isActive) {
 			if (funnel[i].isHit) {
 				funnel[i].color = 0xb7282eFF;
-				funnel[i].line_color = 0x4BBC54FF;
+				funnel[i].line_color = 0xfce4b3FF;
 				funnel[i].isHit = false;
 			} else {
 				funnel[i].color = 0x191B19FF;
-				funnel[i].line_color = 0x4BBC54FF;
+				funnel[i].line_color = 0xfce4b3FF;
 			}
 		}
 	}
@@ -805,8 +805,10 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Draw(const int posX, const int posY) {
 	
-	int LineColor = 0xA30019FF;
+	int LineColor = 0xe51837FF;
 	int DarkColor = 0x4D000CFF;
+	
+	int droneColor = 0xf4cecfFF;
 	//int BlackColor = 0xA30019FF;
 
 
@@ -815,25 +817,25 @@ void Enemy::Draw(const int posX, const int posY) {
 	}
 
 	if (drone1.w >= static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
+		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
 		DrawRound(drone1, drone1.color);
-		DrawCircle(drone1, 0x4BBC54FF);
-		DrawCircle(drone_aura[0], 0x4BBC54FF);
-		DrawRound(drone_eye[0], 0x4BBC54FF);
+		DrawCircle(drone1, droneColor);
+		DrawCircle(drone_aura[0], droneColor);
+		DrawRound(drone_eye[0], droneColor);
 	}
 	if (drone2.w >= static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
+		Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
 		DrawRound(drone2, drone2.color);
-		DrawCircle(drone2, 0x4BBC54FF);
-		DrawCircle(drone_aura[1], 0x4BBC54FF);
-		DrawRound(drone_eye[1], 0x4BBC54FF);
+		DrawCircle(drone2, droneColor);
+		DrawCircle(drone_aura[1], droneColor);
+		DrawRound(drone_eye[1], droneColor);
 	}
 	if (drone3.w >= static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
+		Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
 		DrawRound(drone3, drone3.color);
-		DrawCircle(drone3, 0x4BBC54FF);
-		DrawCircle(drone_aura[2], 0x4BBC54FF);
-		DrawRound(drone_eye[2], 0x4BBC54FF);
+		DrawCircle(drone3, droneColor);
+		DrawCircle(drone_aura[2], droneColor);
+		DrawRound(drone_eye[2], droneColor);
 	}
 
 	//テスト：敵の描画
@@ -1016,26 +1018,26 @@ void Enemy::Draw(const int posX, const int posY) {
 	}
 
 	if (drone1.w < static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
+		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
 		DrawRound(drone1, drone1.color);
-		DrawCircle(drone1, 0x4BBC54FF);
-		DrawCircle(drone_aura[0], 0x4BBC54FF);
-		DrawRound(drone_eye[0], 0x4BBC54FF);
+		DrawCircle(drone1, droneColor);
+		DrawCircle(drone_aura[0], droneColor);
+		DrawRound(drone_eye[0], droneColor);
 	}
 
 	if (drone2.w < static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
+		Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
 		DrawRound(drone2, drone2.color);
-		DrawCircle(drone2, 0x4BBC54FF);
-		DrawCircle(drone_aura[1], 0x4BBC54FF);
-		DrawRound(drone_eye[1], 0x4BBC54FF);
+		DrawCircle(drone2, droneColor);
+		DrawCircle(drone_aura[1], droneColor);
+		DrawRound(drone_eye[1], droneColor);
 	}
 	if (drone3.w < static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
+		Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
 		DrawRound(drone3, drone3.color);
-		DrawCircle(drone3, 0x4BBC54FF);
-		DrawCircle(drone_aura[2], 0x4BBC54FF);
-		DrawRound(drone_eye[2], 0x4BBC54FF);
+		DrawCircle(drone3, droneColor);
+		DrawCircle(drone_aura[2], droneColor);
+		DrawRound(drone_eye[2], droneColor);
 	}
 }
 
