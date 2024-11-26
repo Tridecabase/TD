@@ -222,7 +222,7 @@ void Title::Render() {
 	///Window
 	window[3]->drawWindow(0x4BBC54FF);
 	if (openClock == 0) {
-		player->Draw(0x4BBC54FF);
+		player->Draw(0x4BBC54FF, false);
 	}
 
 	///WindowTitle

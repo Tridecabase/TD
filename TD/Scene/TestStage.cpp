@@ -171,7 +171,7 @@ void TestStage::Render() {
 	///Window
 	window[3]->drawWindow(0x4BBC54FF);
 	if (openClock == 0) {
-		player->Draw(0x4BBC54FF);
+		player->Draw(0x4BBC54FF, FALSE);
 	}
 	window[0]->drawWindow(0x4BBC54FF);
 	{

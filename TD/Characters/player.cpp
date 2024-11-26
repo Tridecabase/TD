@@ -282,7 +282,7 @@ float easyOut(int a, int b, float c, float t) {
 	return x;
 }
 
-void Player::Draw(int color) const {
+void Player::Draw(const int color, const bool Flat) const {
 	int color2 = 0x191B19FF;
 	int ballPrePosX = int(screen_pos.x);
 
@@ -464,18 +464,20 @@ void Player::Draw(int color) const {
 		static_cast<int>(height),
 		0.0f, color, kFillModeWireFrame);
 
-	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
-		static_cast<int>(screen_pos.y + height + 10),
-		static_cast<int>(10 * width / 5), static_cast<int>(10.0f),
-		0.0f, 0x191B19FF, kFillModeSolid);
-	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
-		static_cast<int>(screen_pos.y + height + 10), 
-		static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
-		0.0f, 0x0ae94dFF, kFillModeSolid);
-	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
-		static_cast<int>(screen_pos.y + height + 10),
-		static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
-		0.0f, 0x191B19FF, kFillModeWireFrame);
+	if(Flat){
+		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+			static_cast<int>(screen_pos.y + height + 10),
+			static_cast<int>(10 * width / 5), static_cast<int>(10.0f),
+			0.0f, 0x191B19FF, kFillModeSolid);
+		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+			static_cast<int>(screen_pos.y + height + 10),
+			static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
+			0.0f, 0x0ae94dFF, kFillModeSolid);
+		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+			static_cast<int>(screen_pos.y + height + 10),
+			static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
+			0.0f, 0x191B19FF, kFillModeWireFrame);
+	}
 
 
 

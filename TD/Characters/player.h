@@ -20,7 +20,7 @@ public:
 	//プレイヤーの移動処理
 	void Move(Map* map, char keys[256], char preKeys[256]);
 	//プレイヤーの描画
-	void Draw(int color) const;
+	void Draw(const int color, const bool Flat) const;
 
 	// ============================
 	// プレイヤ基本情報
