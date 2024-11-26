@@ -69,6 +69,8 @@ public:
     void Scroll(Player* player, char keys[256]);
     //背景の描画処理
     void Render(Player* player);
+
+    void DrawMid();
     
     float getPlayerScreenX() {
         return scrollX;
@@ -94,6 +96,9 @@ private:
     int seed[MAX_NUM];
     int sum[MAX_NUM];
     float scroll_factor[MAX_NUM];
+
+    Obj* window[12];
+
 };
 
 

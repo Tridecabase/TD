@@ -190,6 +190,9 @@ Background::Background()
 }
 Background::~Background() {
 	delete playerRoad;
+	for (int i = 0; i < 12; i++) {
+		delete window[i];
+	}
 }
 
 //背景の初期化
@@ -224,6 +227,23 @@ void Background::Init() {
 		}
 	}
 
+
+	for (int i = 0; i < 12; i++) {
+		window[i] = new Obj;
+	}
+
+	window[0]->Init(120, 100); window[0]->pos_ = { 100, 350 };
+	window[1]->Init(90, 110); window[1]->pos_ = { 450, 450 };
+	window[2]->Init(180, 120); window[2]->pos_ = { 900, 370 };
+	window[3]->Init(75, 90); window[3]->pos_ = { 1300, 430 };
+	window[4]->Init(50, 105); window[4]->pos_ = { 1500, 310 };
+	window[5]->Init(110, 115); window[5]->pos_ = { 2000, 450 };
+	window[6]->Init(140, 95); window[6]->pos_ = { 2500, 340 };
+	window[7]->Init(170, 100); window[7]->pos_ = { 2800, 500 };
+	window[8]->Init(60, 120); window[8]->pos_ = { 3100, 320 };
+	window[9]->Init(130, 105); window[9]->pos_ = { 3600, 470 };
+	window[10]->Init(100, 90); window[10]->pos_ = { 4000, 350 };
+	window[11]->Init(80, 100); window[11]->pos_ = { 4500, 370 };
 };
 
 //背景の更新処理
@@ -239,6 +259,16 @@ void Background::Update(Player* player, Map* map, char keys[256]) {
 	}
 	if (scrollX >=  WINDOW_WIDTH * MAX_SCROLL) {
 		scrollX -= WINDOW_WIDTH * MAX_SCROLL;
+	}
+
+	// ウィンドウのスクロール位置をループさせる
+	for (int i = 0; i < 12; i++) {
+		if (window[i]->pos_.x < -window[i]->width_) {
+			window[i]->pos_.x += MID_WIDTH - window[i]->width_;
+		}
+		if (window[i]->pos_.x >= MID_WIDTH) {
+			window[i]->pos_.x -= MID_WIDTH + window[i]->width_;
+		}
 	}
 
 	offsetX = -(static_cast<int>(scrollX) % static_cast<int>(WINDOW_WIDTH));
@@ -291,6 +321,22 @@ void Background::Scroll(Player* player, char keys[256]) {
 			}
 		}
 	}
+
+	// ウィンドウの位置更新
+	for (int i = 0; i < 12; ++i) {
+		if (player->isPlayerLeft) {
+			if (keys[DIK_A]) {
+				window[i]->pos_.x += MID_BG_SPEED;
+			}
+		}
+
+		if (player->isPlayerRight && keys[DIK_D]) {
+			if (keys[DIK_D]) {
+				window[i]->pos_.x -= MID_BG_SPEED;
+			}
+		}
+	}
+
 }
 
 //背景の描画処理
@@ -342,7 +388,13 @@ void Background::Render(Player* player) {
 			}
 		}
 	}
-
-	Novice::ScreenPrintf(10, 60, "scollX %f", scrollX);
-
 };
+
+void Background::DrawMid() {
+	///背景のWINDOW
+	{
+		for (int i = 0; i < 12; ++i) {
+			window[i]->drawWindow(0x4BBC5444);
+		}
+	}
+}

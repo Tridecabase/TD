@@ -188,6 +188,10 @@ void Stage::Render() {
         enemy->Draw(int(player->screen_pos.x), int(player->screen_pos.y));
     }
 
+    if (background) {
+        background->DrawMid();
+    }
+
     if (funnelBullet) {
         funnelBullet->Draw();
     }

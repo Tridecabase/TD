@@ -51,6 +51,14 @@ const int MAX_SCROLL = 3;
 const float BLOCK_SIZE = 96.0f;
 //外層背景の移動速度
 const float OUTER_BG_SPEED = 10.0f;
+//中層背景の移動速度
+const float MID_BG_SPEED = 7.5f;
+//里層背景の移動速度
+const float CLOSE_BG_SPEED = 5.0f;
+
+const float OUTER_WIDTH = WINDOW_WIDTH * MAX_SCROLL;
+const float MID_WIDTH = WINDOW_WIDTH * MAX_SCROLL * 0.75f;
+const float CLOSE_WIDTH = WINDOW_WIDTH * MAX_SCROLL * 0.5f;
 
 const int MAX_PARTICLES = 20;
 //01描画関する最大数
