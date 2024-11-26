@@ -50,6 +50,8 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 			testStage->Init();
 		}
 		if (title->StageChanger()) {
+			title->~Title();
+			stage->Init();
 			current_scene = SceneState::GAMESTART;
 		}
 		//テスト用シーン切り替え

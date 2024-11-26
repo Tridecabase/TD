@@ -48,6 +48,9 @@ void Player::Init(Map* map) {
 	isAlive = true;
 	isHit = false;
 
+	clock = 60;
+	timer = 60;
+
 	isPlayerLeft = false;
 	isPlayerRight = false;
 
@@ -568,6 +571,12 @@ void Player::Draw(const int color, const bool Flat) const {
 	Novice::DrawLine(int(point41.x), int(point41.y),
 		int(point43.x), int(point43.y), color);
 
+
+	Novice::ScreenPrintf(10, 600, "%d", clock);
+	Novice::ScreenPrintf(10, 620, "%d", timer);
+	Novice::ScreenPrintf(10, 640, "%f", point11N);
+	Novice::ScreenPrintf(10, 680, "%f", point11.x);
+	Novice::ScreenPrintf(10, 660, "%f", point11LP.x);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
