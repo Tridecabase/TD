@@ -88,9 +88,9 @@ void StageClear::Init() {
 }
 
 void StageClear::DrawClear(const int posX, const int posY, const int width, int color) {
-	char b[] = "NeoHorizon";
+	char b[] = "GameClear";
 	//char b[] = "e";
-	float w = float(float(width) / 41.0f);
+	float w = float(float(width) / 42.0f);
 	float number = 0;
 	for (int i = 0; i < 10; i++) {
 		if (isupper(b[i])) {
@@ -100,8 +100,13 @@ void StageClear::DrawClear(const int posX, const int posY, const int width, int 
 		if (islower(b[i])) {
 			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
 			number += 4.0f;
+			if (b[i] == 'm') {
+				number += 2.0f;
+			}
 		}
-
+		if (b[i] == ' ') {
+			number += 2.0f;
+		}
 	}
 
 }
@@ -199,6 +204,7 @@ bool StageClear::StageChanger() {
 void StageClear::Render() {
 
 	int color = 0x4BBC54FF;
+	int colorYellow = 0xFFD30688;
 
 	Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x191b19FF, kFillModeSolid);
 	///背景の数字
@@ -224,7 +230,7 @@ void StageClear::Render() {
 	///Window
 	window[1]->drawWindow(color);
 	if (openClock == 0) {
-		runingBinary->Render(color);
+		runingBinary->Render(colorYellow);
 	}
 	///Window
 	window[2]->drawWindow(color);
@@ -235,10 +241,10 @@ void StageClear::Render() {
 	}
 
 	///WindowTitle
-	window[0]->drawWindow(color);
+	window[0]->drawWindow(colorYellow);
 	if (openClock == 0) {
 		//int y = 40;
-		DrawClear(360, 290, 600, color);
+		DrawClear(360, 290, 560, color);
 		if (aniClock <= (aniTime / 2)) {
 			DrawBack(WINDOW_WIDTH / 2 - 280, 440, 290, 0xFFD30688);
 		}
