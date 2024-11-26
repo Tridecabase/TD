@@ -20,6 +20,7 @@ public:
 
 
 	void DrawClear(const int posX, const int posY, const int width, int color);
+	void DrawCongratulations(const int posX, const int posY, const int width, int color);
 	void DrawBack(const int posX, const int posY, const int width, int color);
 
 	//タイトルの更新処理
