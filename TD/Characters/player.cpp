@@ -577,6 +577,8 @@ void Player::Draw(const int color, const bool Flat) const {
 	Novice::ScreenPrintf(10, 640, "%f", point11N);
 	Novice::ScreenPrintf(10, 680, "%f", point11.x);
 	Novice::ScreenPrintf(10, 660, "%f", point11LP.x);
+
+	Novice::ScreenPrintf(10, 580, "%f", screen_pos.y);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
