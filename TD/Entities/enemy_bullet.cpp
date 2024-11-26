@@ -63,6 +63,11 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 
 			float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
 			float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
+
+            if (- dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
+                funnelBullet[i].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
+            }
+
 			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
 
 			funnelBullet[i].time = magnitude / funnelBullet[i].speed;
@@ -83,6 +88,11 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 			float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
 			float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
 			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+
+
+            if (- dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
+                funnelBullet[i].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
+            }
 
 			funnelBullet[i].time = magnitude / funnelBullet[i].speed;
 			funnelBullet[i].velocity.x = dirX / funnelBullet[i].time;
@@ -356,6 +366,11 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                 float dirX = droneBullets[i][j].target_pos.x - droneBullets[i][j].pos.x;
                 float dirY = droneBullets[i][j].target_pos.y - droneBullets[i][j].pos.y;
                 float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+
+
+                if (-dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
+                    droneBullets[i][j].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
+                }
 
                 droneBullets[i][j].time = magnitude / droneBullets[i][j].speed;
                 droneBullets[i][j].velocity.x = dirX / droneBullets[i][j].time;
