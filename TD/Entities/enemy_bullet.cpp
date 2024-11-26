@@ -88,16 +88,10 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
             funnelBullet[i].velocity.x = dirX / remaining_time;
             funnelBullet[i].velocity.y = dirY / remaining_time;
 
-            funnelBullet[i].pos.z = 1.0f - (funnelBullet[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
+            funnelBullet[i].pos.z = 1.0f - (funnelBullet[i].pos.y - enemy->funnel[i].y) / (funnelBullet[i].target_pos.y - enemy->funnel[i].y);
             funnelBullet[i].pos.z = max(0.0f, funnelBullet[i].pos.z);
             funnelBullet[i].scale = 0.2f + 0.8f * (1.0f - funnelBullet[i].pos.z);
-			if (particle) {
-				particle->GenerateParticles(
-					funnelBullet[i].pos.x,
-					funnelBullet[i].pos.y,
-					0x4BBC5444
-				);
-			}
+
 			float dx = funnelBullet[i].pos.x - funnelBullet[i].target_pos.x;
 			float dy = funnelBullet[i].pos.y - funnelBullet[i].target_pos.y;
 			if (sqrtf(dx * dx + dy * dy) < 32.0f) {
@@ -179,11 +173,13 @@ void FunnelBullet::Draw() {
             float height = 5.0f * factor;
 
 
-            if (funnelBullet[i].pos.z >= 0.2f) {
+            if (funnelBullet[i].pos.z >= 0.3f) {
                 line_color = 0x4BBC5422;
             }
-            if (funnelBullet[i].pos.z <= 0.2f) {
-                line_color = RED;
+            if (funnelBullet[i].pos.z <= 0.3f) {
+                unsigned int colors[] = { 0xFF0000FF, 0x800080FF, 0xFF69B4FF, 0xFFA500FF };
+                int colorIndex = (int(funnelBullet[i].time) / 4) % 4;
+                line_color = colors[colorIndex];
             }
 
             //線
@@ -222,6 +218,15 @@ void FunnelBullet::Draw() {
 			outerPoints[j][1] = posY + sin(outerAngle) * radius;
 		}
 
+        float t = 1.0f - funnelBullet[i].pos.z;
+
+        unsigned char r = static_cast<unsigned char>(255 - (255 - 246) * t);
+        unsigned char g = static_cast<unsigned char>(250 - (250 - 225) * t);
+        unsigned char b = static_cast<unsigned char>(205 - (205 - 107) * t);
+        unsigned char alpha = static_cast<unsigned char>(11 + (255 - 11) * t);
+
+        unsigned int color = (r << 24) | (g << 16) | (b << 8) | alpha;
+
 		if (funnelBullet[i].isShoot) {
 			//外部線を描画
 			for (int j = 0; j < 5; ++j) {
@@ -248,7 +253,7 @@ void FunnelBullet::Draw() {
 					static_cast<int>(outerPoints[next][1]),
 					static_cast<int>(posX),
 					static_cast<int>(posY),
-                    0xf6e16bFF,
+                    color,
 					kFillModeSolid
 				);
 			}
@@ -364,7 +369,7 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                 droneBullets[i][j].velocity.x = dirX / remaining_time;
                 droneBullets[i][j].velocity.y = dirY / remaining_time;
 
-                droneBullets[i][j].pos.z = 1.0f - (droneBullets[i][j].pos.y - enemy->pos.y) / (530.0f - enemy->pos.y);
+                droneBullets[i][j].pos.z = 1.0f - (droneBullets[i][j].pos.y - enemy->pos.y) / (droneBullets[i][j].target_pos.y - enemy->pos.y);
                 droneBullets[i][j].pos.z = max(0.0f, droneBullets[i][j].pos.z);
                 droneBullets[i][j].scale = 0.2f + 0.8f * (1.0f - droneBullets[i][j].pos.z);
 
@@ -449,11 +454,13 @@ void DroneBullet::Draw() {
 
             if (droneBullets[i][j].isShoot) {
                 unsigned int line_color{};
-                if (droneBullets[i][j].pos.z >= 0.2f) {
+                if (droneBullets[i][j].pos.z >= 0.3f) {
                     line_color = 0x4BBC5411;
                 }
-                if (droneBullets[i][j].pos.z <= 0.2f) {
-                    line_color = RED;
+                if (droneBullets[i][j].pos.z <= 0.3f) {
+                    unsigned int colors[] = { 0xFF0000FF, 0x800080FF, 0xFF69B4FF, 0xFFA500FF };
+                    int colorIndex = (int(droneBullets[i][j].time) / 4) % 4;
+                    line_color = colors[colorIndex];
                 }
                 //線
                 Novice::DrawLine(
@@ -490,6 +497,15 @@ void DroneBullet::Draw() {
                     outerPoints[k][1] = posY + sin(outerAngle) * radius;
                 }
 
+                float t = 1.0f - droneBullets[i][j].pos.z;
+
+                unsigned char r = static_cast<unsigned char>(255 - (255 - 246) * t);
+                unsigned char g = static_cast<unsigned char>(250 - (250 - 225) * t);
+                unsigned char b = static_cast<unsigned char>(205 - (205 - 107) * t);
+                unsigned char alpha = static_cast<unsigned char>(11 + (255 - 11) * t);
+
+                unsigned int color = (r << 24) | (g << 16) | (b << 8) | alpha;
+
                 for (int k = 0; k < 5; ++k) {
                     int next = (k + 2) % 5;
                     Novice::DrawLine(
@@ -510,7 +526,7 @@ void DroneBullet::Draw() {
                         static_cast<int>(outerPoints[next][1]),
                         static_cast<int>(posX),
                         static_cast<int>(posY),
-                        0xf6e16bFF,
+                        color,
                         kFillModeSolid
                     );
                 }
