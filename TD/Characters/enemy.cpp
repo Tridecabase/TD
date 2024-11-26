@@ -592,16 +592,18 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		for (int j = 0; j < MAX_FUNNEL; ++j) {
 			if (bulletA->bulletA[i].isShoot) {
-				float dx = funnel[j].x - bulletA->bulletA[i].screen_pos.x;
-				float dy = funnel[j].y - bulletA->bulletA[i].screen_pos.y;
-				float distanceSquared = dx * dx + dy * dy;
+				if (funnel[j].isActive) {
+					float dx = funnel[j].x - bulletA->bulletA[i].screen_pos.x;
+					float dy = funnel[j].y - bulletA->bulletA[i].screen_pos.y;
+					float distanceSquared = dx * dx + dy * dy;
 
-				float combinedRadius = bulletA->bulletA[i].radiusX + funnel[j].width / 2;
+					float combinedRadius = bulletA->bulletA[i].radiusX + funnel[j].width / 2;
 
-				if (distanceSquared <= combinedRadius * combinedRadius) {
-					funnel[j].isHit = true;
-					funnel[j].hp -= PLAYER_ATK_A;
-					bulletA->bulletA[i].isShoot = false;
+					if (distanceSquared <= combinedRadius * combinedRadius) {
+						funnel[j].isHit = true;
+						funnel[j].hp -= PLAYER_ATK_A;
+						bulletA->bulletA[i].isShoot = false;
+					}
 				}
 			}
 		}
@@ -611,15 +613,17 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		for (int j = 0; j < MAX_FUNNEL; ++j) {
 			if (bulletB->bulletB[i].isShoot) {
-				float dx = funnel[j].x - bulletB->bulletB[i].screen_pos.x;
-				float dy = funnel[j].y - bulletB->bulletB[i].screen_pos.y;
-				float distanceSquared = dx * dx + dy * dy;
-				float combinedRadius = bulletB->bulletB[i].radiusX + funnel[j].width / 2;
+				if (funnel[j].isActive) {
+					float dx = funnel[j].x - bulletB->bulletB[i].screen_pos.x;
+					float dy = funnel[j].y - bulletB->bulletB[i].screen_pos.y;
+					float distanceSquared = dx * dx + dy * dy;
+					float combinedRadius = bulletB->bulletB[i].radiusX + funnel[j].width / 2;
 
-				if (distanceSquared <= combinedRadius * combinedRadius) {
-					funnel[j].isHit = true;
-					funnel[j].hp -= PLAYER_ATK_B;
-					bulletB->bulletB[i].isShoot = false;
+					if (distanceSquared <= combinedRadius * combinedRadius) {
+						funnel[j].isHit = true;
+						funnel[j].hp -= PLAYER_ATK_B;
+						bulletB->bulletB[i].isShoot = false;
+					}
 				}
 			}
 		}
@@ -630,15 +634,17 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 		for (int k = 0; k < MAX_BULLET_C; k++) {
 			if (bulletC->bulletC[i][k].isShoot) {
 				for (int j = 0; j < MAX_FUNNEL; ++j) {
-					float dx = funnel[j].x - bulletC->bulletC[i][k].screen_pos.x;
-					float dy = funnel[j].y - bulletC->bulletC[i][k].screen_pos.y;
-					float distanceSquared = dx * dx + dy * dy;
-					float combinedRadius = bulletC->bulletC[i][k].radiusX + funnel[j].width / 2;
+					if (funnel[j].isActive) {
+						float dx = funnel[j].x - bulletC->bulletC[i][k].screen_pos.x;
+						float dy = funnel[j].y - bulletC->bulletC[i][k].screen_pos.y;
+						float distanceSquared = dx * dx + dy * dy;
+						float combinedRadius = bulletC->bulletC[i][k].radiusX + funnel[j].width / 2;
 
-					if (distanceSquared <= combinedRadius * combinedRadius) {
-						funnel[j].isHit = true;
-						funnel[j].hp -= PLAYER_ATK_C;
-						bulletC->bulletC[i][k].isShoot = false;
+						if (distanceSquared <= combinedRadius * combinedRadius) {
+							funnel[j].isHit = true;
+							funnel[j].hp -= PLAYER_ATK_C;
+							bulletC->bulletC[i][k].isShoot = false;
+						}
 					}
 				}
 			}
@@ -649,14 +655,16 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 	for (int j = 0; j < MAX_FUNNEL; ++j) {
 		if (bulletD->isShoot) {
 			if (bulletD->pos.z < 1100.0f) {
-				float dx = funnel[j].x - bulletD->screen_pos.x;
-				float dy = funnel[j].y - bulletD->screen_pos.y;
-				float distanceSquared = dx * dx + dy * dy;
-				float combinedRadius = bulletD->radiusX + funnel[j].width / 2;
+				if (funnel[j].isActive) {
+					float dx = funnel[j].x - bulletD->screen_pos.x;
+					float dy = funnel[j].y - bulletD->screen_pos.y;
+					float distanceSquared = dx * dx + dy * dy;
+					float combinedRadius = bulletD->radiusX + funnel[j].width / 2;
 
-				if (distanceSquared <= combinedRadius * combinedRadius) {
-					funnel[j].isHit = true;
-					funnel[j].hp -= PLAYER_ATK_D * 15;
+					if (distanceSquared <= combinedRadius * combinedRadius) {
+						funnel[j].isHit = true;
+						funnel[j].hp -= PLAYER_ATK_D * 15;
+					}
 				}
 			}
 		}
