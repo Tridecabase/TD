@@ -112,15 +112,12 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
 		if (posNum.x == 3) {
 			pos.x = 120.0f;
-		}
-		else if (posNum.x == 2) {
+		} else if (posNum.x == 2) {
 			pos.x = 0.0f;
-		}
-		else if (posNum.x == 1) {
+		} else if (posNum.x == 1) {
 			pos.x = -120.0f;
 		}
-	}
-	else if (posNum.y == 2) {
+	} else if (posNum.y == 2) {
 		pos.y = 0.0f;
 		pos.z = 50.0f;
 		width = 40.0f;
@@ -128,15 +125,12 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
 		if (posNum.x == 3) {
 			pos.x = 106.0f;
-		}
-		else if (posNum.x == 2) {
+		} else if (posNum.x == 2) {
 			pos.x = 0.0f;
-		}
-		else if (posNum.x == 1) {
+		} else if (posNum.x == 1) {
 			pos.x = -107.0f;
 		}
-	}
-	else if (posNum.y == 1) {
+	} else if (posNum.y == 1) {
 		pos.y = -46.0f;
 		pos.z = 100.0f;
 		width = 32.0f;
@@ -144,11 +138,9 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
 		if (posNum.x == 3) {
 			pos.x = 91.0f;
-		}
-		else if (posNum.x == 2) {
+		} else if (posNum.x == 2) {
 			pos.x = 0.0f;
-		}
-		else if (posNum.x == 1) {
+		} else if (posNum.x == 1) {
 			pos.x = -93.0f;
 		}
 	}
@@ -177,8 +169,7 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
 	if (moveCooltime >= 0) {
 		moveCooltime--;
-	}
-	else {
+	} else {
 		moveCooltime = -1;
 
 		if (keys[DIK_A]) {
@@ -191,8 +182,7 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 			}
 			clock = 0;
 			velocity = -2;
-		}
-		else if (keys[DIK_D]) {
+		} else if (keys[DIK_D]) {
 			tmpPos.x += speed.x;
 			posNum.x = tmpPos.x / speed.x;
 
@@ -224,8 +214,7 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 		if (isHit) {
 			if (graceTime > 0) {
 				graceTime--;
-			}
-			else {
+			} else {
 				graceTime = 60;
 				isHit = false;
 			}
@@ -233,21 +222,17 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 			//無敵時間中の色変化
 			if (graceTime % 4 == 2 || graceTime % 4 == 1) {
 				color1 = 0x191B19FF; //ヒット時の色
-			}
-			else {
+			} else {
 				if (mouseType) {
 					color1 = 0xfed03aFF; //通常時の色
-				}
-				else {
+				} else {
 					color1 = 0xf8fd67FF;//通常時の色
 				}
 			}
-		}
-		else {
+		} else {
 			if (mouseType) {
 				color1 = 0xfed03aFF; //通常時の色
-			}
-			else {
+			} else {
 				color1 = 0xf8fd67FF;//通常時の色
 			}
 		}
@@ -255,15 +240,14 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 
 	//表示用
 	mouseValue += static_cast<int>(fabs(Novice::GetWheel()));
-		if (mouseValue > 550) {
-			mouseValue = 0;
-			if (mouseType) {
-				mouseType = false;
-			}
-			else {
-				mouseType = true;
-			}
+	if (mouseValue > 550) {
+		mouseValue = 0;
+		if (mouseType) {
+			mouseType = false;
+		} else {
+			mouseType = true;
 		}
+	}
 
 }
 
@@ -282,7 +266,7 @@ float easyOut(int a, int b, float c, float t) {
 	return x;
 }
 
-void Player::Draw(int color) const {
+void Player::Draw(const int color, const bool Flat) const {
 	int color2 = 0x191B19FF;
 	int ballPrePosX = int(screen_pos.x);
 
@@ -464,51 +448,48 @@ void Player::Draw(int color) const {
 		static_cast<int>(height),
 		0.0f, color, kFillModeWireFrame);
 
-	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
-		static_cast<int>(screen_pos.y + height + 10),
-		static_cast<int>(10 * width / 5), static_cast<int>(10.0f),
-		0.0f, 0x191B19FF, kFillModeSolid);
-	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
-		static_cast<int>(screen_pos.y + height + 10), 
-		static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
-		0.0f, 0x0ae94dFF, kFillModeSolid);
-	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
-		static_cast<int>(screen_pos.y + height + 10),
-		static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
-		0.0f, 0x191B19FF, kFillModeWireFrame);
+	if (Flat) {
+		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+			static_cast<int>(screen_pos.y + height + 10),
+			static_cast<int>(10 * width / 5), static_cast<int>(10.0f),
+			0.0f, 0x191B19FF, kFillModeSolid);
+		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+			static_cast<int>(screen_pos.y + height + 10),
+			static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
+			0.0f, 0x0ae94dFF, kFillModeSolid);
+		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+			static_cast<int>(screen_pos.y + height + 10),
+			static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
+			0.0f, 0x191B19FF, kFillModeWireFrame);
 
 
-
-
-
-
-	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
-		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
-		static_cast<int>(30 * height / 15),
-		0.0f, 0x191B19FF, kFillModeSolid);
-	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
-		static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
-		static_cast<int>(-480 * height / 390),
-		0.0f, 0x191B19FF, kFillModeSolid);
-	if (mouseType) {
 		Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
-			static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
-			static_cast<int>(-((36 - shootCoolTimeD / 10) * height / 18)),
-			0.0f, 0x8E13E0FF, kFillModeSolid);
+			static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
+			static_cast<int>(30 * height / 15),
+			0.0f, 0x191B19FF, kFillModeSolid);
 		Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
 			static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
-			static_cast<int>(-(mouseValue)*height / 390),
-			0.0f, 0xf8fd67FF, kFillModeSolid);
-	}
-	else {
-		Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
-			static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
-			static_cast<int>(-((30 - shootCoolTimeB / 10) * height / 15)),
-			0.0f, 0xBC47F7FF, kFillModeSolid);
-		Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
-			static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
-			static_cast<int>(-(mouseValue)*height / 390),
-			0.0f, 0xfed03aFF, kFillModeSolid);
+			static_cast<int>(-480 * height / 390),
+			0.0f, 0x191B19FF, kFillModeSolid);
+		if (mouseType) {
+			Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
+				static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+				static_cast<int>(-((36 - shootCoolTimeD / 10) * height / 18)),
+				0.0f, 0x8E13E0FF, kFillModeSolid);
+			Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
+				static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+				static_cast<int>(-(mouseValue)*height / 390),
+				0.0f, 0xf8fd67FF, kFillModeSolid);
+		} else {
+			Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
+				static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+				static_cast<int>(-((30 - shootCoolTimeB / 10) * height / 15)),
+				0.0f, 0xBC47F7FF, kFillModeSolid);
+			Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
+				static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+				static_cast<int>(-(mouseValue)*height / 390),
+				0.0f, 0xfed03aFF, kFillModeSolid);
+		}
 	}
 	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
 		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),

@@ -23,6 +23,8 @@ public:
 
 	//タイトルの初期化処理
 	void Init();
+	void DrawGameOver(const int posX, const int posY, const int width, int color);
+	void DrawBack(const int posX, const int posY, const int width, int color);
 	//タイトルの更新処理
 	void Update();
 	//タイトルの描画処理
@@ -50,10 +52,5 @@ public:
 	int changeClockTime[6];
 
 	RuningBinary* runingBinary;
-
-	Player* player;
-
-	//敵の宣言
-	Enemy* enemy;
 };
 

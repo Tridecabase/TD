@@ -56,7 +56,7 @@ void TestStage::Init() {
 	window[3]->Init(400, 0);
 	window[3]->pos_ = { WINDOW_WIDTH / 2 + 300,670 };
 
-	runingBinary->Init(180, 270, 270, 200, 20);
+	runingBinary->Init(180, 270, 270, 200, 20, 10);
 
 
 	openTime = 15;
@@ -164,14 +164,14 @@ void TestStage::Render() {
 	///Window
 	window[1]->drawWindow(0x4BBC54FF);
 	if (openClock == 0) {
-		runingBinary->Render();
+		runingBinary->Render(0x4BBC54FF);
 	}
 	///Window
 	window[2]->drawWindow(0x4BBC54FF);
 	///Window
 	window[3]->drawWindow(0x4BBC54FF);
 	if (openClock == 0) {
-		player->Draw(0x4BBC54FF);
+		player->Draw(0x4BBC54FF, FALSE);
 	}
 	window[0]->drawWindow(0x4BBC54FF);
 	{

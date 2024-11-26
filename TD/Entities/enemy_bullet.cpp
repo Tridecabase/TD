@@ -63,6 +63,11 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 
 			float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
 			float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
+
+            if (- dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
+                funnelBullet[i].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
+            }
+
 			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
 
 			funnelBullet[i].time = magnitude / funnelBullet[i].speed;
@@ -83,6 +88,11 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 			float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
 			float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
 			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+
+
+            if (- dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
+                funnelBullet[i].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
+            }
 
 			funnelBullet[i].time = magnitude / funnelBullet[i].speed;
 			funnelBullet[i].velocity.x = dirX / funnelBullet[i].time;
@@ -167,19 +177,30 @@ void FunnelBullet::Draw() {
 		particle->Render();
 	}
 
+    //敵弾の照準表現
     for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
         if (funnelBullet[i].isShoot) {
+            unsigned int line_color{};
+            if (funnelBullet[i].pos.z >= 0.2f) {
+                line_color = 0x4BBC5422;
+            }
+            if (funnelBullet[i].pos.z <= 0.2f) {
+                line_color = RED;
+            }
+
+            //線
             Novice::DrawLine(
                 static_cast<int>(funnelBullet[i].pos.x),
                 static_cast<int>(funnelBullet[i].pos.y),
                 static_cast<int>(funnelBullet[i].target_pos.x),
                 static_cast<int>(funnelBullet[i].target_pos.y),
-                0x4BBC5422
+                line_color
             );
+            //円
             Novice::DrawEllipse(
                 static_cast<int>(funnelBullet[i].target_pos.x),
                 static_cast<int>(funnelBullet[i].target_pos.y),
-                10, 5, 0.0f, 0x4BBC54FF, kFillModeSolid);
+                10, 5, 0.0f, line_color, kFillModeSolid);
         }
     }
  
@@ -346,6 +367,11 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                 float dirY = droneBullets[i][j].target_pos.y - droneBullets[i][j].pos.y;
                 float magnitude = sqrtf(dirX * dirX + dirY * dirY);
 
+
+                if (-dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
+                    droneBullets[i][j].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
+                }
+
                 droneBullets[i][j].time = magnitude / droneBullets[i][j].speed;
                 droneBullets[i][j].velocity.x = dirX / droneBullets[i][j].time;
                 droneBullets[i][j].velocity.y = dirY / droneBullets[i][j].time;
@@ -426,20 +452,30 @@ void DroneBullet::Draw() {
         particle->Render();
     }
 
+    //敵弾の照準表現
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
             if (droneBullets[i][j].isShoot) {
+                unsigned int line_color{};
+                if (droneBullets[i][j].pos.z >= 0.2f) {
+                    line_color = 0x4BBC5411;
+                }
+                if (droneBullets[i][j].pos.z <= 0.2f) {
+                    line_color = RED;
+                }
+                //線
                 Novice::DrawLine(
                     static_cast<int>(droneBullets[i][j].pos.x),
                     static_cast<int>(droneBullets[i][j].pos.y),
                     static_cast<int>(droneBullets[i][j].target_pos.x),
                     static_cast<int>(droneBullets[i][j].target_pos.y),
-                    0x4BBC5411
+                    line_color
                 );
+                //円
                 Novice::DrawEllipse(
                     static_cast<int>(droneBullets[i][j].target_pos.x),
                     static_cast<int>(droneBullets[i][j].target_pos.y),
-                    10, 5, 0.0f, 0x4BBC54FF,kFillModeSolid);
+                    10, 5, 0.0f, line_color,kFillModeSolid);
             }
         }
     }

@@ -53,7 +53,7 @@ void Title::Init() {
 	window[3]->Init(400, 0);
 	window[3]->pos_ = { WINDOW_WIDTH / 2 + 300,670 };
 
-	runingBinary->Init(180, 270, 270, 200, 20);
+	runingBinary->Init(180, 270, 270, 200, 20, 10);
 
 
 	openTime = 15;
@@ -128,7 +128,7 @@ void Title::DrawGameStart(const int posX, const int posY, const int width, int c
 void Title::Update() {
 	/////////////////////////////UI処理
 	ui->Updata();
-	
+
 	/////////////////////////////opening処理
 	///opening時計
 	if (openClock != 0) {
@@ -171,7 +171,7 @@ bool Title::StageChanger() {
 	int MPY = {};
 	Novice::GetMousePosition(&MPX, &MPY);
 	if (Novice::IsTriggerMouse(0)) {
-		if(MPX>0 && MPX<WINDOW_WIDTH){
+		if (MPX > 0 && MPX < WINDOW_WIDTH) {
 			if (MPY > 0 && MPY < WINDOW_HEIGHT) {
 				if (!scFlat) {
 					scFlat = true;
@@ -215,14 +215,14 @@ void Title::Render() {
 	///Window
 	window[1]->drawWindow(0x4BBC54FF);
 	if (openClock == 0) {
-		runingBinary->Render();
+		runingBinary->Render(0x4BBC54FF);
 	}
 	///Window
 	window[2]->drawWindow(0x4BBC54FF);
 	///Window
 	window[3]->drawWindow(0x4BBC54FF);
 	if (openClock == 0) {
-		player->Draw(0x4BBC54FF);
+		player->Draw(0x4BBC54FF, false);
 	}
 
 	///WindowTitle

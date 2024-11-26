@@ -202,7 +202,7 @@ void Stage::Render() {
 
     if (player) {
         //プレイヤーの描画
-        player->Draw(player->color1);
+        player->Draw(player->color1, TRUE);
     }
 
     if (ui) {
