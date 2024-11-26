@@ -568,10 +568,6 @@ void Player::Draw(const int color, const bool Flat) const {
 	Novice::DrawLine(int(point41.x), int(point41.y),
 		int(point43.x), int(point43.y), color);
 
-	Novice::DrawBox(900, 300, 100, 100, 0.0f, 0xe03243FF, kFillModeSolid);
-	Novice::DrawBox(900, 500, 100, 100, 0.0f, 0x0497E6FF, kFillModeSolid);
-	Novice::DrawBox(1100, 300, 100, 100, 0.0f, 0xBC47F7FF, kFillModeSolid);
-	Novice::DrawBox(1100, 500, 100, 100, 0.0f, 0x8E13E0FF, kFillModeSolid);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

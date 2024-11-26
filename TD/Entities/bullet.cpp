@@ -79,7 +79,8 @@ void BulletA::Init() {
 	}
 
 	playhandle = -1;
-	shot_hanlde = Novice::LoadAudio("../Resources/hit.wav");
+	shot_hanlde = Novice::LoadAudio("../Resources/sounds/effects/gun_A.mp4");
+	isSoundPlay = false;
 }
 
 void BulletA::Scroll(Player* player, char keys[256]) {
@@ -108,18 +109,10 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 		if (bullet->mouseType == false) {
 			if (Novice::IsPressMouse(0)) {
 				if (player->isShootAbleA) {
-
-					//
-
 					player->isShootAbleA = false;
 					player->shootCoolTimeA = 3;
 					for (int i = 0; i < MAX_BULLET_A; i++) {
 						if (!bulletA[i].isShoot) {
-
-							if (!Novice::IsPlayingAudio(playhandle) || playhandle == -1) {
-								playhandle = Novice::PlayAudio(shot_hanlde, 1, 1.0f);
-							}
-
 							bulletA[i].isShoot = true;
 							bulletA[i].pos.x = player->pos.x;
 							bulletA[i].pos.y = player->pos.y;
@@ -143,6 +136,9 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 		}
 		for (int i = 0; i < MAX_BULLET_A; i++) {
 			if (bulletA[i].isShoot) {
+				if (!Novice::IsPlayingAudio(playhandle)) {
+					playhandle = Novice::PlayAudio(shot_hanlde, false, 1.0f);
+				}
 				bulletA[i].pos.z += bulletA[i].speed;
 				bulletA[i].time += bulletA[i].speed / bulletA[i].distanceToMouse;
 				bulletA[i].scale = 1.0f - bulletA[i].pos.z / 1500.0f;
@@ -174,6 +170,9 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 			else {
 				bulletA[i].screen_pos = { NULL };
 			}
+		}
+		if (isSoundPlay) {
+		
 		}
 	}
 }
@@ -717,8 +716,4 @@ void BulletD::Draw() const {
 		Novice::DrawEllipse(static_cast<int>(screen_pos.x), static_cast<int>(screen_pos.y), static_cast<int>(radiusX * scale), static_cast<int>(radiusY * scale), 0.0f, 0x191B19FF, kFillModeSolid);
 		Novice::DrawEllipse(static_cast<int>(screen_pos.x), static_cast<int>(screen_pos.y), static_cast<int>(radiusX * scale), static_cast<int>(radiusY * scale), 0.0f, 0x8E13E0FF, kFillModeWireFrame);
 	}
-	Novice::ScreenPrintf(100, 260, "stoppageTimer = %f", stoppageTimer);
-	Novice::ScreenPrintf(100, 280, "screenPosX = %f,screenPosY = %f,screenPosZ = %f", screen_pos.x, screen_pos.y, pos.z);
-	Novice::ScreenPrintf(100, 300, "radiusX = %f,radiusY = %f", radiusX, radiusY);
-	Novice::ScreenPrintf(100, 320, "time = %f,scale = %f", time, scale);
 }

@@ -151,6 +151,7 @@ public:
 
 	int playhandle;
 	int shot_hanlde;
+	bool isSoundPlay;
 
 };
 
