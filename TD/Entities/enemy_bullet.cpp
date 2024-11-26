@@ -24,7 +24,7 @@ void FunnelBullet::init() {
 		1.0f,	//scale 
 		3.0f,	//speed
 		0.0f,	//angle
-		150.0f,	//time
+		0.0f,	//time
 		200,	//cooldown
 		0.0f,	//distanceToMouse
 		0.0f,	//altitude
@@ -61,18 +61,7 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
                 funnelBullet[i].target_pos.y = player->screen_pos.y;
 
 
-                float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
-                float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
-
-                if (-dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
-                    funnelBullet[i].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
-                }
-
-                float magnitude = sqrtf(dirX * dirX + dirY * dirY);
-
-                funnelBullet[i].time = magnitude / funnelBullet[i].speed;
-                funnelBullet[i].velocity.x = dirX / funnelBullet[i].time;
-                funnelBullet[i].velocity.y = dirY / funnelBullet[i].time;
+                funnelBullet[i].time = 0;
 
                 funnelBullet[i].isShoot = true;
             }
@@ -82,26 +71,26 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 
 	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
 		if (funnelBullet[i].isShoot) {
+            funnelBullet[i].time++;
 
 			funnelBullet[i].pos.x += funnelBullet[i].velocity.x;
 			funnelBullet[i].pos.y += funnelBullet[i].velocity.y;
 
 			float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
 			float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
-			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+            float remaining_time = max(BULLET_FLYING_TIME - funnelBullet[i].time, 0.01f);
 
 
             if (- dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
                 funnelBullet[i].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
             }
 
-			funnelBullet[i].time = magnitude / funnelBullet[i].speed;
-			funnelBullet[i].velocity.x = dirX / funnelBullet[i].time;
-			funnelBullet[i].velocity.y = dirY / funnelBullet[i].time;
+            funnelBullet[i].velocity.x = dirX / remaining_time;
+            funnelBullet[i].velocity.y = dirY / remaining_time;
 
-			funnelBullet[i].pos.z = 1.0f - (funnelBullet[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
-			funnelBullet[i].pos.z = max(0.0f, funnelBullet[i].pos.z);
-			funnelBullet[i].scale = 0.2f + 0.8f * (1.0f - funnelBullet[i].pos.z);
+            funnelBullet[i].pos.z = 1.0f - (funnelBullet[i].pos.y - enemy->funnel[i].y) / (530.0f - enemy->funnel[i].y);
+            funnelBullet[i].pos.z = max(0.0f, funnelBullet[i].pos.z);
+            funnelBullet[i].scale = 0.2f + 0.8f * (1.0f - funnelBullet[i].pos.z);
 			if (particle) {
 				particle->GenerateParticles(
 					funnelBullet[i].pos.x,
@@ -112,6 +101,7 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 			float dx = funnelBullet[i].pos.x - funnelBullet[i].target_pos.x;
 			float dy = funnelBullet[i].pos.y - funnelBullet[i].target_pos.y;
 			if (sqrtf(dx * dx + dy * dy) < 32.0f) {
+                funnelBullet[i].time = 0;
 				if (particle) {
 					particle->Destroy(
 						funnelBullet[i].pos.x,
@@ -132,6 +122,7 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 				if (player->screen_pos.y + player->height / 2 >= funnelBullet[i].pos.y - funnelBullet[i].radius * funnelBullet[i].scale &&
 					player->screen_pos.y - player->height / 2 <= funnelBullet[i].pos.y + funnelBullet[i].radius * funnelBullet[i].scale) {
 					if (!player->isHit) {
+                        funnelBullet[i].time = 0;
 						particle->Destroy(
 							funnelBullet[i].pos.x,
 							funnelBullet[i].pos.y,
@@ -182,6 +173,12 @@ void FunnelBullet::Draw() {
     for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
         if (funnelBullet[i].isShoot) {
             unsigned int line_color{};
+
+            float factor =  funnelBullet[i].target_pos.y / 450.0f;
+            float width = 10.0f * factor;
+            float height = 5.0f * factor;
+
+
             if (funnelBullet[i].pos.z >= 0.2f) {
                 line_color = 0x4BBC5422;
             }
@@ -201,7 +198,9 @@ void FunnelBullet::Draw() {
             Novice::DrawEllipse(
                 static_cast<int>(funnelBullet[i].target_pos.x),
                 static_cast<int>(funnelBullet[i].target_pos.y),
-                10, 5, 0.0f, line_color, kFillModeSolid);
+                static_cast<int>(width),
+                static_cast<int>(height),
+                0.0f, line_color, kFillModeSolid);
         }
     }
  
@@ -320,13 +319,7 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                     droneBullets[i][j].target_pos.x = player->screen_pos.x;
                     droneBullets[i][j].target_pos.y = player->screen_pos.y;
 
-                    float dirX = droneBullets[i][j].target_pos.x - droneBullets[i][j].pos.x;
-                    float dirY = droneBullets[i][j].target_pos.y - droneBullets[i][j].pos.y;
-                    float magnitude = sqrtf(dirX * dirX + dirY * dirY);
-
-                    droneBullets[i][j].velocity.x = (dirX / magnitude) * droneBullets[i][j].speed;
-                    droneBullets[i][j].velocity.y = (dirY / magnitude) * droneBullets[i][j].speed;
-
+                    droneBullets[i][j].time = 0;
                     droneBullets[i][j].isShoot = true;
                 }
             }
@@ -340,13 +333,7 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                     droneBullets[i][j].target_pos.x = player->screen_pos.x;
                     droneBullets[i][j].target_pos.y = player->screen_pos.y;
 
-                    float dirX = droneBullets[i][j].target_pos.x - droneBullets[i][j].pos.x;
-                    float dirY = droneBullets[i][j].target_pos.y - droneBullets[i][j].pos.y;
-                    float magnitude = sqrtf(dirX * dirX + dirY * dirY);
-
-                    droneBullets[i][j].velocity.x = (dirX / magnitude) * droneBullets[i][j].speed;
-                    droneBullets[i][j].velocity.y = (dirY / magnitude) * droneBullets[i][j].speed;
-
+                    droneBullets[i][j].time = 0;
                     droneBullets[i][j].isShoot = true;
                 }
             }
@@ -361,32 +348,30 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
             if (droneBullets[i][j].isShoot) {
+                droneBullets[i][j].time++;
                 droneBullets[i][j].pos.x += droneBullets[i][j].velocity.x;
                 droneBullets[i][j].pos.y += droneBullets[i][j].velocity.y;
 
                 float dirX = droneBullets[i][j].target_pos.x - droneBullets[i][j].pos.x;
                 float dirY = droneBullets[i][j].target_pos.y - droneBullets[i][j].pos.y;
-                float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+                float remaining_time = max(BULLET_FLYING_TIME - droneBullets[i][j].time, 0.01f);
 
 
                 if (-dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
                     droneBullets[i][j].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
                 }
 
-                droneBullets[i][j].time = magnitude / droneBullets[i][j].speed;
-                droneBullets[i][j].velocity.x = dirX / droneBullets[i][j].time;
-                droneBullets[i][j].velocity.y = dirY / droneBullets[i][j].time;
-                //if (particle) {
-                //    particle->GenerateParticles(
-                //        droneBullets[i][j].pos.x,
-                //        droneBullets[i][j].pos.y,
-                //        0x4BBC5444
-                //    );
-                //}
+                droneBullets[i][j].velocity.x = dirX / remaining_time;
+                droneBullets[i][j].velocity.y = dirY / remaining_time;
+
+                droneBullets[i][j].pos.z = 1.0f - (droneBullets[i][j].pos.y - enemy->pos.y) / (530.0f - enemy->pos.y);
+                droneBullets[i][j].pos.z = max(0.0f, droneBullets[i][j].pos.z);
+                droneBullets[i][j].scale = 0.2f + 0.8f * (1.0f - droneBullets[i][j].pos.z);
 
                 float dx = droneBullets[i][j].pos.x - droneBullets[i][j].target_pos.x;
                 float dy = droneBullets[i][j].pos.y - droneBullets[i][j].target_pos.y;
                 if (sqrtf(dx * dx + dy * dy) < 32.0f) {
+                    droneBullets[i][j].time = 0;
                     if (particle) {
                         particle->Destroy(
                             droneBullets[i][j].pos.x,
@@ -408,6 +393,7 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                     if (player->screen_pos.y + player->height / 2 >= droneBullets[i][j].pos.y - droneBullets[i][j].radius * droneBullets[i][j].scale &&
                         player->screen_pos.y - player->height / 2 <= droneBullets[i][j].pos.y + droneBullets[i][j].radius * droneBullets[i][j].scale) {
                         if (!player->isHit) {
+                            droneBullets[i][j].time = 0;
                             player->hp -= FUNNEL_ATK;
                             particle->Destroy(
                                 droneBullets[i][j].pos.x,
@@ -456,6 +442,11 @@ void DroneBullet::Draw() {
     //敵弾の照準表現
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
+
+            float factor = droneBullets[i][j].target_pos.y / 450.0f;
+            float width = 10.0f * factor;
+            float height = 5.0f * factor;
+
             if (droneBullets[i][j].isShoot) {
                 unsigned int line_color{};
                 if (droneBullets[i][j].pos.z >= 0.2f) {
@@ -476,7 +467,9 @@ void DroneBullet::Draw() {
                 Novice::DrawEllipse(
                     static_cast<int>(droneBullets[i][j].target_pos.x),
                     static_cast<int>(droneBullets[i][j].target_pos.y),
-                    10, 5, 0.0f, line_color,kFillModeSolid);
+                    static_cast<int>(width),
+                    static_cast<int>(height)
+                    , 0.0f, line_color,kFillModeSolid);
             }
         }
     }

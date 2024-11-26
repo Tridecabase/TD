@@ -108,4 +108,7 @@ const float BULLET_VEL_Z = 0.02f;
 
 const int FUNNEL_ATK = 1;
 
+//敵の弾　プレーヤーまでの飛行時間
+const float BULLET_FLYING_TIME = 240.0f;
+
 #endif
