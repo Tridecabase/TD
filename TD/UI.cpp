@@ -53,6 +53,6 @@ void Mouse::Draw()
 	Novice::DrawLine(int(mousePos_.x) + 15, int(mousePos_.y), int(mousePos_.x) - 15, int(mousePos_.y), color);
 	Novice::DrawLine(int(mousePos_.x), int(mousePos_.y) + 15, int(mousePos_.x), int(mousePos_.y) - 15, color);
 
-	Novice::ScreenPrintf(10, 150, "MousePx = %d,MousePy = %d", int(mousePos_.x), int(mousePos_.y));
+	//Novice::ScreenPrintf(10, 150, "MousePx = %d,MousePy = %d", int(mousePos_.x), int(mousePos_.y));
 
 };

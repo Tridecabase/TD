@@ -572,13 +572,13 @@ void Player::Draw(const int color, const bool Flat) const {
 		int(point43.x), int(point43.y), color);
 
 
-	Novice::ScreenPrintf(10, 600, "%d", clock);
-	Novice::ScreenPrintf(10, 620, "%d", timer);
-	Novice::ScreenPrintf(10, 640, "%f", point11N);
-	Novice::ScreenPrintf(10, 680, "%f", point11.x);
-	Novice::ScreenPrintf(10, 660, "%f", point11LP.x);
-
-	Novice::ScreenPrintf(10, 580, "%f", screen_pos.y);
+	//Novice::ScreenPrintf(10, 600, "%d", clock);
+	//Novice::ScreenPrintf(10, 620, "%d", timer);
+	//Novice::ScreenPrintf(10, 640, "%f", point11N);
+	//Novice::ScreenPrintf(10, 680, "%f", point11.x);
+	//Novice::ScreenPrintf(10, 660, "%f", point11LP.x);
+	//
+	//Novice::ScreenPrintf(10, 580, "%f", screen_pos.y);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
