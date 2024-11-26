@@ -149,6 +149,9 @@ public:
 
 	Bullet_A bulletA[MAX_BULLET_A]{};
 
+	int playhandle;
+	int shot_hanlde;
+
 };
 
 class BulletB {
