@@ -12,9 +12,9 @@ public:
 	RuningBinary();
 	~RuningBinary();
 
-	void Init(const float posX, const float posY, const int showWidth, const int showHeight, const int wordWidth);
+	void Init(const float posX, const float posY, const int showWidth, const int showHeight, const int wordWidth, const int clock);
 	void Updata();
-	void Render();
+	void Render(const int color);
 
 	//句
 	WordFloat* wordFloat[20];

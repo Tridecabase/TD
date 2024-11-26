@@ -26,9 +26,8 @@ GameOver::GameOver() {
 		changeClockTime[i] = {};
 	}
 
-	player = new(Player);
-
-	enemy = new(Enemy);
+	//player = new(Player);
+	//enemy = new(Enemy);
 }
 
 GameOver::~GameOver() {
@@ -38,8 +37,8 @@ GameOver::~GameOver() {
 		delete window[i];
 	}
 	delete runingBinary;
-	delete player;
-	delete enemy;
+	//delete player;
+	//delete enemy;
 }
 
 void GameOver::Init() {
@@ -54,9 +53,9 @@ void GameOver::Init() {
 	window[2]->Init(200, 0);
 	window[2]->pos_ = { WINDOW_WIDTH / 2 + 300,150 };
 	window[3]->Init(400, 0);
-	window[3]->pos_ = { WINDOW_WIDTH / 2 + 300,670 };
+	window[3]->pos_ = { WINDOW_WIDTH / 2 + 400,670 };
 
-	runingBinary->Init(180, 270, 270, 200, 20);
+	runingBinary->Init(180, 270, 270, 200, 20,30);
 
 
 	openTime = 15;
@@ -79,28 +78,72 @@ void GameOver::Init() {
 	changeClockClock[2] = 40;
 	changeClockClock[3] = 30;
 	changeClockClock[4] = 20;
-	changeClockClock[5] = 10;
+	changeClockClock[5] = 0;
 
-	player->InitDisplay();
-	player->velocity = 2;
-	player->screen_pos = { 1050 ,600 };
-	player->width = 48.0f;
-	player->height = 24.0f;
-	player->clock = 0;
-	player->timer = 1;
+	//player->InitDisplay();
+	//player->velocity = 2;
+	//player->screen_pos = { 1050 ,600 };
+	//player->width = 48.0f;
+	//player->height = 24.0f;
+	//player->clock = 0;
+	//player->timer = 1;
 
-	enemy->Init();
+	//enemy->Init();
 }
 
+void GameOver::DrawGameOver(const int posX, const int posY, const int width, int color) {
+	char b[] = "GameOver";
+	//char b[] = "e";
+	float w = float(float(width) / 41.0f);
+	float number = 0;
+	for (int i = 0; i < 10; i++) {
+		if (isupper(b[i])) {
+			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
+			number += 6.0f;
+		}
+		if (islower(b[i])) {
+			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
+			number += 4.0f;
+			if(b[i] == 'm'){
+				number += 2.0f;
+			}
+		}
 
+	}
+
+}
+void GameOver::DrawBack(const int posX, const int posY, const int width, int color) {
+	char b[] = "Push M back to title";
+	//char b[] = "e";
+	float w = float(float(width) / 41.0f);
+	float number = 0;
+	for (int i = 0; i < 20; i++) {
+		if (isupper(b[i])) {
+			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
+			number += 6.0f;
+		}
+		if (islower(b[i])) {
+			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
+			number += 4.0f;
+			if(b[i] == 'm'){
+				number += 2.0f;
+			}
+		}
+		if (b[i] == ' ') {
+			number += 2.0f;
+		}
+
+	}
+
+}
 
 void GameOver::Update() {
 	/////////////////////////////UI処理
 	ui->Updata();
 
 	/////////////////////////////Boss処理
-	enemy->screen_pos.x = WINDOW_WIDTH / 2;
-	enemy->screen_pos.y = WINDOW_HEIGHT / 2;
+	//enemy->screen_pos.x = WINDOW_WIDTH / 2;
+	//->screen_pos.y = WINDOW_HEIGHT / 2;
 
 	/////////////////////////////opening処理
 	///opening時計
@@ -125,7 +168,7 @@ void GameOver::Update() {
 	}
 	/////////////////////////////背景処理
 	///数字の更新
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 5; i++) {
 		if (changeClockClock[i] != 0) {
 			changeClockClock[i]--;
 		} else {
@@ -140,13 +183,15 @@ void GameOver::Update() {
 }
 
 void GameOver::Render() {
+	int color = 0xA30019FF;
+
 	Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x191b19FF, kFillModeSolid);
 	///背景の数字
 	{
 		int numSizeW = 50;
 		int numSizeH = int(50 * 1.4f);
-		int colorStart = 0x4BBC5444;
-		int colorEnd = 0x4BBC5400;
+		int colorStart = 0xA3001944;
+		int colorEnd = 0xA3001900;
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 27; j++) {
 				for (int k = 0; k < 6; k++) {
@@ -162,23 +207,20 @@ void GameOver::Render() {
 	}
 
 	///Window
-	window[1]->drawWindow(0x4BBC54FF);
+	window[1]->drawWindow(color);
 	if (openClock == 0) {
-		runingBinary->Render();
+		runingBinary->Render(color);
 	}
 	///Window
-	window[2]->drawWindow(0x4BBC54FF);
+	window[2]->drawWindow(color);
 	///Window
-	window[3]->drawWindow(0x4BBC54FF);
+	window[3]->drawWindow(color);
+	window[0]->drawWindow(color);
 	if (openClock == 0) {
-		player->Draw(0x4BBC54FF);
-	}
-	window[0]->drawWindow(0x4BBC54FF);
-	{
-		int MouseX = {};
-		int MouseY = {};
-		Novice::GetMousePosition(&MouseX, &MouseY);
-		enemy->Draw(MouseX, MouseY);
+		DrawGameOver(360, 290, 600, color);
+		if (aniClock <= (aniTime / 2)) {
+			DrawBack(WINDOW_WIDTH / 2 - 280, 440, 290, 0xFFD30688);
+		}
 	}
 
 	ui->Draw();
@@ -187,7 +229,7 @@ void GameOver::Render() {
 	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
 	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
-	Novice::ScreenPrintf(10, 700, "%f/%f", enemy->screen_pos.x, enemy->screen_pos.y);
+	//Novice::ScreenPrintf(10, 700, "%f/%f", enemy->screen_pos.x, enemy->screen_pos.y);
 	if (scFlat) {
 		stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
 	}

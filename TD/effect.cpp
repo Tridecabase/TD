@@ -17,15 +17,15 @@ RuningBinary::~RuningBinary() {
 	}
 }
 
-void RuningBinary::Init(const float posX, const float posY, const int showWidth, const int showHeight, const int wordWidth) {
+void RuningBinary::Init(const float posX, const float posY, const int showWidth, const int showHeight, const int wordWidth, const int clock) {
 	for (int i = 0; i < 20; i++) {
 		wordFloat[i]->Init(wordWidth, i);
 	}
 	pos_ = { posX,posY };
 	width_ = showWidth;
 	height_ = showHeight;
-	clock_ = 10;
-	time_ = 10;
+	clock_ = clock;
+	time_ = clock;
 }
 
 void RuningBinary::Updata() {
@@ -50,10 +50,10 @@ void RuningBinary::Updata() {
 	//Novice::ScreenPrintf(10, 700, "%d /%d", clock_, time_);
 }
 
-void RuningBinary::Render() {
+void RuningBinary::Render(const int color) {
 	for (int i = 0; i < 20; i++) {
 		if (wordFloat[i]->pos_.y < height_) {
-			wordFloat[i]->Render(pos_.x, pos_.y, width_, clock_, time_, 0x4BBC54FF);
+			wordFloat[i]->Render(pos_.x, pos_.y, width_, clock_, time_, color);
 		}
 		//Novice::ScreenPrintf(10, 680 - i * 20, "%c", wordFloat[i]->word_[i]);
 	}
