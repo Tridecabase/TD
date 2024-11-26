@@ -708,6 +708,9 @@ void Enemy::FireAtPlayer() {
 	if ((vel > 0 && pos.x >= WINDOW_WIDTH * MAX_SCROLL) || (vel < 0.0f && pos.x <= 0.0f)) {
 		//行動終了、リセット
 		vel = 0.0f;
+		if (fabs(pos.y - ENEMY_SPAWN_POSY) > 1.0f) {
+			pos.y += (ENEMY_SPAWN_POSY - pos.y) * 0.1f; //緩やかな移動
+		}
 		current_action = ActionID::IDLE; //次はIDLEに遷移
 		action_timer = 100;             //IDLEの時間設定
 	}
@@ -757,9 +760,9 @@ void Enemy::ExitBreakState() {
 void Enemy::Idle() {
 	// 高さをゆっくり元の位置へ戻す
 	if (fabs(pos.y - ENEMY_SPAWN_POSY) > 1.0f) {
-		pos.y += (ENEMY_SPAWN_POSY - pos.y) * 0.1f; // 緩やかな移動
+		pos.y += (ENEMY_SPAWN_POSY - pos.y) * 0.1f; //緩やかな移動
 	} else {
-		SetRandomAction(); // ランダムな次の行動を選択
+		SetRandomAction(); //ランダムな次の行動を選択
 	}
 }
 

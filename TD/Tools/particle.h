@@ -59,11 +59,15 @@ public:
         for (int i = 0; i < MAX_PARTICLES; ++i) {
             Particle& p = particles[i];
             if (p.active) {
+
+                float alpha = static_cast<float>(p.life) / maxlife;
+                unsigned int newColor = ChangeAlpha(p.color, alpha);
+
                 Novice::DrawBox(
                     static_cast<int>(p.x), static_cast<int>(p.y),
                     10, 10,
                     p.angle,
-                    p.color,
+                    newColor,
                     kFillModeSolid
                 );
 
@@ -84,6 +88,15 @@ private:
     int nextParticleIndex;             //次に使用するParticleのインデックス
     const int maxlife = 60;            //最大生命値
     const float maxSpeed = 3.0f;       //最大速度
+
+    unsigned int ChangeAlpha(unsigned int color, float alpha) {
+        unsigned char r = (color >> 24) & 0xFF;
+        unsigned char g = (color >> 16) & 0xFF;
+        unsigned char b = (color >> 8) & 0xFF;
+        unsigned char a = static_cast<unsigned char>(alpha * 255);
+
+        return (r << 24) | (g << 16) | (b << 8) | a;
+    }
 };
 
 #endif
