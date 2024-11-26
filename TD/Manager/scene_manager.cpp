@@ -1,12 +1,13 @@
 #include "scene_manager.h"
 
-SceneManager::SceneManager() : current_scene(SceneState::GAMETITLE),stage(new Stage),testStage(new TestStage), title(new Title) {
+SceneManager::SceneManager() : current_scene(SceneState::GAMETITLE),stage(new Stage),testStage(new TestStage),gameOver(new GameOver), title(new Title) {
 
 }
 SceneManager::~SceneManager() {
 	delete title;
 	delete stage;
 	delete testStage;
+	delete gameOver;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,6 +22,7 @@ void SceneManager::Init() {
 	title->Init();
 	stage->Init();
 	testStage->Init();
+	gameOver->Init();
 
 	is_stage_off = true;
 }
@@ -65,21 +67,37 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		//    current_scene = SceneState::GAMEEND;
 		//    stage->Init();
 		//}
+		
 		//テスト用シーン切り替え
-		if (stage->StageChanger(keys, preKeys)) {
-			current_scene = SceneState::GAMEEND;
-			stage->Init();
+		if (keys[DIK_O] && !preKeys[DIK_O]) {
+			stage->player->hp = 0;
+		   
 		}
+		if (keys[DIK_M] && !preKeys[DIK_M]) {
+			stage->enemy->hp = 0;
+		}
+		
+		//テスト用シーン切り替え
+		//if (stage->StageChanger(keys, preKeys)) {
+		//	current_scene = SceneState::GAMECLEAR;
+		//	stage->Init();
+		//}
 
 
 		//敵を倒したらシーン切り替え
 		if (stage->enemy->hp <= 0) {
-			current_scene = SceneState::GAMEEND;
+			current_scene = SceneState::GAMECLEAR;
+			stage->Init();
+		}
+		
+		//プレイヤーが倒されたらシーン切り替え
+		if (stage->player->hp <= 0) {
+			current_scene = SceneState::GAMEOVER;
 			stage->Init();
 		}
 
 		break;
-	case SceneState::GAMEEND:
+	case SceneState::GAMECLEAR:
 
 		if (is_stage_off) {
 			stage->~Stage();
@@ -90,8 +108,26 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		if (keys[DIK_M] && !preKeys[DIK_M]) {
 			current_scene = SceneState::GAMETITLE;
 			title->Init();
+			stage->Init();
 		}
 		//テスト用シーン切り替え
+
+		break;
+	case SceneState::GAMEOVER:
+
+		if (is_stage_off) {
+			stage->~Stage();
+			is_stage_off = false;
+		}
+
+		//テスト用シーン切り替え
+		if (keys[DIK_M] && !preKeys[DIK_M]) {
+			current_scene = SceneState::GAMETITLE;
+			title->Init();
+			stage->Init();
+		}
+		
+		gameOver->Update();
 
 		break;
 	case SceneState::GAMETEST:
@@ -143,13 +179,23 @@ void SceneManager::Render() {
 
 
 		break;
-	case SceneState::GAMEEND:
+	case SceneState::GAMECLEAR:
 
 		//テスト用背景
 		Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
 		//テスト用シーン切り替え
 		Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
 
+
+		break;
+	case SceneState::GAMEOVER:
+
+		//テスト用背景
+		Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
+		//テスト用シーン切り替え
+		Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
+
+		gameOver->Render();
 
 		break;
 	case SceneState::GAMETEST:
