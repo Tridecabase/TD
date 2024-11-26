@@ -6,7 +6,6 @@ FunnelBullet::FunnelBullet() {
 FunnelBullet::~FunnelBullet() {
 	if (particle) {
 		delete particle;
-		particle = nullptr;
 	}
 }
 

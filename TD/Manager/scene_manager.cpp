@@ -50,7 +50,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 			testStage->Init();
 		}
 		if (title->StageChanger()) {
-			title->~Title();
+			//title->~Title();
 			stage->Init();
 			current_scene = SceneState::GAMESTART;
 		}
@@ -94,7 +94,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 	case SceneState::GAMECLEAR:
 
 		if (is_stage_off) {
-			stage->~Stage();
+			//stage->~Stage();
 			is_stage_off = false;
 		}
 
@@ -111,7 +111,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 	case SceneState::GAMEOVER:
 
 		if (is_stage_off) {
-			stage->~Stage();
+			//stage->~Stage();
 			is_stage_off = false;
 		}
 
