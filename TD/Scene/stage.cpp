@@ -219,7 +219,7 @@ void Stage::Render() {
         stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
     }
 
-    Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
+    //Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
 }
 
 

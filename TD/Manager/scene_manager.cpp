@@ -18,7 +18,7 @@ SceneManager::~SceneManager() {
 void SceneManager::Init() {
 
 	//初期シーンを設定
-	current_scene = SceneState::GAMECLEAR;
+	current_scene = SceneState::GAMETITLE;
 	//ステージ要素の初期化
 	title->Init();
 	stage->Init();
@@ -170,7 +170,7 @@ void SceneManager::Render() {
 		//テスト用背景
 		//Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x808080ff, kFillModeSolid);
 		//テスト用シーン切り替え
-		Novice::ScreenPrintf(10, 30, "current_scene : GAMESTART");
+		//Novice::ScreenPrintf(10, 30, "current_scene : GAMESTART");
 
 		stage->Render();
 
@@ -178,10 +178,10 @@ void SceneManager::Render() {
 		break;
 	case SceneState::GAMECLEAR:
 
-		//テスト用背景
-		Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
-		//テスト用シーン切り替え
-		Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
+		////テスト用背景
+		//Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
+		////テスト用シーン切り替え
+		//Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
 		stageClear->Render();
 
 		break;
@@ -198,7 +198,7 @@ void SceneManager::Render() {
 	case SceneState::GAMETEST:
 
 		//テスト用背景
-		Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
+		//Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
 		//テスト用シーン切り替え
 		Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
 
@@ -208,11 +208,11 @@ void SceneManager::Render() {
 	}
 
 	//テスト用シーン切り替えボータン
-	if (current_scene != SceneState::GAMETITLE) {
-		if (current_scene != SceneState::GAMEOVER) {
-			Novice::ScreenPrintf(10, 10, "press M to change scene");
-		}
-	}
+	//if (current_scene != SceneState::GAMETITLE) {
+	//	if (current_scene != SceneState::GAMEOVER) {
+	//		Novice::ScreenPrintf(10, 10, "press M to change scene");
+	//	}
+	//}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
