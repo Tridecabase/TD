@@ -10,6 +10,7 @@ Enemy::~Enemy() {
 	delete wave1;   //wave1 のメモリ解放
 	delete wave2;   //wave2 のメモリ解放
 	delete wave3;   //wave3 のメモリ解放
+	delete circle_effect;
 }
 
 bool Enemy::IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2)
@@ -65,6 +66,8 @@ void Enemy::Init() {
 	is_break = false;
 	//ブレイク状態の残り時間
 	break_timer = 0;
+
+	circle_effect = new CircleEffect;
 
 
 	// ============================
@@ -681,13 +684,18 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 //エネルギー収集と弾幕発射
 void Enemy::FireAtPlayer() {
 	static int chargeTime = 0;
-	const int maxChargeTime = 300;
+
+	if (action_timer <= 300) {
+		circle_effect->Update(drone1.pos);
+		circle_effect->Update(drone2.pos);
+		circle_effect->Update(drone3.pos);
+	}
 
 	chargeTime++;
-	if (chargeTime >= maxChargeTime) {
+	if (chargeTime >= 600) {
 		chargeTime = 0;
 		current_action = ActionID::IDLE; //IDLEに遷移
-		action_timer = 300;              //IDLE時間設定
+		action_timer = 100;              //IDLE時間設定
 	}
 
 	//巻き戻し処理
@@ -788,6 +796,10 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Draw(const int posX, const int posY) {
+
+	if (current_action == ActionID::FIRE_AT_PLAYER && action_timer <= 300) {
+		circle_effect->Draw();
+	}
 
 	if (drone1.w >= static_cast<float>(M_PI)) {
 		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);

@@ -14,6 +14,7 @@
 #include "./Scene/title.h"
 #include "./Scene/stage.h"
 #include "./Scene/TestStage.h"
+#include "gameOver.h"
 #include "./Manager/resource_manager.h"
 
 
@@ -40,8 +41,8 @@ private:
     enum class SceneState {
         GAMETITLE,
         GAMESTART,
-        GAMEEND,
         GAMECLEAR,
+        GAMEOVER,
         GAMETEST
     };
 
@@ -55,6 +56,8 @@ private:
     Title* title;
     Stage* stage;
     TestStage* testStage;
+    GameOver* gameOver;
+
     bool is_stage_off;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////

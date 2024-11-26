@@ -180,6 +180,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Scene\TestStage.h" />
     <ClInclude Include="Scene\title.h" />
     <ClInclude Include="stageClear.h" />
+    <ClInclude Include="Tools\circle_effect.h" />
     <ClInclude Include="Tools\config.h" />
     <ClInclude Include="Tools\csv_parser.h" />
     <ClInclude Include="Tools\particle.h" />

@@ -2,14 +2,10 @@
 #define CIRCLE_EFFECT_H
 
 #include "Novice.h"
+#include "Vector2.h"
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-
-//2Dベクトル構造体
-struct Vector2 {
-    float x, y;
-};
 
 class CircleEffect {
 public:
@@ -27,16 +23,19 @@ public:
     void Update(Vector2 pos) {
         frameTimer++;
 
-        if (frameTimer >= rand() % 6 + 5) {
+        if (frameTimer >= rand() % 30 + 5) {
             frameTimer = 0; 
-            Circle newCircle = { pos, 1500.0f, 0, true };
+            Circle newCircle = { pos, 750.0f, 0, true };
             circles.push_back(newCircle);
         }
 
         for (auto& circle : circles) {
+
+            circle.pos = pos;
+
             if (circle.isActive) {
                 //円の半径を減少させ、消失させる
-                circle.radius -= 1.0f;
+                circle.radius -= 3.0f;
                 if (circle.radius <= 0) {
                     circle.isActive = false;
                 }
@@ -53,7 +52,7 @@ public:
                     static_cast<int>(circle.radius),
                     static_cast<int>(circle.radius),
                     0.0f,
-                    0xFFFFFF00, 
+                    0x4BBC5466,
                     kFillModeWireFrame
                 );
             }
