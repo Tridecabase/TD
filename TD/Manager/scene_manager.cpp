@@ -50,7 +50,6 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 			testStage->Init();
 		}
 		if (title->StageChanger()) {
-			//title->~Title();
 			stage->Init();
 			current_scene = SceneState::GAMESTART;
 		}
@@ -72,12 +71,13 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		   
 		}
 		if (keys[DIK_M] && !preKeys[DIK_M]) {
-			stage->enemy->hp = 0;
+			stage->enemy->current_action = ActionID::ENEMY_DEATH;
+			stage->enemy->action_timer = 480;
 		}
 		
 
 		//敵を倒したらシーン切り替え
-		if (stage->enemy->hp <= 0) {
+		if (stage->enemy->death_flag == true) {
 			current_scene = SceneState::GAMECLEAR;
 			stageClear->Init();
 			stage->Init();
@@ -96,7 +96,6 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		stageClear->Update();
 
 		if (is_stage_off) {
-			//stage->~Stage();
 			is_stage_off = false;
 		}
 
@@ -114,7 +113,6 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		gameOver->Update();
 
 		if (is_stage_off) {
-			//stage->~Stage();
 			is_stage_off = false;
 		}
 

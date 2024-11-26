@@ -20,6 +20,7 @@ enum class ActionID {
 	Figure_Eight,
 	BREAK_STATE,			//ブレイク状態
 	ENEMY_SPAWN,
+	ENEMY_DEATH,
 };
 
 
@@ -111,6 +112,8 @@ public:
 
 	bool isMovingRight;
 
+	bool death_flag;
+
 
 	// ============================
 	// 弾丸関数変数
@@ -201,6 +204,7 @@ private:
 	//行動を実行する関数
 	//ID 100
 	void Idle();
+	void Death();
 	//ID 101: 移動して浮遊砲を設置
 	void MoveAndDeploy(); 
 	void DeployFunnel(float x, float y);
@@ -256,6 +260,11 @@ private:
 
 	CircleEffect* circle_effect;
 	ParticleGenerator* particle;
+
+	float triangleRotation[3];
+	float triangleOffset[3];
+	float triangleAlpha;
+	float trianglescale;
 
 	// ============================
 	// 敵運動関するローカル定数

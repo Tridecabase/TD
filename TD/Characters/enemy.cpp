@@ -70,6 +70,8 @@ void Enemy::Init() {
 
 	isMovingRight = 0;
 
+	death_flag = false;
+
 	circle_effect = new CircleEffect;
 	particle = new ParticleGenerator;
 
@@ -218,6 +220,13 @@ void Enemy::Init() {
 			0.3f,				//加速度
 		};
 	}
+
+	for (int i = 0; i < 3; i++) {
+		triangleRotation[i] = 0.0f;
+		triangleOffset[i] = 0.0f;
+	}
+	triangleAlpha = 0.0f;
+	trianglescale = 0.0f;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -258,7 +267,10 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	} else if (current_action == ActionID::BREAK_STATE) {
 
 
-	} else {
+	}else if (current_action == ActionID::ENEMY_DEATH) {
+
+
+	}else {
 		drone1.tmp_pos = { center.pos.x - drone1_shift.x , center.pos.y - drone1_shift.y };
 		drone2.tmp_pos = { center.pos.x - drone2_shift.x , center.pos.y - drone2_shift.y };
 
@@ -313,8 +325,10 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	// ============================
 
 	//HPを0に超えないように
-	if (hp <= 0) {
+	if (hp < 0) {
 		hp = 0;
+		action_timer = 480;
+		current_action = ActionID::ENEMY_DEATH;
 	}
 
 	// ============================
@@ -474,6 +488,9 @@ void Enemy::PerformAction() {
 		break;
 	case ActionID::ENEMY_SPAWN:
 		EnemySpawn();
+		break;
+	case ActionID::ENEMY_DEATH:
+		Death();
 		break;
 	}
 
@@ -810,6 +827,49 @@ void Enemy::Idle() {
 	}
 }
 
+void Enemy::Death() {
+	const float maxSize = 200.0f;    //最大サイズ
+	const int maxFrames = 180;       //爆発効果の継続フレーム数
+	const float rotationSpeed = 0.03f;  //回転速度
+
+
+	//死亡状態に入ったときに初期化
+	if (current_action == ActionID::ENEMY_DEATH) {
+		if (action_timer >= maxFrames) {
+			//三角形の回転と拡大
+			for (int i = 0; i < 3; ++i) {
+				triangleRotation[i] += rotationSpeed;  //回転を更新
+				triangleOffset[i] = (i * 120.0f) * (float(M_PI) / 180.0f);  //120度に近いオフセット
+			}
+
+			//透明度と拡大率を増加
+			triangleAlpha = min(1.0f, triangleAlpha + 0.005f);
+			trianglescale = min(maxSize, trianglescale + 1.5f);
+
+			if (particle) {
+				particle->GenerateParticles(
+					pos.x, pos.y,
+					0xf4cecfFF
+				);
+			}
+		}
+		else {
+			for (int i = 0; i < 10; i++) {
+				if (particle) {
+					particle->Destroy(
+						pos.x, pos.y,
+						0xf4cecfFF
+					);
+				}
+			}
+		}
+	}
+
+	if (action_timer <= 20) {
+		death_flag = true;
+	}
+}
+
 //プレイヤーの移動によってスクロール関数
 void Enemy::Scroll(Player* player, char keys[256]) {
 
@@ -849,240 +909,273 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Draw(const int posX, const int posY) {
-	
-	int LineColor = 0xe51837FF;
-	int DarkColor = 0x4D000CFF;
-	
-	int droneColor = 0xf4cecfFF;
-	//int BlackColor = 0xA30019FF;
+
+	if (current_action != ActionID::ENEMY_DEATH || current_action == ActionID::ENEMY_DEATH && action_timer >= 180) {
+		int LineColor = 0xe51837FF;
+		int DarkColor = 0x4D000CFF;
+
+		int droneColor = 0xf4cecfFF;
+		//int BlackColor = 0xA30019FF;
 
 
-	if (current_action == ActionID::FIRE_AT_PLAYER) {
-		circle_effect->Draw();
-	}
-
-	if (drone1.w >= static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
-		DrawRound(drone1, drone1.color);
-		DrawCircle(drone1, droneColor);
-		DrawCircle(drone_aura[0], droneColor);
-		DrawRound(drone_eye[0], droneColor);
-	}
-	if (drone2.w >= static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
-		DrawRound(drone2, drone2.color);
-		DrawCircle(drone2, droneColor);
-		DrawCircle(drone_aura[1], droneColor);
-		DrawRound(drone_eye[1], droneColor);
-	}
-	if (drone3.w >= static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
-		DrawRound(drone3, drone3.color);
-		DrawCircle(drone3, droneColor);
-		DrawCircle(drone_aura[2], droneColor);
-		DrawRound(drone_eye[2], droneColor);
-	}
-
-	//テスト：敵の描画
-	{
-		int a = 23;
-		int b = 45;
-		Vector2 point6_1[6];
-		point6_1[0] = { float(-a),height / 2 };
-		point6_1[1] = { float(a),height / 2 };
-		point6_1[2] = { float(-b),0 };
-		point6_1[3] = { float(b),0 };
-		point6_1[4] = { float(-a),-height / 2 };
-		point6_1[5] = { float(a),-height / 2 };
-
-
-		///外六角形
-		Vector2 pPoint6_1[6];
-		for (int i = 0; i < 6; i++) {
-			pPoint6_1[i].x = point6_1[i].x + screen_pos.x;
-			pPoint6_1[i].y = point6_1[i].y + screen_pos.y;
+		if (current_action == ActionID::FIRE_AT_PLAYER) {
+			circle_effect->Draw();
 		}
 
-		DrawPolygon(pPoint6_1[0], pPoint6_1[1], pPoint6_1[2], pPoint6_1[3], pPoint6_1[4], pPoint6_1[5], DarkColor);
-		//e03243
-		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 0), int(screen_pos.y + point6_1[0].y + 0), int(screen_pos.x + point6_1[1].x + 0), int(screen_pos.y + point6_1[1].y + 0), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 1), int(screen_pos.y + point6_1[0].y + 1), int(screen_pos.x + point6_1[1].x + 1), int(screen_pos.y + point6_1[1].y + 1), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 2), int(screen_pos.y + point6_1[0].y + 2), int(screen_pos.x + point6_1[1].x + 2), int(screen_pos.y + point6_1[1].y + 2), LineColor);
+		if (drone1.w >= static_cast<float>(M_PI)) {
+			Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
+			DrawRound(drone1, drone1.color);
+			DrawCircle(drone1, droneColor);
+			DrawCircle(drone_aura[0], droneColor);
+			DrawRound(drone_eye[0], droneColor);
+		}
+		if (drone2.w >= static_cast<float>(M_PI)) {
+			Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
+			DrawRound(drone2, drone2.color);
+			DrawCircle(drone2, droneColor);
+			DrawCircle(drone_aura[1], droneColor);
+			DrawRound(drone_eye[1], droneColor);
+		}
+		if (drone3.w >= static_cast<float>(M_PI)) {
+			Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
+			DrawRound(drone3, drone3.color);
+			DrawCircle(drone3, droneColor);
+			DrawCircle(drone_aura[2], droneColor);
+			DrawRound(drone_eye[2], droneColor);
+		}
 
-		Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 0), int(screen_pos.y + point6_1[1].y + 0), int(screen_pos.x + point6_1[3].x + 0), int(screen_pos.y + point6_1[3].y), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 1), int(screen_pos.y + point6_1[1].y + 1), int(screen_pos.x + point6_1[3].x + 1), int(screen_pos.y + point6_1[3].y), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 2), int(screen_pos.y + point6_1[1].y + 2), int(screen_pos.x + point6_1[3].x + 2), int(screen_pos.y + point6_1[3].y), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 0), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 0), int(screen_pos.y + point6_1[5].y - 0), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 1), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 1), int(screen_pos.y + point6_1[5].y - 1), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 2), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 2), int(screen_pos.y + point6_1[5].y - 2), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 0), int(screen_pos.y + point6_1[5].y - 0), int(screen_pos.x + point6_1[4].x - 0), int(screen_pos.y + point6_1[4].y - 0), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 1), int(screen_pos.y + point6_1[5].y - 1), int(screen_pos.x + point6_1[4].x - 1), int(screen_pos.y + point6_1[4].y - 1), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 2), int(screen_pos.y + point6_1[5].y - 2), int(screen_pos.x + point6_1[4].x - 2), int(screen_pos.y + point6_1[4].y - 2), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 0), int(screen_pos.y + point6_1[4].y - 0), int(screen_pos.x + point6_1[2].x - 0), int(screen_pos.y + point6_1[2].y), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 1), int(screen_pos.y + point6_1[4].y - 1), int(screen_pos.x + point6_1[2].x - 1), int(screen_pos.y + point6_1[2].y), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 2), int(screen_pos.y + point6_1[4].y - 2), int(screen_pos.x + point6_1[2].x - 2), int(screen_pos.y + point6_1[2].y), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 0), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 0), int(screen_pos.y + point6_1[0].y + 0), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 1), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 1), int(screen_pos.y + point6_1[0].y + 1), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 2), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 2), int(screen_pos.y + point6_1[0].y + 2), LineColor);
-
-
-		///中角形
-		int f = 8;
-		int g = 12;
-		int h = 12;
-		int l = 20;
-		Novice::DrawLine(int(screen_pos.x + point6_1[0].x + f), int(screen_pos.y + point6_1[0].y - h), int(screen_pos.x + point6_1[1].x - f - l), int(screen_pos.y + point6_1[1].y - h), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[0].x + f + l), int(screen_pos.y + point6_1[0].y - h), int(screen_pos.x + point6_1[1].x - f), int(screen_pos.y + point6_1[1].y - h), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[1].x - f), int(screen_pos.y + point6_1[1].y - h), int(screen_pos.x + point6_1[3].x - g - h), int(screen_pos.y + point6_1[3].y + l), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[1].x - f + h), int(screen_pos.y + point6_1[1].y - h - l), int(screen_pos.x + point6_1[3].x - g), int(screen_pos.y + point6_1[3].y), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[3].x - g - h), int(screen_pos.y + point6_1[3].y - l), int(screen_pos.x + point6_1[5].x - f), int(screen_pos.y + point6_1[5].y + h), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[3].x - g), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x - f + h), int(screen_pos.y + point6_1[5].y + h + l), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[5].x - f), int(screen_pos.y + point6_1[5].y + h), int(screen_pos.x + point6_1[4].x + f + l), int(screen_pos.y + point6_1[4].y + h), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[5].x - f - l), int(screen_pos.y + point6_1[5].y + h), int(screen_pos.x + point6_1[4].x + f), int(screen_pos.y + point6_1[4].y + h), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[4].x + f - h), int(screen_pos.y + point6_1[4].y + h + l), int(screen_pos.x + point6_1[2].x + g), int(screen_pos.y + point6_1[2].y), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[4].x + f), int(screen_pos.y + point6_1[4].y + h), int(screen_pos.x + point6_1[2].x + g + h), int(screen_pos.y + point6_1[2].y - l), LineColor);
-
-		Novice::DrawLine(int(screen_pos.x + point6_1[2].x + g), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x + f - h), int(screen_pos.y + point6_1[0].y - h - l), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[2].x + g + h), int(screen_pos.y + point6_1[2].y + l), int(screen_pos.x + point6_1[0].x + f), int(screen_pos.y + point6_1[0].y - h), LineColor);
-
-		///内六角形
-		int c = 12;
-		int d = 23;
-		int e = 20;
-
-		Vector2 pPoint6_2[6];
-		pPoint6_2[0].x = point6_1[0].x + c + screen_pos.x;
-		pPoint6_2[0].y = point6_1[0].y - e + screen_pos.y;
-		pPoint6_2[1].x = point6_1[1].x - c + screen_pos.x;
-		pPoint6_2[1].y = point6_1[1].y - e + screen_pos.y;
-		pPoint6_2[2].x = point6_1[2].x + d + screen_pos.x;
-		pPoint6_2[2].y = point6_1[2].y + 0 + screen_pos.y;
-		pPoint6_2[3].x = point6_1[3].x - d + screen_pos.x;
-		pPoint6_2[3].y = point6_1[3].y - 0 + screen_pos.y;
-		pPoint6_2[4].x = point6_1[4].x + c + screen_pos.x;
-		pPoint6_2[4].y = point6_1[4].y + e + screen_pos.y;
-		pPoint6_2[5].x = point6_1[5].x - c + screen_pos.x;
-		pPoint6_2[5].y = point6_1[5].y + e + screen_pos.y;
-		DrawPolygon(pPoint6_2[0], pPoint6_2[1], pPoint6_2[2], pPoint6_2[3], pPoint6_2[4], pPoint6_2[5], color);
-		Novice::DrawLine(int(screen_pos.x + point6_1[0].x + c), int(screen_pos.y + point6_1[0].y - e), int(screen_pos.x + point6_1[1].x - c), int(screen_pos.y + point6_1[1].y - e), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[1].x - c), int(screen_pos.y + point6_1[1].y - e), int(screen_pos.x + point6_1[3].x - d), int(screen_pos.y + point6_1[3].y), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[3].x - d), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x - c), int(screen_pos.y + point6_1[5].y + e), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[5].x - c), int(screen_pos.y + point6_1[5].y + e), int(screen_pos.x + point6_1[4].x + c), int(screen_pos.y + point6_1[4].y + e), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[4].x + c), int(screen_pos.y + point6_1[4].y + e), int(screen_pos.x + point6_1[2].x + d), int(screen_pos.y + point6_1[2].y), LineColor);
-		Novice::DrawLine(int(screen_pos.x + point6_1[2].x + d), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x + c), int(screen_pos.y + point6_1[0].y - e), LineColor);
-
-		///目
+		//テスト：敵の描画
 		{
-			float eyeToPosX = posX - screen_pos.x;
-			float eyeToPosY = posY - screen_pos.y;
-			float eyeToPosLength = sqrtf(eyeToPosX * eyeToPosX + eyeToPosY * eyeToPosY);
-			float theta = atan2(eyeToPosY, eyeToPosX);
-			float eyePosX = {};
-			float eyePosY = {};
-			if (eyeToPosLength > 10) {
-				eyeToPosLength = 10;
-				eyePosX = eyeToPosLength * cosf(theta);
-				eyePosY = eyeToPosLength * sinf(theta);
-			} else {
-				eyePosX = float(posX - screen_pos.x);
-				eyePosY = float(posY - screen_pos.y);
+			int a = 23;
+			int b = 45;
+			Vector2 point6_1[6];
+			point6_1[0] = { float(-a),height / 2 };
+			point6_1[1] = { float(a),height / 2 };
+			point6_1[2] = { float(-b),0 };
+			point6_1[3] = { float(b),0 };
+			point6_1[4] = { float(-a),-height / 2 };
+			point6_1[5] = { float(a),-height / 2 };
+
+
+			///外六角形
+			Vector2 pPoint6_1[6];
+			for (int i = 0; i < 6; i++) {
+				pPoint6_1[i].x = point6_1[i].x + screen_pos.x;
+				pPoint6_1[i].y = point6_1[i].y + screen_pos.y;
 			}
-			
+
+			DrawPolygon(pPoint6_1[0], pPoint6_1[1], pPoint6_1[2], pPoint6_1[3], pPoint6_1[4], pPoint6_1[5], DarkColor);
+			//e03243
+			Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 0), int(screen_pos.y + point6_1[0].y + 0), int(screen_pos.x + point6_1[1].x + 0), int(screen_pos.y + point6_1[1].y + 0), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 1), int(screen_pos.y + point6_1[0].y + 1), int(screen_pos.x + point6_1[1].x + 1), int(screen_pos.y + point6_1[1].y + 1), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 2), int(screen_pos.y + point6_1[0].y + 2), int(screen_pos.x + point6_1[1].x + 2), int(screen_pos.y + point6_1[1].y + 2), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 0), int(screen_pos.y + point6_1[1].y + 0), int(screen_pos.x + point6_1[3].x + 0), int(screen_pos.y + point6_1[3].y), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 1), int(screen_pos.y + point6_1[1].y + 1), int(screen_pos.x + point6_1[3].x + 1), int(screen_pos.y + point6_1[3].y), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[1].x + 2), int(screen_pos.y + point6_1[1].y + 2), int(screen_pos.x + point6_1[3].x + 2), int(screen_pos.y + point6_1[3].y), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 0), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 0), int(screen_pos.y + point6_1[5].y - 0), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 1), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 1), int(screen_pos.y + point6_1[5].y - 1), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[3].x + 2), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x + 2), int(screen_pos.y + point6_1[5].y - 2), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 0), int(screen_pos.y + point6_1[5].y - 0), int(screen_pos.x + point6_1[4].x - 0), int(screen_pos.y + point6_1[4].y - 0), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 1), int(screen_pos.y + point6_1[5].y - 1), int(screen_pos.x + point6_1[4].x - 1), int(screen_pos.y + point6_1[4].y - 1), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[5].x + 2), int(screen_pos.y + point6_1[5].y - 2), int(screen_pos.x + point6_1[4].x - 2), int(screen_pos.y + point6_1[4].y - 2), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 0), int(screen_pos.y + point6_1[4].y - 0), int(screen_pos.x + point6_1[2].x - 0), int(screen_pos.y + point6_1[2].y), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 1), int(screen_pos.y + point6_1[4].y - 1), int(screen_pos.x + point6_1[2].x - 1), int(screen_pos.y + point6_1[2].y), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[4].x - 2), int(screen_pos.y + point6_1[4].y - 2), int(screen_pos.x + point6_1[2].x - 2), int(screen_pos.y + point6_1[2].y), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 0), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 0), int(screen_pos.y + point6_1[0].y + 0), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 1), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 1), int(screen_pos.y + point6_1[0].y + 1), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[2].x - 2), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x - 2), int(screen_pos.y + point6_1[0].y + 2), LineColor);
 
 
-			Novice::DrawEllipse(int(screen_pos.x + point6_1[4].x + f), int(screen_pos.y + point6_1[4].y + h), int(5), int(5), 0.0f, LineColor, kFillModeSolid);
-			Novice::DrawEllipse(int(screen_pos.x + point6_1[3].x - g), int(screen_pos.y + point6_1[3].y), int(5), int(5), 0.0f, LineColor, kFillModeSolid);
+			///中角形
+			int f = 8;
+			int g = 12;
+			int h = 12;
+			int l = 20;
+			Novice::DrawLine(int(screen_pos.x + point6_1[0].x + f), int(screen_pos.y + point6_1[0].y - h), int(screen_pos.x + point6_1[1].x - f - l), int(screen_pos.y + point6_1[1].y - h), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[0].x + f + l), int(screen_pos.y + point6_1[0].y - h), int(screen_pos.x + point6_1[1].x - f), int(screen_pos.y + point6_1[1].y - h), LineColor);
 
-			Novice::DrawEllipse(int(screen_pos.x + eyePosX), int(screen_pos.y + eyePosY), int(10), int(10), 0.0f, DarkColor, kFillModeSolid);
-			Novice::DrawEllipse(int(screen_pos.x + eyePosX), int(screen_pos.y + eyePosY), int(10), int(10), 0.0f, LineColor, kFillModeWireFrame);
-			Novice::DrawEllipse(int(screen_pos.x + eyePosX), int(screen_pos.y + eyePosY), int(5), int(5), 0.0f, LineColor, kFillModeWireFrame);
+			Novice::DrawLine(int(screen_pos.x + point6_1[1].x - f), int(screen_pos.y + point6_1[1].y - h), int(screen_pos.x + point6_1[3].x - g - h), int(screen_pos.y + point6_1[3].y + l), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[1].x - f + h), int(screen_pos.y + point6_1[1].y - h - l), int(screen_pos.x + point6_1[3].x - g), int(screen_pos.y + point6_1[3].y), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[3].x - g - h), int(screen_pos.y + point6_1[3].y - l), int(screen_pos.x + point6_1[5].x - f), int(screen_pos.y + point6_1[5].y + h), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[3].x - g), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x - f + h), int(screen_pos.y + point6_1[5].y + h + l), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[5].x - f), int(screen_pos.y + point6_1[5].y + h), int(screen_pos.x + point6_1[4].x + f + l), int(screen_pos.y + point6_1[4].y + h), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[5].x - f - l), int(screen_pos.y + point6_1[5].y + h), int(screen_pos.x + point6_1[4].x + f), int(screen_pos.y + point6_1[4].y + h), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[4].x + f - h), int(screen_pos.y + point6_1[4].y + h + l), int(screen_pos.x + point6_1[2].x + g), int(screen_pos.y + point6_1[2].y), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[4].x + f), int(screen_pos.y + point6_1[4].y + h), int(screen_pos.x + point6_1[2].x + g + h), int(screen_pos.y + point6_1[2].y - l), LineColor);
+
+			Novice::DrawLine(int(screen_pos.x + point6_1[2].x + g), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x + f - h), int(screen_pos.y + point6_1[0].y - h - l), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[2].x + g + h), int(screen_pos.y + point6_1[2].y + l), int(screen_pos.x + point6_1[0].x + f), int(screen_pos.y + point6_1[0].y - h), LineColor);
+
+			///内六角形
+			int c = 12;
+			int d = 23;
+			int e = 20;
+
+			Vector2 pPoint6_2[6];
+			pPoint6_2[0].x = point6_1[0].x + c + screen_pos.x;
+			pPoint6_2[0].y = point6_1[0].y - e + screen_pos.y;
+			pPoint6_2[1].x = point6_1[1].x - c + screen_pos.x;
+			pPoint6_2[1].y = point6_1[1].y - e + screen_pos.y;
+			pPoint6_2[2].x = point6_1[2].x + d + screen_pos.x;
+			pPoint6_2[2].y = point6_1[2].y + 0 + screen_pos.y;
+			pPoint6_2[3].x = point6_1[3].x - d + screen_pos.x;
+			pPoint6_2[3].y = point6_1[3].y - 0 + screen_pos.y;
+			pPoint6_2[4].x = point6_1[4].x + c + screen_pos.x;
+			pPoint6_2[4].y = point6_1[4].y + e + screen_pos.y;
+			pPoint6_2[5].x = point6_1[5].x - c + screen_pos.x;
+			pPoint6_2[5].y = point6_1[5].y + e + screen_pos.y;
+			DrawPolygon(pPoint6_2[0], pPoint6_2[1], pPoint6_2[2], pPoint6_2[3], pPoint6_2[4], pPoint6_2[5], color);
+			Novice::DrawLine(int(screen_pos.x + point6_1[0].x + c), int(screen_pos.y + point6_1[0].y - e), int(screen_pos.x + point6_1[1].x - c), int(screen_pos.y + point6_1[1].y - e), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[1].x - c), int(screen_pos.y + point6_1[1].y - e), int(screen_pos.x + point6_1[3].x - d), int(screen_pos.y + point6_1[3].y), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[3].x - d), int(screen_pos.y + point6_1[3].y), int(screen_pos.x + point6_1[5].x - c), int(screen_pos.y + point6_1[5].y + e), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[5].x - c), int(screen_pos.y + point6_1[5].y + e), int(screen_pos.x + point6_1[4].x + c), int(screen_pos.y + point6_1[4].y + e), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[4].x + c), int(screen_pos.y + point6_1[4].y + e), int(screen_pos.x + point6_1[2].x + d), int(screen_pos.y + point6_1[2].y), LineColor);
+			Novice::DrawLine(int(screen_pos.x + point6_1[2].x + d), int(screen_pos.y + point6_1[2].y), int(screen_pos.x + point6_1[0].x + c), int(screen_pos.y + point6_1[0].y - e), LineColor);
+
+			///目
+			{
+				float eyeToPosX = posX - screen_pos.x;
+				float eyeToPosY = posY - screen_pos.y;
+				float eyeToPosLength = sqrtf(eyeToPosX * eyeToPosX + eyeToPosY * eyeToPosY);
+				float theta = atan2(eyeToPosY, eyeToPosX);
+				float eyePosX = {};
+				float eyePosY = {};
+				if (eyeToPosLength > 10) {
+					eyeToPosLength = 10;
+					eyePosX = eyeToPosLength * cosf(theta);
+					eyePosY = eyeToPosLength * sinf(theta);
+				}
+				else {
+					eyePosX = float(posX - screen_pos.x);
+					eyePosY = float(posY - screen_pos.y);
+				}
+
+
+
+				Novice::DrawEllipse(int(screen_pos.x + point6_1[4].x + f), int(screen_pos.y + point6_1[4].y + h), int(5), int(5), 0.0f, LineColor, kFillModeSolid);
+				Novice::DrawEllipse(int(screen_pos.x + point6_1[3].x - g), int(screen_pos.y + point6_1[3].y), int(5), int(5), 0.0f, LineColor, kFillModeSolid);
+
+				Novice::DrawEllipse(int(screen_pos.x + eyePosX), int(screen_pos.y + eyePosY), int(10), int(10), 0.0f, DarkColor, kFillModeSolid);
+				Novice::DrawEllipse(int(screen_pos.x + eyePosX), int(screen_pos.y + eyePosY), int(10), int(10), 0.0f, LineColor, kFillModeWireFrame);
+				Novice::DrawEllipse(int(screen_pos.x + eyePosX), int(screen_pos.y + eyePosY), int(5), int(5), 0.0f, LineColor, kFillModeWireFrame);
+			}
+
+			///box
+			Vector2 boxPos[10];
+			int boxWidth[10];
+			int boxHeight[10];
+			boxPos[0] = { screen_pos.x + 30, screen_pos.y + 30 };
+			boxWidth[0] = 15;
+			boxHeight[0] = 15;
+			boxPos[1] = { screen_pos.x + 33, screen_pos.y + 35 };
+			boxWidth[1] = 28;
+			boxHeight[1] = 28;
+			boxPos[2] = { screen_pos.x + 28, screen_pos.y + 32 };
+			boxWidth[2] = 15;
+			boxHeight[2] = 15;
+			boxPos[3] = { screen_pos.x + 45, screen_pos.y - 45 };
+			boxWidth[3] = 26;
+			boxHeight[3] = 20;
+			boxPos[4] = { screen_pos.x + 30, screen_pos.y - 40 };
+			boxWidth[4] = 28;
+			boxHeight[4] = 30;
+			boxPos[5] = { screen_pos.x + 25, screen_pos.y - 15 };
+			boxWidth[5] = 20;
+			boxHeight[5] = 10;
+			boxPos[6] = { screen_pos.x + 45, screen_pos.y - 45 };
+			boxWidth[6] = 26;
+			boxHeight[6] = 20;
+			boxPos[7] = { screen_pos.x - 60, screen_pos.y + 21 };
+			boxWidth[7] = 28;
+			boxHeight[7] = 26;
+			boxPos[8] = { screen_pos.x - 55, screen_pos.y + 18 };
+			boxWidth[8] = 15;
+			boxHeight[8] = 10;
+			boxPos[9] = { screen_pos.x - 45, screen_pos.y + 25 };
+			boxWidth[9] = 20;
+			boxHeight[9] = 30;
+
+			for (int i = 0; i < 10; i++) {
+				Novice::DrawBox(int(boxPos[i].x), int(boxPos[i].y), int(boxWidth[i]), int(boxHeight[i]), 0.0f, DarkColor, kFillModeSolid);
+				Novice::DrawBox(int(boxPos[i].x), int(boxPos[i].y), int(boxWidth[i]), int(boxHeight[i]), 0.0f, LineColor, kFillModeWireFrame);
+			}
+
+			//Novice::DrawEllipse(int(screen_pos.x), int(screen_pos.y), int(height / 2), int(height / 2), 0.0f, LineColor, kFillModeWireFrame);
+
+			//Novice::DrawBox(
+			//	static_cast<int>(screen_pos.x - width / 2),
+			//	static_cast<int>(screen_pos.y - height / 2),
+			//	static_cast<int>(width),
+			//	static_cast<int>(height),
+			//	0.0f, color, kFillModeSolid);
+			//Novice::DrawBox(
+			//	static_cast<int>(screen_pos.x - width / 2),
+			//	static_cast<int>(screen_pos.y - height / 2),
+			//	static_cast<int>(width),
+			//	static_cast<int>(height),
+			//	0.0f, 0x4BBC54FF, kFillModeWireFrame);
 		}
 
-		///box
-		Vector2 boxPos[10];
-		int boxWidth[10];
-		int boxHeight[10];
-		boxPos[0] = { screen_pos.x + 30, screen_pos.y + 30 };
-		boxWidth[0] = 15;
-		boxHeight[0] = 15;
-		boxPos[1] = { screen_pos.x + 33, screen_pos.y + 35 };
-		boxWidth[1] = 28;
-		boxHeight[1] = 28;
-		boxPos[2] = { screen_pos.x + 28, screen_pos.y + 32 };
-		boxWidth[2] = 15;
-		boxHeight[2] = 15;
-		boxPos[3] = { screen_pos.x + 45, screen_pos.y - 45 };
-		boxWidth[3] = 26;
-		boxHeight[3] = 20;
-		boxPos[4] = { screen_pos.x + 30, screen_pos.y - 40 };
-		boxWidth[4] = 28;
-		boxHeight[4] = 30;
-		boxPos[5] = { screen_pos.x + 25, screen_pos.y - 15 };
-		boxWidth[5] = 20;
-		boxHeight[5] = 10;
-		boxPos[6] = { screen_pos.x + 45, screen_pos.y - 45 };
-		boxWidth[6] = 26;
-		boxHeight[6] = 20;
-		boxPos[7] = { screen_pos.x - 60, screen_pos.y + 21 };
-		boxWidth[7] = 28;
-		boxHeight[7] = 26;
-		boxPos[8] = { screen_pos.x - 55, screen_pos.y + 18 };
-		boxWidth[8] = 15;
-		boxHeight[8] = 10;
-		boxPos[9] = { screen_pos.x - 45, screen_pos.y + 25 };
-		boxWidth[9] = 20;
-		boxHeight[9] = 30;
-
-		for (int i = 0; i < 10; i++) {
-			Novice::DrawBox(int(boxPos[i].x), int(boxPos[i].y), int(boxWidth[i]), int(boxHeight[i]), 0.0f, DarkColor, kFillModeSolid);
-			Novice::DrawBox(int(boxPos[i].x), int(boxPos[i].y), int(boxWidth[i]), int(boxHeight[i]), 0.0f, LineColor, kFillModeWireFrame);
+		if (drone1.w < static_cast<float>(M_PI)) {
+			Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
+			DrawRound(drone1, drone1.color);
+			DrawCircle(drone1, droneColor);
+			DrawCircle(drone_aura[0], droneColor);
+			DrawRound(drone_eye[0], droneColor);
 		}
 
-		//Novice::DrawEllipse(int(screen_pos.x), int(screen_pos.y), int(height / 2), int(height / 2), 0.0f, LineColor, kFillModeWireFrame);
-
-		//Novice::DrawBox(
-		//	static_cast<int>(screen_pos.x - width / 2),
-		//	static_cast<int>(screen_pos.y - height / 2),
-		//	static_cast<int>(width),
-		//	static_cast<int>(height),
-		//	0.0f, color, kFillModeSolid);
-		//Novice::DrawBox(
-		//	static_cast<int>(screen_pos.x - width / 2),
-		//	static_cast<int>(screen_pos.y - height / 2),
-		//	static_cast<int>(width),
-		//	static_cast<int>(height),
-		//	0.0f, 0x4BBC54FF, kFillModeWireFrame);
+		if (drone2.w < static_cast<float>(M_PI)) {
+			Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
+			DrawRound(drone2, drone2.color);
+			DrawCircle(drone2, droneColor);
+			DrawCircle(drone_aura[1], droneColor);
+			DrawRound(drone_eye[1], droneColor);
+		}
+		if (drone3.w < static_cast<float>(M_PI)) {
+			Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
+			DrawRound(drone3, drone3.color);
+			DrawCircle(drone3, droneColor);
+			DrawCircle(drone_aura[2], droneColor);
+			DrawRound(drone_eye[2], droneColor);
+		}
 	}
 
-	if (drone1.w < static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
-		DrawRound(drone1, drone1.color);
-		DrawCircle(drone1, droneColor);
-		DrawCircle(drone_aura[0], droneColor);
-		DrawRound(drone_eye[0], droneColor);
-	}
 
-	if (drone2.w < static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone2.pos.x), static_cast<int>(drone2.pos.y), static_cast<int>(drone2.r.x + 5.0f), static_cast<int>(drone2.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
-		DrawRound(drone2, drone2.color);
-		DrawCircle(drone2, droneColor);
-		DrawCircle(drone_aura[1], droneColor);
-		DrawRound(drone_eye[1], droneColor);
-	}
-	if (drone3.w < static_cast<float>(M_PI)) {
-		Novice::DrawEllipse(static_cast<int>(drone3.pos.x), static_cast<int>(drone3.pos.y), static_cast<int>(drone3.r.x + 5.0f), static_cast<int>(drone3.r.y + 5.0f), 0.0f, droneColor, kFillModeSolid);
-		DrawRound(drone3, drone3.color);
-		DrawCircle(drone3, droneColor);
-		DrawCircle(drone_aura[2], droneColor);
-		DrawRound(drone_eye[2], droneColor);
+	if (current_action == ActionID::ENEMY_DEATH && action_timer >= 180) {
+		//3つの三角形を描画
+		for (int i = 0; i < 3; ++i) {
+			float offsetX = cos(triangleRotation[i] + triangleOffset[i]) * trianglescale;
+			float offsetY = sin(triangleRotation[i] + triangleOffset[i]) * trianglescale;
+
+			unsigned int colorD = (255 << 24) | (255 << 16) | (204 << 8) | static_cast<unsigned char>(triangleAlpha * 255);
+
+			//三角形の頂点を計算
+			int x1 = static_cast<int>(pos.x + offsetX);
+			int y1 = static_cast<int>(pos.y + offsetY);
+
+			int x2 = static_cast<int>(pos.x + offsetX * 0.3f);
+			int y2 = static_cast<int>(pos.y + offsetY * 0.3f);
+
+			int x3 = static_cast<int>(pos.x + offsetX * 1.5f);
+			int y3 = static_cast<int>(pos.y + offsetY * 1.5f);
+
+			//三角形の描画
+			Novice::DrawTriangle(
+				x1, y1,
+				x2, y2,
+				x3, y3,
+				colorD,
+				kFillModeSolid
+			);
+		}
 	}
 }
 
