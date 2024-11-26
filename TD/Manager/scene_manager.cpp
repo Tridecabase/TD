@@ -1,6 +1,6 @@
 #include "scene_manager.h"
 
-SceneManager::SceneManager() : current_scene(SceneState::GAMETITLE),stage(new Stage),testStage(new TestStage),gameOver(new GameOver), title(new Title) {
+SceneManager::SceneManager() : current_scene(SceneState::GAMETITLE),stage(new Stage),testStage(new TestStage),gameOver(new GameOver),stageClear(new StageClear), title(new Title) {
 
 }
 SceneManager::~SceneManager() {
@@ -8,6 +8,7 @@ SceneManager::~SceneManager() {
 	delete stage;
 	delete testStage;
 	delete gameOver;
+	delete stageClear;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,6 +24,7 @@ void SceneManager::Init() {
 	stage->Init();
 	testStage->Init();
 	gameOver->Init();
+	stageClear->Init();
 
 	is_stage_off = true;
 }
@@ -63,12 +65,6 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 
 
 		//テスト用シーン切り替え
-		//if (keys[DIK_M] && !preKeys[DIK_M]) {
-		//    current_scene = SceneState::GAMEEND;
-		//    stage->Init();
-		//}
-		
-		//テスト用シーン切り替え
 		if (keys[DIK_O] && !preKeys[DIK_O]) {
 			stage->player->hp = 0;
 		   
@@ -77,22 +73,18 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 			stage->enemy->hp = 0;
 		}
 		
-		//テスト用シーン切り替え
-		//if (stage->StageChanger(keys, preKeys)) {
-		//	current_scene = SceneState::GAMECLEAR;
-		//	stage->Init();
-		//}
-
 
 		//敵を倒したらシーン切り替え
 		if (stage->enemy->hp <= 0) {
 			current_scene = SceneState::GAMECLEAR;
+			stageClear->Init();
 			stage->Init();
 		}
 		
 		//プレイヤーが倒されたらシーン切り替え
 		if (stage->player->hp <= 0) {
 			current_scene = SceneState::GAMEOVER;
+			gameOver->Init();
 			stage->Init();
 		}
 
@@ -110,7 +102,8 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 			title->Init();
 			stage->Init();
 		}
-		//テスト用シーン切り替え
+		
+		stageClear->Update();
 
 		break;
 	case SceneState::GAMEOVER:
@@ -185,15 +178,15 @@ void SceneManager::Render() {
 		Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
 		//テスト用シーン切り替え
 		Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
-
+		stageClear->Render();
 
 		break;
 	case SceneState::GAMEOVER:
 
 		//テスト用背景
-		Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
+		//Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x20b2aaff, kFillModeSolid);
 		//テスト用シーン切り替え
-		Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
+		//Novice::ScreenPrintf(10, 30, "current_scene : GAMEEND");
 
 		gameOver->Render();
 
@@ -212,7 +205,9 @@ void SceneManager::Render() {
 
 	//テスト用シーン切り替えボータン
 	if (current_scene != SceneState::GAMETITLE) {
-		Novice::ScreenPrintf(10, 10, "press M to change scene");
+		if (current_scene != SceneState::GAMEOVER) {
+			Novice::ScreenPrintf(10, 10, "press M to change scene");
+		}
 	}
 }
 

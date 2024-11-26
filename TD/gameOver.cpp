@@ -293,9 +293,9 @@ void GameOver::Render() {
 
 	//Novice::ScreenPrintf(10, 680, "%d", scFlat);
 	//Novice::ScreenPrintf(10, 700, "%d /%d", scClock, scTime);
-	Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
-	Novice::ScreenPrintf(10, 680, "%d /%d", unAniClock, unAniTime);
-	Novice::ScreenPrintf(10, 660, "%d ", unAniTimeFlat);
+	//Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
+	//Novice::ScreenPrintf(10, 680, "%d /%d", unAniClock, unAniTime);
+	//Novice::ScreenPrintf(10, 660, "%d ", unAniTimeFlat);
 	//Novice::ScreenPrintf(600, 600, "%d/%d", openClock, openTime);
 	//Novice::ScreenPrintf(10, 700, "%f/%f", enemy->screen_pos.x, enemy->screen_pos.y);
 	if (scFlat) {
