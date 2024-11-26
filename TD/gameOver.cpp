@@ -1,6 +1,6 @@
-#include "gameOver.h"
+ï»¿#include "gameOver.h"
 
-gameOver::gameOver() {
+GameOver::GameOver() {
 	randNumber = {};
 
 	ui = new(UI);
@@ -31,7 +31,7 @@ gameOver::gameOver() {
 	enemy = new(Enemy);
 }
 
-gameOver::~gameOver() {
+GameOver::~GameOver() {
 
 	delete ui;
 	for (int i = 0; i < 4; i++) {
@@ -42,7 +42,7 @@ gameOver::~gameOver() {
 	delete enemy;
 }
 
-void gameOver::Init() {
+void GameOver::Init() {
 	srand((unsigned int)time(NULL));
 
 	ui = new(UI);
@@ -94,16 +94,16 @@ void gameOver::Init() {
 
 
 
-void gameOver::Update() {
-	/////////////////////////////UIˆ—
+void GameOver::Update() {
+	/////////////////////////////UIå‡¦ç†
 	ui->Updata();
 
-	/////////////////////////////Bossˆ—
+	/////////////////////////////Bosså‡¦ç†
 	enemy->screen_pos.x = WINDOW_WIDTH / 2;
 	enemy->screen_pos.y = WINDOW_HEIGHT / 2;
 
-	/////////////////////////////openingˆ—
-	///openingŒv
+	/////////////////////////////openingå‡¦ç†
+	///openingæ™‚è¨ˆ
 	if (openClock != 0) {
 		openClock--;
 	}
@@ -115,7 +115,7 @@ void gameOver::Update() {
 		aniClock = 0;
 	}
 
-	///window•ÏŒ`
+	///windowå¤‰å½¢
 	{
 		float t = float(openClock) / float(openTime);
 		window[0]->height_ = (t * 0 + (1 - t) * 500);
@@ -123,8 +123,8 @@ void gameOver::Update() {
 		window[2]->height_ = (t * 0 + (1 - t) * 140);
 		window[3]->height_ = (t * 0 + (1 - t) * 280);
 	}
-	/////////////////////////////”wŒiˆ—
-	///”š‚ÌXV
+	/////////////////////////////èƒŒæ™¯å‡¦ç†
+	///æ•°å­—ã®æ›´æ–°
 	for (int i = 0; i < 6; i++) {
 		if (changeClockClock[i] != 0) {
 			changeClockClock[i]--;
@@ -139,9 +139,9 @@ void gameOver::Update() {
 	runingBinary->Updata();
 }
 
-void gameOver::Render() {
+void GameOver::Render() {
 	Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x191b19FF, kFillModeSolid);
-	///”wŒi‚Ì”š
+	///èƒŒæ™¯ã®æ•°å­—
 	{
 		int numSizeW = 50;
 		int numSizeH = int(50 * 1.4f);
