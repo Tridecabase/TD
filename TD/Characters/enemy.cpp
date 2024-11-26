@@ -59,9 +59,9 @@ void Enemy::Init() {
 	//行動の残り時間
 	action_timer = 1200;
 	//ブレイクゲージ
-	break_meter = ENEMY_MAX_HP / 4;
+	break_meter = ENEMY_MAX_HP / 5;
 	//ブレイクゲージの最大値
-	break_meter_max = ENEMY_MAX_HP / 4;
+	break_meter_max = ENEMY_MAX_HP / 5;
 	//ブレイク状態フラグ
 	is_break = false;
 	//ブレイク状態の残り時間
@@ -371,10 +371,10 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 
 	//ブレイク状態の場合、ブレイクタイマーを減らす
 	if (is_break) {
-		break_timer -= 2;
+		break_timer -= 5;
 		if (break_timer <= 0) {
 			ExitBreakState();
-			break_meter = ENEMY_MAX_HP / 40;
+			break_meter = ENEMY_MAX_HP / 5;
 			break_timer = 0;
 		}
 	} else {
