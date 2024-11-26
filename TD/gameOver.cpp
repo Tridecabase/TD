@@ -57,7 +57,7 @@ void GameOver::Init() {
 	window[2]->Init(400, 0);
 	window[2]->pos_ = { WINDOW_WIDTH / 2 + 350,320 };
 	window[3]->Init(200, 0);
-	window[3]->pos_ = { WINDOW_WIDTH / 2 + 400,670 };
+	window[3]->pos_ = { WINDOW_WIDTH / 2 + 360,670 };
 
 	runingBinary->Init(180, 270, 270, 200, 20, 30);
 
