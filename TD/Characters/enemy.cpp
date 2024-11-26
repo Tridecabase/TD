@@ -752,9 +752,6 @@ void Enemy::Idle() {
 //プレイヤーの移動によってスクロール関数
 void Enemy::Scroll(Player* player, char keys[256]) {
 
-	if (player == nullptr || keys == nullptr) {
-	}
-
 	if (player->isPlayerLeft) {
 		if (keys[DIK_A]) {
 			pos.x += OUTER_BG_SPEED;
