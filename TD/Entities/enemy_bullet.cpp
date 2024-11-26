@@ -48,34 +48,36 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 			funnelBullet[i].angle -= 2 * static_cast<float>(M_PI);
 		}
 
-		if (funnelBullet[i].cooldown <= 0 && !funnelBullet[i].isShoot) {
-			funnelBullet[i].cooldown = 150;
+        if (enemy->funnel[i].isActive) {
+            if (funnelBullet[i].cooldown <= 0 && !funnelBullet[i].isShoot) {
+                funnelBullet[i].cooldown = 150;
 
 
-			funnelBullet[i].pos.x = enemy->funnel[i].x;
-			funnelBullet[i].pos.y = enemy->funnel[i].y;
-			funnelBullet[i].pos.z = 1.0f;
+                funnelBullet[i].pos.x = enemy->funnel[i].x;
+                funnelBullet[i].pos.y = enemy->funnel[i].y;
+                funnelBullet[i].pos.z = 1.0f;
 
 
-			funnelBullet[i].target_pos.x = player->screen_pos.x;
-			funnelBullet[i].target_pos.y = player->screen_pos.y;
+                funnelBullet[i].target_pos.x = player->screen_pos.x;
+                funnelBullet[i].target_pos.y = player->screen_pos.y;
 
 
-			float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
-			float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
+                float dirX = funnelBullet[i].target_pos.x - funnelBullet[i].pos.x;
+                float dirY = funnelBullet[i].target_pos.y - funnelBullet[i].pos.y;
 
-            if (- dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
-                funnelBullet[i].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
+                if (-dirX > static_cast<float>(WINDOW_WIDTH * MAX_SCROLL / 2.0f)) {
+                    funnelBullet[i].pos.x -= WINDOW_WIDTH * MAX_SCROLL;
+                }
+
+                float magnitude = sqrtf(dirX * dirX + dirY * dirY);
+
+                funnelBullet[i].time = magnitude / funnelBullet[i].speed;
+                funnelBullet[i].velocity.x = dirX / funnelBullet[i].time;
+                funnelBullet[i].velocity.y = dirY / funnelBullet[i].time;
+
+                funnelBullet[i].isShoot = true;
             }
-
-			float magnitude = sqrtf(dirX * dirX + dirY * dirY);
-
-			funnelBullet[i].time = magnitude / funnelBullet[i].speed;
-			funnelBullet[i].velocity.x = dirX / funnelBullet[i].time;
-			funnelBullet[i].velocity.y = dirY / funnelBullet[i].time;
-
-			funnelBullet[i].isShoot = true;
-		}
+        }
 	}
 
 
