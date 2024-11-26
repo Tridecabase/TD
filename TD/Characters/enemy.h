@@ -4,6 +4,7 @@
 #include "./Tools/config.h" 
 #include "./Tools/wave_generator.h" 
 #include "./Tools/circle_effect.h" 
+#include "./Tools/particle.h" 
 #include "./Characters/player.h" 
 #include "./Entities/bullet.h"
 #include "drawPolygon.h"
@@ -17,8 +18,8 @@ enum class ActionID {
 	MOVE_AND_DEPLOY,		//移動して浮遊砲を設置する行動
 	FIRE_AT_PLAYER,			//プレイヤーに向けた弾を多方向に発射
 	Figure_Eight,
-	BREAK_STATE				//ブレイク状態
-							//and more...
+	BREAK_STATE,			//ブレイク状態
+	ENEMY_SPAWN,
 };
 
 
@@ -108,6 +109,8 @@ public:
 	//ブレイク状態の残り時間
 	int break_timer;
 
+	bool isMovingRight;
+
 
 	// ============================
 	// 弾丸関数変数
@@ -193,6 +196,8 @@ private:
 	//行動を切り替える関数
 	void SetRandomAction();
 
+	void EnemySpawn();
+
 	//行動を実行する関数
 	//ID 100
 	void Idle();
@@ -250,6 +255,7 @@ private:
 	Subobj drone_eye[3];
 
 	CircleEffect* circle_effect;
+	ParticleGenerator* particle;
 
 	// ============================
 	// 敵運動関するローカル定数

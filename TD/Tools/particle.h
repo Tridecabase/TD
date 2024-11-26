@@ -44,11 +44,11 @@ public:
             p.active = true;
         }
 
-        // 次の粒子のインデックスを更新
+        //次の粒子のインデックスを更新
         nextParticleIndex = (nextParticleIndex + 1) % MAX_PARTICLES;
     }
 
-    // 破壊時に赤い粒子を生成する
+    //破壊時に赤い粒子を生成する
     void Destroy(float x, float y, unsigned int color) {
         for (int i = 0; i < 20; ++i) {
             GenerateParticles(x, y, color);

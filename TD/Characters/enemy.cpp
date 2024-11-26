@@ -11,6 +11,7 @@ Enemy::~Enemy() {
 	delete wave2;   //wave2 のメモリ解放
 	delete wave3;   //wave3 のメモリ解放
 	delete circle_effect;
+	delete particle;
 }
 
 bool Enemy::IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2)
@@ -38,7 +39,7 @@ void Enemy::Init() {
 
 	//敵の位置ベクトル
 	pos.x = 640.0f;
-	pos.y = ENEMY_SPAWN_POSY;
+	pos.y = -200.0f;
 	pos.z = 1090.0f;
 	//敵の長さ
 	width = 60.0f;
@@ -55,7 +56,7 @@ void Enemy::Init() {
 	is_spawned = false;
 
 	//現在の行動
-	current_action = ActionID::IDLE;
+	current_action = ActionID::ENEMY_SPAWN;
 	//行動の残り時間
 	action_timer = 1200;
 	//ブレイクゲージ
@@ -67,7 +68,10 @@ void Enemy::Init() {
 	//ブレイク状態の残り時間
 	break_timer = 0;
 
+	isMovingRight = 0;
+
 	circle_effect = new CircleEffect;
+	particle = new ParticleGenerator;
 
 
 	// ============================
@@ -236,7 +240,13 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	drone3.tmp_pos.x = center.pos.x + 50.0f;
 	drone3.tmp_pos.y = center.pos.y - 70.0f;
 
-	if (current_action == ActionID::IDLE || current_action == ActionID::FIRE_AT_PLAYER || current_action == ActionID::Figure_Eight) {
+	if (current_action != ActionID::ENEMY_SPAWN) {
+		if (pos.y - height <= 0.0f) {
+			pos.y = height;
+		}
+	}
+
+	if (current_action == ActionID::IDLE || current_action == ActionID::FIRE_AT_PLAYER || current_action == ActionID::Figure_Eight || current_action == ActionID::ENEMY_SPAWN) {
 
 		drone1_shift = { center.pos.x - drone1.pos.x , center.pos.y - drone1.pos.y };
 		drone2_shift = { center.pos.x - drone2.pos.x , center.pos.y - drone2.pos.y };
@@ -246,6 +256,7 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 		FloatingOver(drone2, center.pos.x, center.pos.y, -1.2f);
 		FloatingOver(drone3, center.pos.x + 50.0f, center.pos.y - 70.0f, 1.0f);
 	} else if (current_action == ActionID::BREAK_STATE) {
+
 
 	} else {
 		drone1.tmp_pos = { center.pos.x - drone1_shift.x , center.pos.y - drone1_shift.y };
@@ -371,7 +382,7 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 
 	//ブレイク状態の場合、ブレイクタイマーを減らす
 	if (is_break) {
-		break_timer -= 5;
+		break_timer -= 2;
 		if (break_timer <= 0) {
 			ExitBreakState();
 			break_meter = ENEMY_MAX_HP / 5;
@@ -461,15 +472,19 @@ void Enemy::PerformAction() {
 		break;
 	case ActionID::BREAK_STATE:
 		break;
+	case ActionID::ENEMY_SPAWN:
+		EnemySpawn();
+		break;
 	}
+
 }
 
 //行動を切り替え
 void Enemy::SetRandomAction() {
 	// もしまだスポーンしていない場合
 	if (!is_spawned) {
-		current_action = ActionID::IDLE;
-		action_timer = 100;
+		current_action = ActionID::ENEMY_SPAWN;
+		action_timer = 300;
 		is_spawned = true;
 		return;
 	} else {
@@ -477,15 +492,29 @@ void Enemy::SetRandomAction() {
 		int actionChoice = rand() % 3 + 1;
 
 		if (actionChoice == 1) {
+			isMovingRight = rand() % 2 == 0;
+			vel = (isMovingRight ? 0.2f : -0.2f);
 			current_action = ActionID::MOVE_AND_DEPLOY;  //行動はMOVE_AND_DEPLOY
 			action_timer = 600;                          //行動の持続時間を600に設定
 		} else if (actionChoice == 2) {
 			current_action = ActionID::FIRE_AT_PLAYER;  //行動はFIRE_AT_PLAYER
 			action_timer = 360;                          //行動の持続時間を600に設定
 		} else if (actionChoice == 3) {
+			isMovingRight = rand() % 2 == 0;
 			current_action = ActionID::Figure_Eight;    //行動はFigure_Eight
 			action_timer = 300;                          //行動の持続時間を300に設定
 		}
+	}
+}
+
+void Enemy::EnemySpawn() {
+
+	if (pos.y < ENEMY_SPAWN_POSY) {
+		pos.y += 2.0f;
+	}
+	else {
+		current_action = ActionID::IDLE;
+		action_timer = 60;
 	}
 }
 
@@ -494,6 +523,7 @@ void Enemy::MoveAndDeploy() {
 	const float maxSpeed = MAX_SPEED_;
 	const float deployInterval = 1280.0f; //浮遊砲設置間隔
 	static float distanceTraveled = 0.0f;
+
 
 	if (action_timer >= 100) {
 		//横の加速
@@ -528,6 +558,15 @@ void Enemy::DeployFunnel(float x, float y) {
 			funnel[i].x = x;
 			funnel[i].y = y;
 			funnel[i].hp = 300;
+			for (int j = 0; j < 20; j++) {
+				if (particle) {
+					particle->GenerateParticles(
+						funnel[i].x,
+						funnel[i].y,
+						0xf4cecfFF
+					);
+				}
+			}
 			break;
 		}
 	}
@@ -546,6 +585,7 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].isActive) {
+
 			//浮動時間を増加
 			funnel[i].floatTime += 0.01f; //浮動速度
 			if (funnel[i].floatTime >= 2.0f * static_cast<float>(M_PI)) {
@@ -730,6 +770,10 @@ void Enemy::FigureEight() {
 		float deltaX = cos(angle) * amplitudeX * 0.05f;		//横の変化量
 		float deltaY = sin(2 * angle) * amplitudeY * 0.05f; //縦の変化量
 
+		if (!isMovingRight) {
+			deltaX = -deltaX;
+		}
+
 		//現在位置を更新
 		pos.x += speed + deltaX; //振動を追加
 		pos.y += deltaY;         //縦方向の振動
@@ -761,7 +805,7 @@ void Enemy::Idle() {
 	// 高さをゆっくり元の位置へ戻す
 	if (fabs(pos.y - ENEMY_SPAWN_POSY) > 1.0f) {
 		pos.y += (ENEMY_SPAWN_POSY - pos.y) * 0.1f; //緩やかな移動
-	} else {
+	} else if(action_timer <= 0){
 		SetRandomAction(); //ランダムな次の行動を選択
 	}
 }
@@ -1043,6 +1087,8 @@ void Enemy::Draw(const int posX, const int posY) {
 }
 
 void Enemy::DrawFunnel() const {
+
+	particle->Render();
 
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].isActive) {
