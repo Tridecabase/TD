@@ -16,8 +16,8 @@ class GameOver
 {
 public:
 
-	gameOver();
-	~gameOver();
+	GameOver();
+	~GameOver();
 
 	///メンバー関数
 
