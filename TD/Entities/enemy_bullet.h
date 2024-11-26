@@ -72,12 +72,11 @@ public:
 	void Scroll(Player* player, char keys[256]);
 	void Draw();
 
-	Bullet droneBullets[MAX_BULLET_DRONE];
+	Bullet droneBullets[3][MAX_BULLET_DRONE];
 
 private:
 	ParticleGenerator* particle;
+
 };
 
-
 #endif
-
