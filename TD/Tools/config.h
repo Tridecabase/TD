@@ -79,9 +79,9 @@ const int MAX_BULLET_D = 32;
 const int PlAYER_MAX_HP = 10;
 
 const int PLAYER_ATK_A = 20;
-const int PLAYER_ATK_B = 60;
+const int PLAYER_ATK_B = 90;
 const int PLAYER_ATK_C = 15;
-const int PLAYER_ATK_D = 1;
+const int PLAYER_ATK_D = 2;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
