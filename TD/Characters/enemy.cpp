@@ -693,11 +693,9 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 void Enemy::FireAtPlayer() {
 	static int chargeTime = 0;
 
-	if (action_timer <= 300) {
 		circle_effect->Update(drone1.pos);
 		circle_effect->Update(drone2.pos);
 		circle_effect->Update(drone3.pos);
-	}
 
 	chargeTime++;
 	if (chargeTime >= 600) {
@@ -812,7 +810,7 @@ void Enemy::Draw(const int posX, const int posY) {
 	//int BlackColor = 0xA30019FF;
 
 
-	if (current_action == ActionID::FIRE_AT_PLAYER && action_timer <= 300) {
+	if (current_action == ActionID::FIRE_AT_PLAYER) {
 		circle_effect->Draw();
 	}
 

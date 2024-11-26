@@ -71,7 +71,12 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 
 	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
 		if (funnelBullet[i].isShoot) {
-            funnelBullet[i].time++;
+            if (enemy->current_action == ActionID::FIRE_AT_PLAYER) {
+                funnelBullet[i].time += 1.5f;
+            }
+            else {
+                funnelBullet[i].time++;
+            }
 
 			funnelBullet[i].pos.x += funnelBullet[i].velocity.x;
 			funnelBullet[i].pos.y += funnelBullet[i].velocity.y;
@@ -329,10 +334,10 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                 }
             }
 
-            if (enemy->current_action == ActionID::FIRE_AT_PLAYER && enemy->action_timer <= 300) {
+            if (enemy->current_action == ActionID::FIRE_AT_PLAYER) {
 
                 if (droneBullets[i][j].cooldown <= 0 && !droneBullets[i][j].isShoot) {
-                    droneBullets[i][j].cooldown = 10;
+                    droneBullets[i][j].cooldown = 150;
                     droneBullets[i][j].pos = dronePos;
 
                     droneBullets[i][j].target_pos.x = player->screen_pos.x;
@@ -353,7 +358,12 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
             if (droneBullets[i][j].isShoot) {
-                droneBullets[i][j].time++;
+                if (enemy->current_action == ActionID::FIRE_AT_PLAYER) {
+                    droneBullets[i][j].time +=1.5f;
+                }
+                else {
+                    droneBullets[i][j].time++;
+                }
                 droneBullets[i][j].pos.x += droneBullets[i][j].velocity.x;
                 droneBullets[i][j].pos.y += droneBullets[i][j].velocity.y;
 
