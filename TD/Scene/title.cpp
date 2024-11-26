@@ -89,7 +89,6 @@ void Title::Init() {
 
 void Title::DrawTitle(const int posX, const int posY, const int width, int color) {
 	char b[] = "NeoHorizon";
-	//char b[] = "e";
 	float w = float(float(width) / 41.0f);
 	float number = 0;
 	for (int i = 0; i < 10; i++) {
@@ -101,9 +100,7 @@ void Title::DrawTitle(const int posX, const int posY, const int width, int color
 			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
 			number += 4.0f;
 		}
-
 	}
-
 }
 
 void Title::DrawGameStart(const int posX, const int posY, const int width, int color) {
@@ -124,6 +121,30 @@ void Title::DrawGameStart(const int posX, const int posY, const int width, int c
 		}
 	}
 }
+
+void Title::DrawRule(const int posX, const int posY, const int width, int color) {
+	char b[] = "WASD:Move ML:AttackL MR:AttackR Wheel:ChangeAttack";
+	float w = float(float(width) / 215.0f);
+	float number = 0;
+	for (int i = 0; i < 50; i++) {
+		if (isupper(b[i])) {
+			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
+			number += 6.0f;
+		}
+		if (islower(b[i])) {
+			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
+			number += 4.0f;
+		}
+		if (b[i] == ':') {
+			DrawApla(int(posX + (w * 3 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 3), color, b[i]);
+			number += 4.0f;
+		}
+		if (b[i] == ' ') {
+			number += 3.0f;
+		}
+	}
+}
+
 
 void Title::Update() {
 	/////////////////////////////UI処理
@@ -230,6 +251,7 @@ void Title::Render() {
 	if (openClock == 0) {
 		int y = 40;
 		DrawTitle(360, 250 + y, 520, 0x4BBC54FF);
+		DrawRule(353, 500 + y, 520, 0x4BBC54FF);
 		if (aniClock <= (aniTime / 2)) {
 			DrawGameStart(WINDOW_WIDTH / 2 - 150 - 25, 400 + y, 300, 0x4BBC54FF);
 		}

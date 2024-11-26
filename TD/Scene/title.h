@@ -21,6 +21,7 @@ public:
 
 	void DrawTitle(const int posX, const int posY, const int width, int color);
 	void DrawGameStart(const int posX, const int posY, const int width, int color);
+	void DrawRule(const int posX, const int posY, const int width, int color);
 
 	//タイトルの更新処理
 	void Update();
