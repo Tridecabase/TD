@@ -1,6 +1,6 @@
-﻿#include "gameOver.h"
+#include "gameOver.h"
 
-gameOver::gameOver() {
+GameOver::GameOver() {
 	randNumber = {};
 
 	ui = new(UI);
@@ -31,7 +31,7 @@ gameOver::gameOver() {
 	enemy = new(Enemy);
 }
 
-gameOver::~gameOver() {
+GameOver::~GameOver() {
 
 	delete ui;
 	for (int i = 0; i < 4; i++) {
@@ -42,7 +42,7 @@ gameOver::~gameOver() {
 	delete enemy;
 }
 
-void gameOver::Init() {
+void GameOver::Init() {
 	srand((unsigned int)time(NULL));
 
 	ui = new(UI);
@@ -94,7 +94,10 @@ void gameOver::Init() {
 
 
 
-void gameOver::Update() {
+
+
+void GameOver::Update() {
+
 	/////////////////////////////UI処理
 	ui->Updata();
 
@@ -139,7 +142,7 @@ void gameOver::Update() {
 	runingBinary->Updata();
 }
 
-void gameOver::Render() {
+void GameOver::Render() {
 	Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 0x191b19FF, kFillModeSolid);
 	///背景の数字
 	{

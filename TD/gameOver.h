@@ -1,6 +1,5 @@
-﻿#pragma once
-
 #pragma once
+
 #include <Novice.h>
 #include <Vector2.h>
 #include <time.h>
@@ -13,11 +12,13 @@
 #include "./Characters/enemy.h"
 #include "./Tools/config.h"
 
-class gameOver
+class GameOver
 {
 public:
+
 	gameOver();
 	~gameOver();
+
 	///メンバー関数
 
 	//タイトルの初期化処理
