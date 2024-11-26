@@ -51,6 +51,10 @@ void Player::Init(Map* map) {
 	isPlayerLeft = false;
 	isPlayerRight = false;
 
+	//表示用
+	mouseValue = 0;
+	mouseType = false;
+
 	// ============================
 	// 弾丸関数変数
 	// ============================
@@ -231,14 +235,38 @@ void Player::Move(Map* map, char keys[256], char preKeys[256]) {
 				color1 = 0x191B19FF; //ヒット時の色
 			}
 			else {
-				color1 = 0xe4f65dFF; //通常時の色
+				if (mouseType) {
+					color1 = 0xfed03aFF; //通常時の色
+				}
+				else {
+					color1 = 0xf8fd67FF;//通常時の色
+				}
 			}
 		}
 		else {
-			color1 = 0xe4f65dFF; //通常時の色
+			if (mouseType) {
+				color1 = 0xfed03aFF; //通常時の色
+			}
+			else {
+				color1 = 0xf8fd67FF;//通常時の色
+			}
 		}
 	}
+
+	//表示用
+	mouseValue += static_cast<int>(fabs(Novice::GetWheel()));
+		if (mouseValue > 550) {
+			mouseValue = 0;
+			if (mouseType) {
+				mouseType = false;
+			}
+			else {
+				mouseType = true;
+			}
+		}
+
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑更新処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -436,30 +464,59 @@ void Player::Draw(int color) const {
 		static_cast<int>(height),
 		0.0f, color, kFillModeWireFrame);
 
+	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+		static_cast<int>(screen_pos.y + height + 10),
+		static_cast<int>(10 * width / 5), static_cast<int>(10.0f),
+		0.0f, 0x191B19FF, kFillModeSolid);
+	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+		static_cast<int>(screen_pos.y + height + 10), 
+		static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
+		0.0f, 0x0ae94dFF, kFillModeSolid);
+	Novice::DrawBox(static_cast<int>(screen_pos.x - width),
+		static_cast<int>(screen_pos.y + height + 10),
+		static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
+		0.0f, 0x191B19FF, kFillModeWireFrame);
+
+
+
+
+
+
 	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
 		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
 		static_cast<int>(30 * height / 15),
 		0.0f, 0x191B19FF, kFillModeSolid);
-	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
+	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
 		static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
-		static_cast<int>(-((30 - shootCoolTimeB / 10) * height / 15)),
-		0.0f, 0xBC47F7FF, kFillModeSolid);
+		static_cast<int>(-480 * height / 390),
+		0.0f, 0x191B19FF, kFillModeSolid);
+	if (mouseType) {
+		Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
+			static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+			static_cast<int>(-((36 - shootCoolTimeD / 10) * height / 18)),
+			0.0f, 0x8E13E0FF, kFillModeSolid);
+		Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
+			static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+			static_cast<int>(-(mouseValue)*height / 390),
+			0.0f, 0xf8fd67FF, kFillModeSolid);
+	}
+	else {
+		Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
+			static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+			static_cast<int>(-((30 - shootCoolTimeB / 10) * height / 15)),
+			0.0f, 0xBC47F7FF, kFillModeSolid);
+		Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
+			static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
+			static_cast<int>(-(mouseValue)*height / 390),
+			0.0f, 0xfed03aFF, kFillModeSolid);
+	}
 	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3),
 		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
 		static_cast<int>(30 * height / 15),
 		0.0f, 0x191B19FF, kFillModeWireFrame);
-
-	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
-		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
-		static_cast<int>(36 * height / 18),
-		0.0f, 0x191B19FF, kFillModeSolid);
 	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
 		static_cast<int>(screen_pos.y + height + 10), static_cast<int>(10.0f),
-		static_cast<int>(-((36 - shootCoolTimeD / 10) * height / 18)),
-		0.0f, 0x8E13E0FF, kFillModeSolid);
-	Novice::DrawBox(static_cast<int>(screen_pos.x + width * 4 / 3 + 10.0f),
-		static_cast<int>(screen_pos.y - height + 10), static_cast<int>(10.0f),
-		static_cast<int>(36 * height / 18),
+		static_cast<int>(-480 * height / 390),
 		0.0f, 0x191B19FF, kFillModeWireFrame);
 
 	Novice::DrawEllipse(
@@ -530,11 +587,10 @@ void Player::Draw(int color) const {
 	Novice::DrawLine(int(point41.x), int(point41.y),
 		int(point43.x), int(point43.y), color);
 
-	Novice::DrawBox(900, 300, 100, 100, 0.0f, 0xAB101BFF, kFillModeSolid);
+	Novice::DrawBox(900, 300, 100, 100, 0.0f, 0xe03243FF, kFillModeSolid);
 	Novice::DrawBox(900, 500, 100, 100, 0.0f, 0x0497E6FF, kFillModeSolid);
 	Novice::DrawBox(1100, 300, 100, 100, 0.0f, 0xBC47F7FF, kFillModeSolid);
 	Novice::DrawBox(1100, 500, 100, 100, 0.0f, 0x8E13E0FF, kFillModeSolid);
-	Novice::ScreenPrintf(500, 500, "hp=%d", hp);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

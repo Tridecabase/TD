@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #pragma once
 #include <Novice.h>
@@ -18,16 +18,16 @@ class gameOver
 public:
 	gameOver();
 	~gameOver();
-	///ƒƒ“ƒo[ŠÖ”
+	///ãƒ¡ãƒ³ãƒãƒ¼é–¢æ•°
 
-	//ƒ^ƒCƒgƒ‹‚Ì‰Šú‰»ˆ—
+	//ã‚¿ã‚¤ãƒˆãƒ«ã®åˆæœŸåŒ–å‡¦ç†
 	void Init();
-	//ƒ^ƒCƒgƒ‹‚ÌXVˆ—
+	//ã‚¿ã‚¤ãƒˆãƒ«ã®æ›´æ–°å‡¦ç†
 	void Update();
-	//ƒ^ƒCƒgƒ‹‚Ì•`‰æˆ—
+	//ã‚¿ã‚¤ãƒˆãƒ«ã®æç”»å‡¦ç†
 	void Render();
 
-	///ƒƒ“ƒo[•Ï”
+	///ãƒ¡ãƒ³ãƒãƒ¼å¤‰æ•°
 	int randNumber;
 
 	UI* ui;
@@ -52,7 +52,7 @@ public:
 
 	Player* player;
 
-	//“G‚ÌéŒ¾
+	//æ•µã®å®£è¨€
 	Enemy* enemy;
 };
 
