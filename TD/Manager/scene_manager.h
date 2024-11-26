@@ -14,6 +14,7 @@
 #include "./Scene/title.h"
 #include "./Scene/stage.h"
 #include "./Scene/TestStage.h"
+#include "stageClear.h"
 #include "gameOver.h"
 #include "./Manager/resource_manager.h"
 
@@ -57,6 +58,8 @@ private:
     Stage* stage;
     TestStage* testStage;
     GameOver* gameOver;
+    StageClear* stageClear;
+
 
     bool is_stage_off;
 };
