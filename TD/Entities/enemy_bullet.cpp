@@ -364,6 +364,7 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                     if (player->screen_pos.y + player->height / 2 >= droneBullets[i][j].pos.y - droneBullets[i][j].radius * droneBullets[i][j].scale &&
                         player->screen_pos.y - player->height / 2 <= droneBullets[i][j].pos.y + droneBullets[i][j].radius * droneBullets[i][j].scale) {
                         if (!player->isHit) {
+                            player->hp -= FUNNEL_ATK;
                             particle->Destroy(
                                 droneBullets[i][j].pos.x,
                                 droneBullets[i][j].pos.y,
