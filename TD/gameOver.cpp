@@ -1,4 +1,4 @@
-﻿#include "gameOver.h"
+#include "gameOver.h"
 
 GameOver::GameOver() {
 	randNumber = {};
@@ -137,7 +137,10 @@ void GameOver::DrawBack(const int posX, const int posY, const int width, int col
 
 }
 
+
+
 void GameOver::Update() {
+
 	/////////////////////////////UI処理
 	ui->Updata();
 

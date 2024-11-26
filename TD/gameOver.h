@@ -1,4 +1,5 @@
-﻿#pragma once
+#pragma once
+
 #include <Novice.h>
 #include <Vector2.h>
 #include <time.h>
@@ -14,8 +15,10 @@
 class GameOver
 {
 public:
+
 	GameOver();
 	~GameOver();
+
 	///メンバー関数
 
 	//タイトルの初期化処理

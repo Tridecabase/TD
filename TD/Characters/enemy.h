@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "./Tools/config.h" 
 #include "./Tools/wave_generator.h" 
+#include "./Tools/circle_effect.h" 
 #include "./Characters/player.h" 
 #include "./Entities/bullet.h"
 #include "drawPolygon.h"
@@ -36,7 +37,6 @@ public:
 	void Draw(const int posX, const int posY);
 	//敵の情報を表示する関数
 	void DrawInfo();
-	//void RenderWaveWithLength(WaveGenerator* wave, int length, unsigned int color);
 
 	bool IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2);
 
@@ -249,7 +249,7 @@ private:
 	Subobj drone_aura[3];
 	Subobj drone_eye[3];
 
-
+	CircleEffect* circle_effect;
 
 	// ============================
 	// 敵運動関するローカル定数

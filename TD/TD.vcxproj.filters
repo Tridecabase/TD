@@ -252,6 +252,9 @@
     <ClInclude Include="gameOver.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Tools\circle_effect.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Csv\background.csv">

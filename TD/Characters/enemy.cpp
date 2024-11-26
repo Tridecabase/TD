@@ -10,6 +10,7 @@ Enemy::~Enemy() {
 	delete wave1;   //wave1 のメモリ解放
 	delete wave2;   //wave2 のメモリ解放
 	delete wave3;   //wave3 のメモリ解放
+	delete circle_effect;
 }
 
 bool Enemy::IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2)
@@ -65,6 +66,8 @@ void Enemy::Init() {
 	is_break = false;
 	//ブレイク状態の残り時間
 	break_timer = 0;
+
+	circle_effect = new CircleEffect;
 
 
 	// ============================
@@ -589,16 +592,18 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 	for (int i = 0; i < MAX_BULLET_A; i++) {
 		for (int j = 0; j < MAX_FUNNEL; ++j) {
 			if (bulletA->bulletA[i].isShoot) {
-				float dx = funnel[j].x - bulletA->bulletA[i].screen_pos.x;
-				float dy = funnel[j].y - bulletA->bulletA[i].screen_pos.y;
-				float distanceSquared = dx * dx + dy * dy;
+				if (funnel[j].isActive) {
+					float dx = funnel[j].x - bulletA->bulletA[i].screen_pos.x;
+					float dy = funnel[j].y - bulletA->bulletA[i].screen_pos.y;
+					float distanceSquared = dx * dx + dy * dy;
 
-				float combinedRadius = bulletA->bulletA[i].radiusX + funnel[j].width / 2;
+					float combinedRadius = bulletA->bulletA[i].radiusX + funnel[j].width / 2;
 
-				if (distanceSquared <= combinedRadius * combinedRadius) {
-					funnel[j].isHit = true;
-					funnel[j].hp -= PLAYER_ATK_A;
-					bulletA->bulletA[i].isShoot = false;
+					if (distanceSquared <= combinedRadius * combinedRadius) {
+						funnel[j].isHit = true;
+						funnel[j].hp -= PLAYER_ATK_A;
+						bulletA->bulletA[i].isShoot = false;
+					}
 				}
 			}
 		}
@@ -608,15 +613,17 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 	for (int i = 0; i < MAX_BULLET_B; i++) {
 		for (int j = 0; j < MAX_FUNNEL; ++j) {
 			if (bulletB->bulletB[i].isShoot) {
-				float dx = funnel[j].x - bulletB->bulletB[i].screen_pos.x;
-				float dy = funnel[j].y - bulletB->bulletB[i].screen_pos.y;
-				float distanceSquared = dx * dx + dy * dy;
-				float combinedRadius = bulletB->bulletB[i].radiusX + funnel[j].width / 2;
+				if (funnel[j].isActive) {
+					float dx = funnel[j].x - bulletB->bulletB[i].screen_pos.x;
+					float dy = funnel[j].y - bulletB->bulletB[i].screen_pos.y;
+					float distanceSquared = dx * dx + dy * dy;
+					float combinedRadius = bulletB->bulletB[i].radiusX + funnel[j].width / 2;
 
-				if (distanceSquared <= combinedRadius * combinedRadius) {
-					funnel[j].isHit = true;
-					funnel[j].hp -= PLAYER_ATK_B;
-					bulletB->bulletB[i].isShoot = false;
+					if (distanceSquared <= combinedRadius * combinedRadius) {
+						funnel[j].isHit = true;
+						funnel[j].hp -= PLAYER_ATK_B;
+						bulletB->bulletB[i].isShoot = false;
+					}
 				}
 			}
 		}
@@ -627,15 +634,17 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 		for (int k = 0; k < MAX_BULLET_C; k++) {
 			if (bulletC->bulletC[i][k].isShoot) {
 				for (int j = 0; j < MAX_FUNNEL; ++j) {
-					float dx = funnel[j].x - bulletC->bulletC[i][k].screen_pos.x;
-					float dy = funnel[j].y - bulletC->bulletC[i][k].screen_pos.y;
-					float distanceSquared = dx * dx + dy * dy;
-					float combinedRadius = bulletC->bulletC[i][k].radiusX + funnel[j].width / 2;
+					if (funnel[j].isActive) {
+						float dx = funnel[j].x - bulletC->bulletC[i][k].screen_pos.x;
+						float dy = funnel[j].y - bulletC->bulletC[i][k].screen_pos.y;
+						float distanceSquared = dx * dx + dy * dy;
+						float combinedRadius = bulletC->bulletC[i][k].radiusX + funnel[j].width / 2;
 
-					if (distanceSquared <= combinedRadius * combinedRadius) {
-						funnel[j].isHit = true;
-						funnel[j].hp -= PLAYER_ATK_C;
-						bulletC->bulletC[i][k].isShoot = false;
+						if (distanceSquared <= combinedRadius * combinedRadius) {
+							funnel[j].isHit = true;
+							funnel[j].hp -= PLAYER_ATK_C;
+							bulletC->bulletC[i][k].isShoot = false;
+						}
 					}
 				}
 			}
@@ -646,14 +655,16 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 	for (int j = 0; j < MAX_FUNNEL; ++j) {
 		if (bulletD->isShoot) {
 			if (bulletD->pos.z < 1100.0f) {
-				float dx = funnel[j].x - bulletD->screen_pos.x;
-				float dy = funnel[j].y - bulletD->screen_pos.y;
-				float distanceSquared = dx * dx + dy * dy;
-				float combinedRadius = bulletD->radiusX + funnel[j].width / 2;
+				if (funnel[j].isActive) {
+					float dx = funnel[j].x - bulletD->screen_pos.x;
+					float dy = funnel[j].y - bulletD->screen_pos.y;
+					float distanceSquared = dx * dx + dy * dy;
+					float combinedRadius = bulletD->radiusX + funnel[j].width / 2;
 
-				if (distanceSquared <= combinedRadius * combinedRadius) {
-					funnel[j].isHit = true;
-					funnel[j].hp -= PLAYER_ATK_D * 15;
+					if (distanceSquared <= combinedRadius * combinedRadius) {
+						funnel[j].isHit = true;
+						funnel[j].hp -= PLAYER_ATK_D * 15;
+					}
 				}
 			}
 		}
@@ -681,13 +692,18 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 //エネルギー収集と弾幕発射
 void Enemy::FireAtPlayer() {
 	static int chargeTime = 0;
-	const int maxChargeTime = 300;
+
+	if (action_timer <= 300) {
+		circle_effect->Update(drone1.pos);
+		circle_effect->Update(drone2.pos);
+		circle_effect->Update(drone3.pos);
+	}
 
 	chargeTime++;
-	if (chargeTime >= maxChargeTime) {
+	if (chargeTime >= 600) {
 		chargeTime = 0;
 		current_action = ActionID::IDLE; //IDLEに遷移
-		action_timer = 300;              //IDLE時間設定
+		action_timer = 100;              //IDLE時間設定
 	}
 
 	//巻き戻し処理
@@ -789,6 +805,10 @@ void Enemy::Scroll(Player* player, char keys[256]) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Enemy::Draw(const int posX, const int posY) {
 
+	if (current_action == ActionID::FIRE_AT_PLAYER && action_timer <= 300) {
+		circle_effect->Draw();
+	}
+
 	if (drone1.w >= static_cast<float>(M_PI)) {
 		Novice::DrawEllipse(static_cast<int>(drone1.pos.x), static_cast<int>(drone1.pos.y), static_cast<int>(drone1.r.x + 5.0f), static_cast<int>(drone1.r.y + 5.0f), 0.0f, 0x4BBC54FF, kFillModeSolid);
 		DrawRound(drone1, drone1.color);
@@ -832,7 +852,7 @@ void Enemy::Draw(const int posX, const int posY) {
 		}
 
 		DrawPolygon(pPoint6_1[0], pPoint6_1[1], pPoint6_1[2], pPoint6_1[3], pPoint6_1[4], pPoint6_1[5], 0x4D000CFF);
-
+		//e03243
 		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 0), int(screen_pos.y + point6_1[0].y + 0), int(screen_pos.x + point6_1[1].x + 0), int(screen_pos.y + point6_1[1].y + 0), 0xA30019FF);
 		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 1), int(screen_pos.y + point6_1[0].y + 1), int(screen_pos.x + point6_1[1].x + 1), int(screen_pos.y + point6_1[1].y + 1), 0xA30019FF);
 		Novice::DrawLine(int(screen_pos.x + point6_1[0].x - 2), int(screen_pos.y + point6_1[0].y + 2), int(screen_pos.x + point6_1[1].x + 2), int(screen_pos.y + point6_1[1].y + 2), 0xA30019FF);

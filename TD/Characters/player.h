@@ -57,6 +57,10 @@ public:
 	bool isPlayerLeft;
 	bool isPlayerRight;
 
+	//表示用
+	int mouseValue;
+	bool mouseType;
+
 	// ============================
 	// 弾丸関数変数
 	// ============================

@@ -167,6 +167,34 @@ void FunnelBullet::Draw() {
 		particle->Render();
 	}
 
+    //敵弾の照準表現
+    for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
+        if (funnelBullet[i].isShoot) {
+            unsigned int line_color{};
+            if (funnelBullet[i].pos.z >= 0.2f) {
+                line_color = 0x4BBC5422;
+            }
+            if (funnelBullet[i].pos.z <= 0.2f) {
+                line_color = RED;
+            }
+
+            //線
+            Novice::DrawLine(
+                static_cast<int>(funnelBullet[i].pos.x),
+                static_cast<int>(funnelBullet[i].pos.y),
+                static_cast<int>(funnelBullet[i].target_pos.x),
+                static_cast<int>(funnelBullet[i].target_pos.y),
+                line_color
+            );
+            //円
+            Novice::DrawEllipse(
+                static_cast<int>(funnelBullet[i].target_pos.x),
+                static_cast<int>(funnelBullet[i].target_pos.y),
+                10, 5, 0.0f, line_color, kFillModeSolid);
+        }
+    }
+ 
+
 	for (int i = 0; i < MAX_BULLET_FUNNEL; ++i) {
 		float posX = funnelBullet[i].pos.x; //現在のX座標
 		float posY = funnelBullet[i].pos.y; //現在のY座標
@@ -364,6 +392,7 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
                     if (player->screen_pos.y + player->height / 2 >= droneBullets[i][j].pos.y - droneBullets[i][j].radius * droneBullets[i][j].scale &&
                         player->screen_pos.y - player->height / 2 <= droneBullets[i][j].pos.y + droneBullets[i][j].radius * droneBullets[i][j].scale) {
                         if (!player->isHit) {
+                            player->hp -= FUNNEL_ATK;
                             particle->Destroy(
                                 droneBullets[i][j].pos.x,
                                 droneBullets[i][j].pos.y,
@@ -406,6 +435,34 @@ void DroneBullet::Scroll(Player* player, char keys[256]) {
 void DroneBullet::Draw() {
     if (particle) {
         particle->Render();
+    }
+
+    //敵弾の照準表現
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
+            if (droneBullets[i][j].isShoot) {
+                unsigned int line_color{};
+                if (droneBullets[i][j].pos.z >= 0.2f) {
+                    line_color = 0x4BBC5411;
+                }
+                if (droneBullets[i][j].pos.z <= 0.2f) {
+                    line_color = RED;
+                }
+                //線
+                Novice::DrawLine(
+                    static_cast<int>(droneBullets[i][j].pos.x),
+                    static_cast<int>(droneBullets[i][j].pos.y),
+                    static_cast<int>(droneBullets[i][j].target_pos.x),
+                    static_cast<int>(droneBullets[i][j].target_pos.y),
+                    line_color
+                );
+                //円
+                Novice::DrawEllipse(
+                    static_cast<int>(droneBullets[i][j].target_pos.x),
+                    static_cast<int>(droneBullets[i][j].target_pos.y),
+                    10, 5, 0.0f, line_color,kFillModeSolid);
+            }
+        }
     }
 
     for (int i = 0; i < 3; ++i) {

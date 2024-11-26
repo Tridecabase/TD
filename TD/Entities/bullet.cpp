@@ -25,7 +25,6 @@ void Bullet::Update() {
 			mouseType = true;
 		}
 	}
-	Novice::ScreenPrintf(100, 500, "getWheel=%d", mouseValue);
 }
 
 BulletA::BulletA() {
@@ -332,7 +331,6 @@ void BulletB::Draw() const {
 			Novice::DrawEllipse(static_cast<int>(bulletB[i].screen_pos.x), static_cast<int>(bulletB[i].screen_pos.y), static_cast<int>(bulletB[i].radiusX * bulletB[i].scale), static_cast<int>(bulletB[i].radiusY * bulletB[i].scale), 0.0f, 0xBC47F7FF, kFillModeWireFrame);
 		}
 	}
-	Novice::ScreenPrintf(100, 240, "bulletB.pos.Z = %f", bulletB[0].pos.z);
 }
 ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
