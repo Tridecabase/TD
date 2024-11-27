@@ -261,6 +261,10 @@ private:
 	CircleEffect* circle_effect;
 	ParticleGenerator* particle;
 
+	digBox1* boxes;
+	digBox1* boxes2;
+	digBox1* boxes3;
+
 	float triangleRotation[3];
 	float triangleOffset[3];
 	float triangleAlpha;

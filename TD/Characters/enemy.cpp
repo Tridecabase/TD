@@ -2,7 +2,11 @@
 #include "enemy.h" 
 
 //コンストラクタ
-Enemy::Enemy() {
+Enemy::Enemy()
+{
+	boxes = new(digBox1);
+	boxes2 = new(digBox1);
+	boxes3 = new(digBox1);
 	Init();
 }
 // デストラクタ
@@ -12,6 +16,9 @@ Enemy::~Enemy() {
 	delete wave3;   //wave3 のメモリ解放
 	delete circle_effect;
 	delete particle;
+	delete boxes;
+	delete boxes2;
+	delete boxes3;
 }
 
 bool Enemy::IsCollision(float x1, float y1, float radius1, float x2, float y2, float radius2)
@@ -75,6 +82,10 @@ void Enemy::Init() {
 	circle_effect = new CircleEffect;
 	particle = new ParticleGenerator;
 
+
+	 boxes->Init(float(-30), float(25), 30, 30, 50, 50, 20, 20, 30);
+	boxes2->Init(float(30), float(-40), 50, 50, 50, 50, 20, 20, 30);
+	boxes3->Init(float(33), float( 35), 50, 50, 50, 50, 20, 20, 30);
 
 	// ============================
 	// 弾丸関数変数
@@ -246,6 +257,7 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	center.pos.x = pos.x;
 	center.pos.y = pos.y;
 
+
 	drone3.tmp_pos.x = center.pos.x + 50.0f;
 	drone3.tmp_pos.y = center.pos.y - 70.0f;
 
@@ -267,10 +279,10 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	} else if (current_action == ActionID::BREAK_STATE) {
 
 
-	}else if (current_action == ActionID::ENEMY_DEATH) {
+	} else if (current_action == ActionID::ENEMY_DEATH) {
 
 
-	}else {
+	} else {
 		drone1.tmp_pos = { center.pos.x - drone1_shift.x , center.pos.y - drone1_shift.y };
 		drone2.tmp_pos = { center.pos.x - drone2_shift.x , center.pos.y - drone2_shift.y };
 
@@ -440,6 +452,11 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 		hpbar_r = 0x0FF;
 	}
 
+	///描写処理
+	boxes->Update();
+	boxes2->Update();
+	boxes3->Update();
+
 	//浮遊砲の状態を更新
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].isActive && funnel[i].hp <= 0) {
@@ -447,6 +464,7 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 			funnel[i].isActive = false;
 		}
 	}
+
 }
 
 //ダメージを受けた際の処理
@@ -528,8 +546,7 @@ void Enemy::EnemySpawn() {
 
 	if (pos.y < ENEMY_SPAWN_POSY) {
 		pos.y += 2.0f;
-	}
-	else {
+	} else {
 		current_action = ActionID::IDLE;
 		action_timer = 60;
 	}
@@ -750,9 +767,9 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 void Enemy::FireAtPlayer() {
 	static int chargeTime = 0;
 
-		circle_effect->Update(drone1.pos);
-		circle_effect->Update(drone2.pos);
-		circle_effect->Update(drone3.pos);
+	circle_effect->Update(drone1.pos);
+	circle_effect->Update(drone2.pos);
+	circle_effect->Update(drone3.pos);
 
 	chargeTime++;
 	if (chargeTime >= 600) {
@@ -822,7 +839,7 @@ void Enemy::Idle() {
 	// 高さをゆっくり元の位置へ戻す
 	if (fabs(pos.y - ENEMY_SPAWN_POSY) > 1.0f) {
 		pos.y += (ENEMY_SPAWN_POSY - pos.y) * 0.1f; //緩やかな移動
-	} else if(action_timer <= 0){
+	} else if (action_timer <= 0) {
 		SetRandomAction(); //ランダムな次の行動を選択
 	}
 }
@@ -852,8 +869,7 @@ void Enemy::Death() {
 					0xf4cecfFF
 				);
 			}
-		}
-		else {
+		} else {
 			for (int i = 0; i < 10; i++) {
 				if (particle) {
 					particle->Destroy(
@@ -864,6 +880,8 @@ void Enemy::Death() {
 			}
 		}
 	}
+
+
 
 	if (action_timer <= 20) {
 		death_flag = true;
@@ -1052,8 +1070,7 @@ void Enemy::Draw(const int posX, const int posY) {
 					eyeToPosLength = 10;
 					eyePosX = eyeToPosLength * cosf(theta);
 					eyePosY = eyeToPosLength * sinf(theta);
-				}
-				else {
+				} else {
 					eyePosX = float(posX - screen_pos.x);
 					eyePosY = float(posY - screen_pos.y);
 				}
@@ -1069,44 +1086,60 @@ void Enemy::Draw(const int posX, const int posY) {
 			}
 
 			///box
-			Vector2 boxPos[10];
-			int boxWidth[10];
-			int boxHeight[10];
-			boxPos[0] = { screen_pos.x + 30, screen_pos.y + 30 };
-			boxWidth[0] = 15;
-			boxHeight[0] = 15;
-			boxPos[1] = { screen_pos.x + 33, screen_pos.y + 35 };
-			boxWidth[1] = 28;
-			boxHeight[1] = 28;
-			boxPos[2] = { screen_pos.x + 28, screen_pos.y + 32 };
-			boxWidth[2] = 15;
-			boxHeight[2] = 15;
-			boxPos[3] = { screen_pos.x + 45, screen_pos.y - 45 };
-			boxWidth[3] = 26;
-			boxHeight[3] = 20;
-			boxPos[4] = { screen_pos.x + 30, screen_pos.y - 40 };
-			boxWidth[4] = 28;
-			boxHeight[4] = 30;
-			boxPos[5] = { screen_pos.x + 25, screen_pos.y - 15 };
-			boxWidth[5] = 20;
-			boxHeight[5] = 10;
-			boxPos[6] = { screen_pos.x + 45, screen_pos.y - 45 };
-			boxWidth[6] = 26;
-			boxHeight[6] = 20;
-			boxPos[7] = { screen_pos.x - 60, screen_pos.y + 21 };
-			boxWidth[7] = 28;
-			boxHeight[7] = 26;
-			boxPos[8] = { screen_pos.x - 55, screen_pos.y + 18 };
-			boxWidth[8] = 15;
-			boxHeight[8] = 10;
-			boxPos[9] = { screen_pos.x - 45, screen_pos.y + 25 };
-			boxWidth[9] = 20;
-			boxHeight[9] = 30;
 
-			for (int i = 0; i < 10; i++) {
-				Novice::DrawBox(int(boxPos[i].x), int(boxPos[i].y), int(boxWidth[i]), int(boxHeight[i]), 0.0f, DarkColor, kFillModeSolid);
-				Novice::DrawBox(int(boxPos[i].x), int(boxPos[i].y), int(boxWidth[i]), int(boxHeight[i]), 0.0f, LineColor, kFillModeWireFrame);
-			}
+			//(-55), float(18)
+			//30), float(-40)
+			//33), float(35),
+			boxes->spawnPosX_ = float(screen_pos.x + (-30));
+			boxes->spawnPosY_ = float(screen_pos.y + (40));
+			boxes2->spawnPosX_ = float(screen_pos.x + (30));
+			boxes2->spawnPosY_ = float(screen_pos.y + (-40));
+			boxes3->spawnPosX_ = float(screen_pos.x + (33));
+			boxes3->spawnPosY_ = float(screen_pos.y + (35));
+
+			boxes->Render();
+			boxes2->Render();
+			boxes3->Render();
+
+
+			//Vector2 boxPos[10];
+			//int boxWidth[10];
+			//int boxHeight[10];
+			//boxPos[0] = { screen_pos.x + 30, screen_pos.y + 30 };
+			//boxWidth[0] = 15;
+			//boxHeight[0] = 15;
+			//boxPos[1] = { screen_pos.x + 33, screen_pos.y + 35 };
+			//boxWidth[1] = 28;
+			//boxHeight[1] = 28;
+			//boxPos[2] = { screen_pos.x + 28, screen_pos.y + 32 };
+			//boxWidth[2] = 15;
+			//boxHeight[2] = 15;
+			//boxPos[3] = { screen_pos.x + 45, screen_pos.y - 45 };
+			//boxWidth[3] = 26;
+			//boxHeight[3] = 20;
+			//boxPos[4] = { screen_pos.x + 30, screen_pos.y - 40 };
+			//boxWidth[4] = 28;
+			//boxHeight[4] = 30;
+			//boxPos[5] = { screen_pos.x + 25, screen_pos.y - 15 };
+			//boxWidth[5] = 20;
+			//boxHeight[5] = 10;
+			//boxPos[6] = { screen_pos.x + 45, screen_pos.y - 45 };
+			//boxWidth[6] = 26;
+			//boxHeight[6] = 20;
+			//boxPos[7] = { screen_pos.x - 60, screen_pos.y + 21 };
+			//boxWidth[7] = 28;
+			//boxHeight[7] = 26;
+			//boxPos[8] = { screen_pos.x - 55, screen_pos.y + 18 };
+			//boxWidth[8] = 15;
+			//boxHeight[8] = 10;
+			//boxPos[9] = { screen_pos.x - 45, screen_pos.y + 25 };
+			//boxWidth[9] = 20;
+			//boxHeight[9] = 30;
+
+			//for (int i = 0; i < 10; i++) {
+			//	Novice::DrawBox(int(boxPos[i].x), int(boxPos[i].y), int(boxWidth[i]), int(boxHeight[i]), 0.0f, DarkColor, kFillModeSolid);
+			//	Novice::DrawBox(int(boxPos[i].x), int(boxPos[i].y), int(boxWidth[i]), int(boxHeight[i]), 0.0f, LineColor, kFillModeWireFrame);
+			//}
 
 			//Novice::DrawEllipse(int(screen_pos.x), int(screen_pos.y), int(height / 2), int(height / 2), 0.0f, LineColor, kFillModeWireFrame);
 

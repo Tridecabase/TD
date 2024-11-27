@@ -233,7 +233,7 @@ void BoxV1::Update() {
 }
 
 void BoxV1::Render(const int posX, const int posY) {
-	int line = 3;
+	int line = 1;
 	float width = {};
 	float height = {};
 	float t = float(startEndTimer->clock_) / float(startEndTimer->time_);
