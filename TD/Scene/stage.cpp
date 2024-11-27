@@ -135,7 +135,7 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 
 	//敵の更新処理
 	if (enemy) {
-		enemy->Move(player, bulletA, bulletB, bulletD);
+		enemy->Move(player, bulletA, bulletB, bulletC, bulletD);
 		enemy->Scroll(player, keys);
 		enemy->UpdateFunnel(player, bulletA, bulletB, bulletC, bulletD);
 	}

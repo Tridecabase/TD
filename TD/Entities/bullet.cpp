@@ -414,7 +414,7 @@ void BulletC::Shot(Player* player, Bullet* bullet) {
 			if (Novice::IsPressMouse(0)) {
 				if (player->isShootAbleC) {
 					player->isShootAbleC = false;
-					player->shootCoolTimeC = 30;
+					player->shootCoolTimeC = 60;
 					for (int i = 0; i < MAX_SHELL_C; i++) {
 						if (!bulletC[i][0].isShoot) {
 							bulletC[i][0].isShoot = true;
