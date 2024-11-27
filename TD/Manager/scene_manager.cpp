@@ -42,6 +42,8 @@ void SceneManager::Init() {
 	is_stage_played = false;
 
 	volume = 1.0f;
+
+	death_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/player_death.wav");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,6 +126,11 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		if (stage->player->hp <= 0) {
 			is_stage_played = false;
 			Novice::StopAudio(playHandle);
+			/////////////////////////////SE
+			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+				playHandle = Novice::PlayAudio(death_hanlde, 0, 1.0f);
+			}
+
 			current_scene = SceneState::GAMEOVER;
 			gameOver->Init();
 			stage->Init();
