@@ -241,6 +241,10 @@ void Enemy::Init() {
 	}
 	triangleAlpha = 0.0f;
 	trianglescale = 0.0f;
+
+	//
+	playHandle = -1;
+	funnel_death_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/funnel_death.wav");
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -490,7 +494,11 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB,BulletC* bul
 
 	//浮遊砲の状態を更新
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
-		if (funnel[i].isActive && funnel[i].hp <= 0) {
+		if (funnel[i].hp <= 0) {
+			/////////////////////////////SE
+			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+				playHandle = Novice::PlayAudio(funnel_death_hanlde, 0, 2.0f);
+			}
 			//耐久値が0以下なら無効化
 			funnel[i].isActive = false;
 		}
@@ -500,6 +508,7 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB,BulletC* bul
 
 //ダメージを受けた際の処理
 void Enemy::TakeDamage(int damage) {
+
 	hp -= damage;
 	//ブレイクメーターはHPダメージの半分減少
 	if (!is_break) {

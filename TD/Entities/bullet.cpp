@@ -93,7 +93,7 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 						if (!bulletA[i].isShoot) {
 							/////////////////////////////BGM
 							if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
-								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 1.0f);
+								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 0.6f);
 							}
 							else {
 								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 1.0f);
