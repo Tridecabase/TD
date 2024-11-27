@@ -290,6 +290,9 @@ private:
 	// ============================
 	int playHandle;
 	int funnel_death_hanlde;
+	int death_hanlde;
+	int explord_handle;
+	bool is_death_played;
 
 	// ============================
 	// 敵運動関するベクトル計算関数

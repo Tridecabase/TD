@@ -245,6 +245,9 @@ void Enemy::Init() {
 	//
 	playHandle = -1;
 	funnel_death_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/funnel_death.wav");
+	death_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/boss_death.wav");
+	explord_handle = Novice::LoadAudio("../Resources/Sounds/effects/boss_explord.wav");
+	is_death_played = false;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑初期化はここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -896,7 +899,16 @@ void Enemy::Death() {
 
 	//死亡状態に入ったときに初期化
 	if (current_action == ActionID::ENEMY_DEATH) {
-		if (action_timer >= maxFrames) {
+
+		/////////////////////////////SE
+		if (!is_death_played) {
+			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+				playHandle = Novice::PlayAudio(death_hanlde, 0, 1.0f);
+			}
+			is_death_played = true;
+		}
+
+		if (action_timer > maxFrames) {
 			//三角形の回転と拡大
 			for (int i = 0; i < 3; ++i) {
 				triangleRotation[i] += rotationSpeed;  //回転を更新
@@ -913,7 +925,13 @@ void Enemy::Death() {
 					0xf4cecfFF
 				);
 			}
-		} else {
+		}
+		else if (action_timer == maxFrames) {
+			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+				playHandle = Novice::PlayAudio(explord_handle, 0, 1.0f);
+			}
+		}		
+		else {
 			for (int i = 0; i < 5; i++) {
 				if (particle) {
 					particle->Destroy(
