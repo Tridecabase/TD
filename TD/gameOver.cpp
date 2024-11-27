@@ -102,7 +102,7 @@ void GameOver::Init() {
 void GameOver::DrawGameOver(const int posX, const int posY, const int width, int color) {
 	char b[] = "GameOver";
 	//char b[] = "e";
-	float w = float(float(width) / 41.0f);
+	float w = float(float(width) / 36.0f);
 	float number = 0;
 	for (int i = 0; i < 10; i++) {
 		if (isupper(b[i])) {
@@ -283,7 +283,7 @@ void GameOver::Render() {
 		window[3]->drawWindow(color);
 	}
 	window[0]->drawWindow(color);
-	DrawGameOver(360, 290, 600, color);
+	DrawGameOver(360, 290, 530, color);
 	if (aniClock <= (aniTime / 2)) {
 		DrawBack(WINDOW_WIDTH / 2 - 280, 440, 290, 0xFFD30688);
 	}
