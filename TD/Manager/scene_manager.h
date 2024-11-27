@@ -62,6 +62,11 @@ private:
 
 
     bool is_stage_off;
+
+    //bgm
+    int playHandle;
+    int title_hanlde;
+    bool is_title_played;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑scenemanager.cppで使用するための変数をここで宣言↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
