@@ -116,23 +116,25 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 	//当たり判定
 	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
 		if (funnelBullet[i].isShoot) {
-			if (player->screen_pos.x + player->width / 2 >= funnelBullet[i].pos.x - funnelBullet[i].radius * funnelBullet[i].scale &&
-				player->screen_pos.x - player->width / 2 <= funnelBullet[i].pos.x + funnelBullet[i].radius * funnelBullet[i].scale) {
-				if (player->screen_pos.y + player->height / 2 >= funnelBullet[i].pos.y - funnelBullet[i].radius * funnelBullet[i].scale &&
-					player->screen_pos.y - player->height / 2 <= funnelBullet[i].pos.y + funnelBullet[i].radius * funnelBullet[i].scale) {
-					if (!player->isHit) {
-                        funnelBullet[i].time = 0;
-						particle->Destroy(
-							funnelBullet[i].pos.x,
-							funnelBullet[i].pos.y,
-							0xFF000044
-						);
-						player->isHit = true;
-						player->hp -= FUNNEL_ATK;
-					}
-					funnelBullet[i].isShoot = false;
-				}
-			}
+            if (funnelBullet[i].pos.z <= 0.05f) {
+                if (player->screen_pos.x + player->width / 2 >= funnelBullet[i].pos.x - funnelBullet[i].radius * funnelBullet[i].scale &&
+                    player->screen_pos.x - player->width / 2 <= funnelBullet[i].pos.x + funnelBullet[i].radius * funnelBullet[i].scale) {
+                    if (player->screen_pos.y + player->height / 2 >= funnelBullet[i].pos.y - funnelBullet[i].radius * funnelBullet[i].scale &&
+                        player->screen_pos.y - player->height / 2 <= funnelBullet[i].pos.y + funnelBullet[i].radius * funnelBullet[i].scale) {
+                        if (!player->isHit) {
+                            funnelBullet[i].time = 0;
+                            particle->Destroy(
+                                funnelBullet[i].pos.x,
+                                funnelBullet[i].pos.y,
+                                0xFF000044
+                            );
+                            player->isHit = true;
+                            player->hp -= FUNNEL_ATK;
+                        }
+                        funnelBullet[i].isShoot = false;
+                    }
+                }
+            }
 		}
 	}
 }
@@ -403,21 +405,23 @@ void DroneBullet::Shot(Player* player, Enemy* enemy) {
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < MAX_BULLET_DRONE; ++j) {
             if (droneBullets[i][j].isShoot) {
-                if (player->screen_pos.x + player->width / 2 >= droneBullets[i][j].pos.x - droneBullets[i][j].radius * droneBullets[i][j].scale &&
-                    player->screen_pos.x - player->width / 2 <= droneBullets[i][j].pos.x + droneBullets[i][j].radius * droneBullets[i][j].scale) {
-                    if (player->screen_pos.y + player->height / 2 >= droneBullets[i][j].pos.y - droneBullets[i][j].radius * droneBullets[i][j].scale &&
-                        player->screen_pos.y - player->height / 2 <= droneBullets[i][j].pos.y + droneBullets[i][j].radius * droneBullets[i][j].scale) {
-                        if (!player->isHit) {
-                            droneBullets[i][j].time = 0;
-                            player->hp -= FUNNEL_ATK;
-                            particle->Destroy(
-                                droneBullets[i][j].pos.x,
-                                droneBullets[i][j].pos.y,
-                                0xFF000044
-                            );
-                            player->isHit = true;
+                if (droneBullets[i][j].pos.z <= 0.05f) {
+                    if (player->screen_pos.x + player->width / 2 >= droneBullets[i][j].pos.x - droneBullets[i][j].radius * droneBullets[i][j].scale &&
+                        player->screen_pos.x - player->width / 2 <= droneBullets[i][j].pos.x + droneBullets[i][j].radius * droneBullets[i][j].scale) {
+                        if (player->screen_pos.y + player->height / 2 >= droneBullets[i][j].pos.y - droneBullets[i][j].radius / 2 * droneBullets[i][j].scale &&
+                            player->screen_pos.y - player->height / 2 <= droneBullets[i][j].pos.y + droneBullets[i][j].radius / 2 * droneBullets[i][j].scale) {
+                            if (!player->isHit) {
+                                droneBullets[i][j].time = 0;
+                                player->hp -= FUNNEL_ATK;
+                                particle->Destroy(
+                                    droneBullets[i][j].pos.x,
+                                    droneBullets[i][j].pos.y,
+                                    0xFF000044
+                                );
+                                player->isHit = true;
+                            }
+                            droneBullets[i][j].isShoot = false;
                         }
-                        droneBullets[i][j].isShoot = false;
                     }
                 }
             }
