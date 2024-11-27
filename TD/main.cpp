@@ -2,7 +2,7 @@
 #include "./Tools/config.h"
 #include "./Manager/scene_manager.h"
 
-const char kWindowTitle[] = "GC1B_08_ジョ_シセイ";
+const char kWindowTitle[] = "5221_ネオンホライゾン";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
