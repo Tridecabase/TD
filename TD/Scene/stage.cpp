@@ -2,7 +2,7 @@
 
 //コンストラクタ
 Stage::Stage()
-	: background(nullptr), map(nullptr), ui(nullptr), player(nullptr),bullet(nullptr), bulletA(nullptr), bulletB(nullptr), bulletC(nullptr),bulletD(nullptr), funnelBullet(nullptr), droneBullet(nullptr), enemy(nullptr) {
+	: background(nullptr), map(nullptr), ui(nullptr), player(nullptr), bullet(nullptr), bulletA(nullptr), bulletB(nullptr), bulletC(nullptr), bulletD(nullptr), funnelBullet(nullptr), droneBullet(nullptr), enemy(nullptr) {
 
 	openTime = 60;
 	openClock = openTime;
@@ -101,71 +101,71 @@ void Stage::Init() {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Stage::Update(char keys[256], char preKeys[256]) {
-    if (background) {
-        //背景の更新処理
-        background->Update(player, map, keys);
-        background->Scroll(player, keys);
-    }
+	if (background) {
+		//背景の更新処理
+		background->Update(player, map, keys);
+		background->Scroll(player, keys);
+	}
 
-    if (player) {
-        //プレイヤーの移動処理
-        player->Move(map, keys, preKeys);
-    }
+	if (player) {
+		//プレイヤーの移動処理
+		player->Move(map, keys, preKeys);
+	}
 
-    //プレイヤー弾丸の更新処理
-    if (bullet) {
-        bullet->Update();
-    }
-    if (bulletA) {
-        bulletA->Shot(player, bullet);
-        bulletA->Scroll(player, keys);
-    }
-    if (bulletB) {
-        bulletB->Shot(player, bullet);
-        bulletB->Scroll(player, keys);
-    }
-    if (bulletC) {
-        bulletC->Shot(player, bullet);
-        bulletC->Scroll(player, keys);
-    }
-    if (bulletD) {
-        bulletD->Shot(player, bullet);
-        bulletD->Scroll(player, keys);
-    }
+	//プレイヤー弾丸の更新処理
+	if (bullet) {
+		bullet->Update();
+	}
+	if (bulletA) {
+		bulletA->Shot(player, bullet);
+		bulletA->Scroll(player, keys);
+	}
+	if (bulletB) {
+		bulletB->Shot(player, bullet);
+		bulletB->Scroll(player, keys);
+	}
+	if (bulletC) {
+		bulletC->Shot(player, bullet);
+		bulletC->Scroll(player, keys);
+	}
+	if (bulletD) {
+		bulletD->Shot(player, bullet);
+		bulletD->Scroll(player, keys);
+	}
 
-    //敵の更新処理
-    if (enemy) {
-        enemy->Move(player, bulletA, bulletB, bulletD);
-        enemy->Scroll(player, keys);
-        enemy->UpdateFunnel(player, bulletA, bulletB, bulletC, bulletD);
-    }
+	//敵の更新処理
+	if (enemy) {
+		enemy->Move(player, bulletA, bulletB, bulletD);
+		enemy->Scroll(player, keys);
+		enemy->UpdateFunnel(player, bulletA, bulletB, bulletC, bulletD);
+	}
 
-    //敵弾丸の更新処理
-    if (funnelBullet) {
-        funnelBullet->Shot(player, enemy);
-        funnelBullet->Scroll(player, keys);
-    }
-    if (droneBullet) {
-        droneBullet->Shot(player, enemy);
-        droneBullet->Scroll(player, keys);
-    }
+	//敵弾丸の更新処理
+	if (funnelBullet) {
+		funnelBullet->Shot(player, enemy);
+		funnelBullet->Scroll(player, keys);
+	}
+	if (droneBullet) {
+		droneBullet->Shot(player, enemy);
+		droneBullet->Scroll(player, keys);
+	}
 
-    //UI処理
-    if (ui) {
-        ui->Updata();
-    }
+	//UI処理
+	if (ui) {
+		ui->Updata();
+	}
 
-    //opening時計
-    if (openClock > 0) {
-        openClock--;
-    }
+	//opening時計
+	if (openClock > 0) {
+		openClock--;
+	}
 
-    //aniClock
-    if (aniClock != aniTime) {
-        aniClock++;
-    } else {
-        aniClock = 0;
-    }
+	//aniClock
+	if (aniClock != aniTime) {
+		aniClock++;
+	} else {
+		aniClock = 0;
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑更新処理ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
@@ -175,59 +175,70 @@ void Stage::Update(char keys[256], char preKeys[256]) {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓描画処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 void Stage::Render() {
-    if (background) {
-        //背景の描画
-        background->Render(player);
-    }
+	if (background) {
+		//背景の描画
+		background->Render(player);
+	}
 
-    if (enemy) {
-        //敵のUI描画
-        enemy->DrawInfo();
-        enemy->DrawFunnel();
-        //敵の描画
-        enemy->Draw(int(player->screen_pos.x), int(player->screen_pos.y));
-    }
+	if (enemy) {
+		//敵のUI描画
+		enemy->DrawInfo();
+		enemy->DrawFunnel();
+		//敵の描画
+		enemy->Draw(int(player->screen_pos.x), int(player->screen_pos.y));
+	}
 
-    if (background) {
-        background->DrawMid();
-    }
+	if (background) {
+		background->DrawMid();
+	}
 
-    if (funnelBullet) {
-        funnelBullet->Draw();
-    }
-    if (droneBullet) {
-        droneBullet->Draw();
-    }
+	if (funnelBullet) {
+		funnelBullet->Draw();
+	}
+	if (droneBullet) {
+		droneBullet->Draw();
+	}
 
-    //プレイヤー弾丸の描画
-    if (bulletA) { bulletA->Draw(); }
-    if (bulletB) { bulletB->Draw(); }
-    if (bulletC) { bulletC->Draw(); }
-    if (bulletD) { bulletD->Draw(); }
+	//プレイヤー弾丸の描画
+	if (bulletA) { bulletA->Draw(); }
+	if (bulletB) { bulletB->Draw(); }
+	if (bulletC) { bulletC->Draw(); }
+	if (bulletD) { bulletD->Draw(); }
 
-    if (player) {
-        //プレイヤーの描画
-        player->Draw(player->color1, TRUE);
-    }
+	if (player) {
+		//プレイヤーの描画
+		player->Draw(player->color1, TRUE);
+	}
 
-    if (ui) {
-        //UIの描画
-        ui->Draw();
-    }
+	if (ui) {
+		//UIの描画
+		ui->Draw();
+	}
 
-    if (openClock > 0) {
-        stageChangeShow(openClock, openTime, 0x4BBC54FF, 1);
-    }
+	if (openClock > 0) {
+		stageChangeShow(openClock, openTime, 0x4BBC54FF, 1);
+	}
 
-    if (scFlat) {
-        stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
-    }
+	if (scFlat) {
+		stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
+	}
 
-    //Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
+	if(enemy){
+		int TC = {};
+		if (enemy->deadClock < 60) {
+			TC = 0;
+		} else {
+			TC = enemy->deadClock - 60;
+		}
+		int TT = enemy->deadTime - 60;
+		Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, colorChanger(0x4BBC54FF, 0x4BBC5400, TC, TT), kFillModeSolid);
+		Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, colorChanger(0x4BBC54FF, 0x4BBC5400, TC, TT), kFillModeSolid);
+	}
+	//Novice::ScreenPrintf(10, 700, "%d /%d", aniClock, aniTime);
 }
 
 
-bool Stage::StageChanger(char key[256],char preKey[256])
+bool Stage::StageChanger(char key[256], char preKey[256])
 {
 	if (key[DIK_M] && !preKey[DIK_M]) {
 		if (!scFlat) {

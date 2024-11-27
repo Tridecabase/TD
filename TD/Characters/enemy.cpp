@@ -83,9 +83,12 @@ void Enemy::Init() {
 	particle = new ParticleGenerator;
 
 
-	 boxes->Init(float(-30), float(25), 30, 30, 50, 50, 20, 20, 30);
+	boxes->Init(float(-30), float(25), 30, 30, 50, 50, 20, 20, 30);
 	boxes2->Init(float(30), float(-40), 50, 50, 50, 50, 20, 20, 30);
-	boxes3->Init(float(33), float( 35), 50, 50, 50, 50, 20, 20, 30);
+	boxes3->Init(float(33), float(35), 50, 50, 50, 50, 20, 20, 30);
+
+	deadClock = 0;
+	deadTime = 120;
 
 	// ============================
 	// 弾丸関数変数
@@ -457,6 +460,18 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 	boxes2->Update();
 	boxes3->Update();
 
+
+	///DeadClock
+	if (current_action == ActionID::ENEMY_DEATH) {
+		if (action_timer < 200.0f) {
+			if(particle){
+				if (deadClock < deadTime) {
+					deadClock++;
+				}
+			}
+		}
+	}
+
 	//浮遊砲の状態を更新
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].isActive && funnel[i].hp <= 0) {
@@ -747,7 +762,7 @@ void Enemy::UpdateFunnel(Player* player, BulletA* bulletA, BulletB* bulletB, Bul
 			}
 		}
 	}
-	
+
 
 	for (int i = 0; i < MAX_FUNNEL; ++i) {
 		if (funnel[i].hp <= 0) {
@@ -874,7 +889,7 @@ void Enemy::Death() {
 				);
 			}
 		} else {
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 5; i++) {
 				if (particle) {
 					particle->Destroy(
 						pos.x, pos.y,

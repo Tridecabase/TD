@@ -263,7 +263,7 @@ void StageClear::Render() {
 	///Window
 	window[1]->drawWindow(color);
 	//if (openClock == 0) {
-		runingBinary->Render(colorYellow);
+	runingBinary->Render(colorYellow);
 	//}
 	///Window
 	window[2]->drawWindow(color);
@@ -307,22 +307,22 @@ void StageClear::Render() {
 		Novice::DrawBox(MiddleW - LegW / 2 + line, MiddleH + MainR - line, LegW - line * 2, LegHeight, 0.0f, BlackColor, kFillModeSolid);
 
 		DrawNum(MiddleW, MiddleH, 40, colorYellow, 1);
-		DrawCongratulations(WINDOW_WIDTH / 2 + 400 - 290/2, MiddleH + 130, 290,colorYellow);
+		DrawCongratulations(WINDOW_WIDTH / 2 + 400 - 290 / 2, MiddleH + 130, 290, colorYellow);
 	}
 
 	///Window
 	window[3]->drawWindow(color);
 	//if (openClock == 0) {
-		player->Draw(color, false);
+	player->Draw(color, false);
 	//}
 
 	///WindowTitle
 	window[0]->drawWindow(color);
 	//if (openClock == 0) {
-		DrawClear(360, 290, 560, color);
-		if (aniClock <= (aniTime / 2)) {
-			DrawBack(WINDOW_WIDTH / 2 - 280, 440, 290, 0xFFD30688);
-		}
+	DrawClear(360, 290, 560, color);
+	if (aniClock <= (aniTime / 2)) {
+		DrawBack(WINDOW_WIDTH / 2 - 280, 440, 290, 0xFFD30688);
+	}
 	//}
 
 	ui->Draw();
@@ -335,8 +335,10 @@ void StageClear::Render() {
 		stageChangeShow(scClock, scTime, 0x4BBC54FF, 0);
 	}
 
+
 	Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, colorChanger(0x4BBC54FF, 0x4BBC5400, openClock, openTime), kFillModeSolid);
+
 	//Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, colorChanger(0xFFFFFFFF, 0xFFFFFF00, openClock, openTime), kFillModeSolid);
 	//Novice::DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, colorChanger(0xFFD306FF, 0xFFD30600, openClock, openTime), kFillModeSolid);
-	
+
 }

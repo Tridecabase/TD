@@ -188,6 +188,9 @@ public:
 	Obj drone2;
 	Obj drone3;
 
+	int deadClock;
+	int deadTime;
+
 private:
 
 	// ============================
@@ -264,6 +267,8 @@ private:
 	digBox1* boxes;
 	digBox1* boxes2;
 	digBox1* boxes3;
+
+	
 
 	float triangleRotation[3];
 	float triangleOffset[3];
