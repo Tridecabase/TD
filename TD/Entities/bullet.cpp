@@ -28,28 +28,7 @@ void Bullet::Update() {
 }
 
 BulletA::BulletA() {
-	for (int i = 0; i < MAX_BULLET_A; i++) {
-		bulletA[i] = {
-		{},		//pos
-		{},		//savePos
-		{},		//newPos
-		{},		//frontPos
-		{},		//lastPos
-		{},		//screen_pos
-		0,		//mousePosX 
-		0,		//mousePosY 
-		0.0f,	//gravityY 
-		0.0f,	//gravitySpeedY
-		5.0f,	//radiusX
-		12.0f,	//radiusY
-		0.0f,	//theta
-		1.0f,	//scale 
-		30.0f,	//speed
-		0.0f,	//time
-		0.0f,	//distanceToMouse
-		false	//isShoot 
-		};
-	}
+Init();
 }
 
 BulletA::~BulletA() {}
@@ -198,27 +177,7 @@ void BulletA::Draw() const {
 /// </summary>
 
 BulletB::BulletB() {
-	for (int i = 0; i < MAX_BULLET_B; i++) {
-		bulletB[i] = {
-		{},		//pos
-		{},		//randPos
-		{},		//newPos
-		{},		//frontPos
-		{},		//lastPos
-		{},		//screen_pos 
-		0,		//mousePosX 
-		0,		//mousePosY 
-		15.0f,	//radiusX
-		15.0f,	//radiusY
-		1.0f,	//scale 
-		110.0f,	//speed
-		0.0f,	//time
-		0.0f,	//distanceToMouse
-		0.0f,	//stoppageTime
-		0.0f,	//stoppageTimer
-		false	//isShoot 
-		};
-	}
+	Init();
 }
 
 BulletB::~BulletB() {}
@@ -244,6 +203,13 @@ void BulletB::Init() {
 		0.0f,	//stoppageTimer
 		false	//isShoot 
 		};
+	}
+
+	playHandle = -1;
+	gunB_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/gun_B.mp3");
+
+	for (int i = 0; i < MAX_BULLET_B; i++) {
+		is_gunB_played[i] = false;
 	}
 }
 
@@ -279,6 +245,7 @@ void BulletB::Shot(Player* player, Bullet* bullet) {
 					player->shootCoolTimeB = 300;
 					for (int i = 0; i < MAX_BULLET_B; i++) {
 						if (!bulletB[i].isShoot) {
+
 							bulletB[i].isShoot = true;
 							bulletB[i].pos.x = player->pos.x;
 							bulletB[i].pos.y = player->pos.y;
@@ -312,9 +279,23 @@ void BulletB::Shot(Player* player, Bullet* bullet) {
 					bulletB[i].pos.z -= bulletB[i].randPos.z / 48.0f;
 				}
 				else {
+
+					if (!is_gunB_played[i]) {
+						/////////////////////////////SE
+						if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+							playHandle = Novice::PlayAudio(gunB_hanlde, 0, 0.5f);
+						}
+						else {
+							playHandle = Novice::PlayAudio(gunB_hanlde, 0, 0.5f);
+						}
+						is_gunB_played[i] = true;
+					}
+
+
 					bulletB[i].pos.z += bulletB[i].speed + bulletB[i].randPos.z / 96.0f;
 					bulletB[i].time += bulletB[i].speed / (bulletB[i].distanceToMouse * 3);
 					if (bulletB[i].time > 1.05f) {
+						is_gunB_played[i] = false;;
 						bulletB[i].isShoot = false;
 					}
 				}
