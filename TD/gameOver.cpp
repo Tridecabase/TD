@@ -104,7 +104,7 @@ void GameOver::DrawGameOver(const int posX, const int posY, const int width, int
 	//char b[] = "e";
 	float w = float(float(width) / 36.0f);
 	float number = 0;
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 8; i++) {
 		if (isupper(b[i])) {
 			DrawApla(int(posX + (w * 5 / 2) + (w * number)), int(posY + (w * 7 / 2)), int(w * 5), color, b[i]);
 			number += 6.0f;

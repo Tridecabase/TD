@@ -28,10 +28,20 @@ void SceneManager::Init() {
 
 	is_stage_off = true;
 
-	//bgm
+	//title bgm
 	playHandle = -1;
-	is_title_played = false;
 	title_hanlde = Novice::LoadAudio("../Resources/Sounds/bgm/title.wav");
+	is_title_played = false;
+
+	//stage bgm
+	stage_hanlde = Novice::LoadAudio("../Resources/Sounds/bgm/stage.mp3");
+	is_stage_played = false;
+
+	//clear bgm
+	clear_hanlde = Novice::LoadAudio("../Resources/Sounds/bgm/clear.mp3");
+	is_stage_played = false;
+
+	volume = 1.0f;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +62,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		/////////////////////////////BGM
 		if (!is_title_played) {
 			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
-				playHandle = Novice::PlayAudio(title_hanlde, 1, 1.0f);
+				playHandle = Novice::PlayAudio(title_hanlde, 1, volume);
 			}
 			is_title_played = true;
 		}
@@ -79,6 +89,14 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 			is_stage_off = false;
 		}
 
+		/////////////////////////////BGM
+		if (!is_stage_played) {
+			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+				playHandle = Novice::PlayAudio(stage_hanlde, 1, 1.2f);
+			}
+			is_stage_played = true;
+		}
+
 
 		//テスト用シーン切り替え
 		if (keys[DIK_O] && !preKeys[DIK_O]) {
@@ -86,6 +104,8 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		   
 		}
 		if (keys[DIK_M] && !preKeys[DIK_M]) {
+			is_stage_played = false;
+			Novice::StopAudio(playHandle);
 			stage->enemy->current_action = ActionID::ENEMY_DEATH;
 			stage->enemy->action_timer = 480;
 		}
@@ -93,6 +113,8 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 
 		//敵を倒したらシーン切り替え
 		if (stage->enemy->death_flag == true) {
+			is_stage_played = false;
+			Novice::StopAudio(playHandle);
 			current_scene = SceneState::GAMECLEAR;
 			stageClear->Init();
 			stage->Init();
@@ -100,6 +122,8 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		
 		//プレイヤーが倒されたらシーン切り替え
 		if (stage->player->hp <= 0) {
+			is_stage_played = false;
+			Novice::StopAudio(playHandle);
 			current_scene = SceneState::GAMEOVER;
 			gameOver->Init();
 			stage->Init();
@@ -114,8 +138,18 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 			is_stage_off = false;
 		}
 
+		/////////////////////////////BGM
+		if (!is_clear_played) {
+			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+				playHandle = Novice::PlayAudio(clear_hanlde, 1, volume);
+			}
+			is_clear_played = true;
+		}
+
 		//テスト用シーン切り替え
 		if (keys[DIK_M] && !preKeys[DIK_M]) {
+			is_clear_played = false;
+			Novice::StopAudio(playHandle);
 			current_scene = SceneState::GAMETITLE;
 			title->Init();
 			stage->Init();

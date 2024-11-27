@@ -78,9 +78,8 @@ void BulletA::Init() {
 		};
 	}
 
-	playhandle = -1;
-	shot_hanlde = Novice::LoadAudio("../Resources/sounds/effects/gun_A.mp4");
-	isSoundPlay = false;
+	playHandle = -1;
+	gunA_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/gun_A.mp3");
 }
 
 void BulletA::Scroll(Player* player, char keys[256]) {
@@ -113,13 +112,13 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 					player->shootCoolTimeA = 3;
 					for (int i = 0; i < MAX_BULLET_A; i++) {
 						if (!bulletA[i].isShoot) {
-						/*	if (!Novice::IsPlayingAudio(playhandle)) {
-								playhandle = Novice::PlayAudio(shot_hanlde, false, 1.0f);
+							/////////////////////////////BGM
+							if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 1.0f);
 							}
-							if (!Novice::IsPlayingAudio(playhandle) || playhandle == -1) {
-								playhandle = Novice::PlayAudio(shot_hanlde, 1, 1.0f);
-							}*/
-
+							else {
+								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 1.0f);
+							}
 							bulletA[i].isShoot = true;
 							bulletA[i].pos.x = player->pos.x;
 							bulletA[i].pos.y = player->pos.y;
@@ -174,9 +173,6 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 			else {
 				bulletA[i].screen_pos = { NULL };
 			}
-		}
-		if (isSoundPlay) {
-		
 		}
 	}
 }

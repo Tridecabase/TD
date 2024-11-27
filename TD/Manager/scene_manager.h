@@ -63,10 +63,20 @@ private:
 
     bool is_stage_off;
 
-    //bgm
+    //title bgm
     int playHandle;
     int title_hanlde;
     bool is_title_played;
+
+    //stage bgm
+    int stage_hanlde;
+    bool is_stage_played;
+
+    //clear bgm
+    int clear_hanlde;
+    bool is_clear_played;
+
+    float volume;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑scenemanager.cppで使用するための変数をここで宣言↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//

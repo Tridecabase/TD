@@ -149,10 +149,10 @@ public:
 
 	Bullet_A bulletA[MAX_BULLET_A]{};
 
-	int playhandle;
-	int shot_hanlde;
-	bool isSoundPlay;
 
+	//BGM
+	int playHandle;
+	int gunA_hanlde;
 };
 
 class BulletB {
@@ -170,6 +170,9 @@ public:
 	void Draw() const;
 
 	Bullet_B bulletB[MAX_BULLET_B]{};
+
+	int playHandle;
+	int gunB_hanlde;
 
 };
 
@@ -211,6 +214,9 @@ public:
 
 	Bullet_C bulletC[MAX_SHELL_C][MAX_BULLET_C]{};
 
+
+	int playHandle;
+	int gunC_hanlde;
 };
 
 class BulletD {
@@ -246,5 +252,8 @@ public:
 	bool isShoot;
 
 	Bullet_D bulletD[MAX_BULLET_D]{};
+
+	int playHandle;
+	int gunD_hanlde;
 
 };
