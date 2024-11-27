@@ -92,7 +92,7 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		/////////////////////////////BGM
 		if (!is_stage_played) {
 			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
-				playHandle = Novice::PlayAudio(stage_hanlde, 1, 1.2f);
+				playHandle = Novice::PlayAudio(stage_hanlde, 1, 0.7f);
 			}
 			is_stage_played = true;
 		}
