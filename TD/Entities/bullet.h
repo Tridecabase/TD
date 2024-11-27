@@ -257,5 +257,8 @@ public:
 
 	int playHandle;
 	int gunD_hanlde;
+	int gunD_charge_hanlde;
+
+	bool is_charge_end;
 
 };

@@ -328,31 +328,7 @@ void BulletB::Draw() const {
 ///
 
 BulletC::BulletC() {
-	for (int i = 0; i < MAX_SHELL_C; i++) {
-		for (int j = 0; j < MAX_BULLET_C; j++) {
-			bulletC[i][j] = {
-			{},		//pos
-			{},		//randPos
-			{},		//savePos
-			{},		//newPos
-			{},		//frontPos
-			{},		//lastPos
-			{},		//screen_pos
-			0,		//mousePosX 
-			0,		//mousePosY 
-			0.0f,	//gravityY 
-			0.0f,	//gravitySpeedY
-			12.0f,	//radiusX
-			12.0f,	//radiusY
-			0.0f,	//theta
-			1.0f,	//scale 
-			25.0f,	//speed
-			0.0f,	//time
-			0.0f,	//distanceToMouse
-			false	//isShoot 
-			};
-		}
-	}
+	Init();
 }
 
 BulletC::~BulletC() {}
@@ -383,6 +359,9 @@ void BulletC::Init() {
 			};
 		}
 	}
+
+	playHandle = -1;
+	gunC_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/gun_C.mp3");
 }
 
 void BulletC::Scroll(Player* player, char keys[256]) {
@@ -417,6 +396,12 @@ void BulletC::Shot(Player* player, Bullet* bullet) {
 					player->shootCoolTimeC = 60;
 					for (int i = 0; i < MAX_SHELL_C; i++) {
 						if (!bulletC[i][0].isShoot) {
+
+							/////////////////////////////SE
+							if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+								playHandle = Novice::PlayAudio(gunC_hanlde, 0, 1.0f);
+							}
+
 							bulletC[i][0].isShoot = true;
 							for (int j = 0; j < MAX_BULLET_C; j++) {
 								bulletC[i][j].isShoot = true;
@@ -506,43 +491,7 @@ void BulletC::Draw() const {
 //////
 
 BulletD::BulletD() {
-	pos = {};
-	newPos = { -100.0f ,-100.0f };
-	frontPos = {};
-	lastPos = {};
-	mousePosX = 0;
-	mousePosY = 0;
-	distanceToMouse = 0.0f;
-	radiusX = 70.0f;
-	radiusY = 70.0f;
-	scale = 1.0f;
-	speed = 10.0f;
-	time = 0.0f;
-	stoppageTime = 0.0f;
-	stoppageTimer = 0.0f;
-
-	isShoot = false;
-
-	screen_pos = {};
-
-	for (int i = 0; i < MAX_BULLET_D; i++) {
-		bulletD[i] = {
-		{},		//pos
-		{},		//randPos
-		{},		//newPos
-		{},		//frontPos
-		{},		//screen_pos 
-		0,		//mousePosX 
-		0,		//mousePosY 
-		15.0f,	//radiusX
-		15.0f,	//radiusY
-		1.0f,	//scale 
-		0.02f,	//speed
-		0,		//randTime
-		0.0f,	//time
-		false	//isShoot 
-		};
-	}
+	Init();
 }
 
 BulletD::~BulletD() {}
@@ -585,6 +534,12 @@ void BulletD::Init() {
 		false	//isShoot 
 		};
 	}
+
+	playHandle = -1;
+	gunD_charge_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/gun_D_charge.mp3");
+	gunD_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/gun_D.mp3");
+
+	is_charge_end = false;
 }
 
 void BulletD::Scroll(Player* player, char keys[256]) {
@@ -643,6 +598,12 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 			scale = 1.0f - pos.z / 2000.0f;
 			stoppageTimer++;
 			if (stoppageTimer <= stoppageTime) {
+				is_charge_end = false;
+				/////////////////////////////SE
+				if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+					playHandle = Novice::PlayAudio(gunD_charge_hanlde, 0, 1.0f);
+				}
+
 				frontPos.x = player->screen_pos.x;
 				frontPos.y = player->screen_pos.y;
 				for (int i = 0; i < MAX_BULLET_D; i++) {
@@ -661,6 +622,18 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 				}
 			}
 			else {
+
+				if (!is_charge_end) {
+					Novice::StopAudio(playHandle);
+					is_charge_end = true;
+				}
+				else {
+					/////////////////////////////SE
+					if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+						playHandle = Novice::PlayAudio(gunD_hanlde, 0, 1.0f);
+					}
+				}
+
 				pos.z += speed;
 				newPos.x = (1 - time) * frontPos.x + time * mousePosX;
 				newPos.y = (1 - time) * frontPos.y + time * mousePosY;
