@@ -454,15 +454,15 @@ void Player::Draw(const int color, const bool Flat) const {
 	if (Flat) {
 		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
 			static_cast<int>(screen_pos.y + height + 10),
-			static_cast<int>(PlAYER_MAX_HP * width / 8), static_cast<int>(10.0f),
+			static_cast<int>(PlAYER_MAX_HP * width / 5), static_cast<int>(10.0f),
 			0.0f, 0x191B19FF, kFillModeSolid);
 		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
 			static_cast<int>(screen_pos.y + height + 10),
-			static_cast<int>(hp * width / 8), static_cast<int>(10.0f),
+			static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
 			0.0f, 0x85f153FF, kFillModeSolid);
 		Novice::DrawBox(static_cast<int>(screen_pos.x - width),
 			static_cast<int>(screen_pos.y + height + 10),
-			static_cast<int>(hp * width / 8), static_cast<int>(10.0f),
+			static_cast<int>(hp * width / 5), static_cast<int>(10.0f),
 			0.0f, 0x191B19FF, kFillModeWireFrame);
 
 

@@ -116,7 +116,6 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
 	//当たり判定
 	for (int i = 0; i < MAX_BULLET_FUNNEL; i++) {
 		if (funnelBullet[i].isShoot) {
-            if (funnelBullet[i].pos.z <= 0.05f) {
                 if (player->screen_pos.x + player->width / 2 >= funnelBullet[i].pos.x - funnelBullet[i].radius * funnelBullet[i].scale &&
                     player->screen_pos.x - player->width / 2 <= funnelBullet[i].pos.x + funnelBullet[i].radius * funnelBullet[i].scale) {
                     if (player->screen_pos.y + player->height / 2 >= funnelBullet[i].pos.y - funnelBullet[i].radius * funnelBullet[i].scale &&
@@ -134,7 +133,6 @@ void FunnelBullet::Shot(Player* player, Enemy* enemy) {
                         funnelBullet[i].isShoot = false;
                     }
                 }
-            }
 		}
 	}
 }

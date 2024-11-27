@@ -44,6 +44,7 @@ void SceneManager::Init() {
 	volume = 1.0f;
 
 	death_hanlde = Novice::LoadAudio("../Resources/Sounds/effects/player_death.wav");
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,12 +70,15 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 			is_title_played = true;
 		}
 
-		///テスト用シーンへ切り替え
-		if (keys[DIK_T] && !preKeys[DIK_T]) {
-		    current_scene = SceneState::GAMETEST;
-			testStage->Init();
-		}
+		/////テスト用シーンへ切り替え
+		//if (keys[DIK_T] && !preKeys[DIK_T]) {
+		//    current_scene = SceneState::GAMETEST;
+		//	testStage->Init();
+		//}
 		if (title->StageChanger()) {
+			//if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+			//	playHandle = Novice::PlayAudio(click_handle, 0, 1.0f);
+			//}
 			is_title_played = false;
 			Novice::StopAudio(playHandle);
 			stage->Init();
@@ -100,17 +104,17 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		}
 
 
-		//テスト用シーン切り替え
-		if (keys[DIK_O] && !preKeys[DIK_O]) {
-			stage->player->hp = 0;
-		   
-		}
-		if (keys[DIK_M] && !preKeys[DIK_M]) {
-			is_stage_played = false;
-			Novice::StopAudio(playHandle);
-			stage->enemy->current_action = ActionID::ENEMY_DEATH;
-			stage->enemy->action_timer = 480;
-		}
+		////テスト用シーン切り替え
+		//if (keys[DIK_O] && !preKeys[DIK_O]) {
+		//	stage->player->hp = 0;
+		//   
+		//}
+		//if (keys[DIK_M] && !preKeys[DIK_M]) {
+		//	is_stage_played = false;
+		//	Novice::StopAudio(playHandle);
+		//	stage->enemy->current_action = ActionID::ENEMY_DEATH;
+		//	stage->enemy->action_timer = 480;
+		//}
 		
 
 		//敵を倒したらシーン切り替え
