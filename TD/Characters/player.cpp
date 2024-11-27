@@ -63,7 +63,7 @@ void Player::Init(Map* map) {
 	// ============================
 	shootCoolTimeA = 3;
 	shootCoolTimeB = 300;
-	shootCoolTimeC = 30;
+	shootCoolTimeC = 60;
 	shootCoolTimeD = 360;
 
 	isShootAbleA = false;

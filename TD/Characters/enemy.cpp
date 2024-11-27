@@ -250,7 +250,7 @@ void Enemy::Init() {
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓更新処理ここから↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bulletD) {
+void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB,BulletC* bulletC, BulletD * bulletD) {
 
 	// ============================
 	// 敵描画関する計算
@@ -379,6 +379,22 @@ void Enemy::Move(Player* player, BulletA* bulletA, BulletB* bulletB, BulletD* bu
 					color = RED;
 					TakeDamage(PLAYER_ATK_B);
 					bulletB->bulletB[i].isShoot = false;
+				}
+			}
+		}
+	}
+
+	if (bulletC != nullptr) {
+		for (int i = 0; i < MAX_SHELL_C; i++) {
+			for (int j = 0; j < MAX_BULLET_C; j++) {
+				if (bulletC->bulletC[i][j].isShoot) {
+					float playerRadius = height / 2;
+					float bulletRadius = bulletC->bulletC[i][j].radiusX;
+					if (IsCollision(pos.x, pos.y, playerRadius, bulletC->bulletC[i][j].screen_pos.x, bulletC->bulletC[i][j].screen_pos.y, bulletRadius)) {
+						color = RED;
+						TakeDamage(PLAYER_ATK_C /3);
+						bulletC->bulletC[i][j].isShoot = false;
+					}
 				}
 			}
 		}
