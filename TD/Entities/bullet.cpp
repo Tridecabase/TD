@@ -93,10 +93,10 @@ void BulletA::Shot(Player* player, Bullet* bullet) {
 						if (!bulletA[i].isShoot) {
 							/////////////////////////////BGM
 							if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
-								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 0.6f);
+								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 0.5f);
 							}
 							else {
-								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 1.0f);
+								playHandle = Novice::PlayAudio(gunA_hanlde, 0, 0.5f);
 							}
 							bulletA[i].isShoot = true;
 							bulletA[i].pos.x = player->pos.x;
@@ -283,10 +283,10 @@ void BulletB::Shot(Player* player, Bullet* bullet) {
 					if (!is_gunB_played[i]) {
 						/////////////////////////////SE
 						if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
-							playHandle = Novice::PlayAudio(gunB_hanlde, 0, 0.5f);
+							playHandle = Novice::PlayAudio(gunB_hanlde, 0, 0.7f);
 						}
 						else {
-							playHandle = Novice::PlayAudio(gunB_hanlde, 0, 0.5f);
+							playHandle = Novice::PlayAudio(gunB_hanlde, 0, 0.7f);
 						}
 						is_gunB_played[i] = true;
 					}
@@ -630,7 +630,7 @@ void BulletD::Shot(Player* player, Bullet* bullet) {
 				else {
 					/////////////////////////////SE
 					if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
-						playHandle = Novice::PlayAudio(gunD_hanlde, 0, 1.0f);
+						playHandle = Novice::PlayAudio(gunD_hanlde, 0, 1.2f);
 					}
 				}
 
