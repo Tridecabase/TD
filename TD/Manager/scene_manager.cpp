@@ -27,6 +27,11 @@ void SceneManager::Init() {
 	stageClear->Init();
 
 	is_stage_off = true;
+
+	//bgm
+	playHandle = -1;
+	is_title_played = false;
+	title_hanlde = Novice::LoadAudio("../Resources/Sounds/bgm/title.wav");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,12 +49,22 @@ void SceneManager::Update(char keys[256], char preKeys[256]) {
 		//Title要素の更新処理
 		title->Update();
 
+		/////////////////////////////BGM
+		if (!is_title_played) {
+			if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+				playHandle = Novice::PlayAudio(title_hanlde, 1, 1.0f);
+			}
+			is_title_played = true;
+		}
+
 		///テスト用シーンへ切り替え
 		if (keys[DIK_T] && !preKeys[DIK_T]) {
 		    current_scene = SceneState::GAMETEST;
 			testStage->Init();
 		}
 		if (title->StageChanger()) {
+			is_title_played = false;
+			Novice::StopAudio(playHandle);
 			stage->Init();
 			current_scene = SceneState::GAMESTART;
 		}
