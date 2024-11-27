@@ -171,6 +171,8 @@ public:
 
 	Bullet_B bulletB[MAX_BULLET_B]{};
 
+	bool is_gunB_played[MAX_BULLET_B];
+
 	int playHandle;
 	int gunB_hanlde;
 
@@ -255,5 +257,8 @@ public:
 
 	int playHandle;
 	int gunD_hanlde;
+	int gunD_charge_hanlde;
+
+	bool is_charge_end;
 
 };
